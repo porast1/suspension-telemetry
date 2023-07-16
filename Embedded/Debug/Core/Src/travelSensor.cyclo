@@ -1,0 +1,6 @@
+../Core/Src/travelSensor.c:68:6:processData	3
+../Core/Src/travelSensor.c:78:6:startAdcDma	1
+../Core/Src/travelSensor.c:82:16:convertAdcToTravel	1
+../Core/Src/travelSensor.c:86:13:printAllBuffers	3
+../Core/Src/travelSensor.c:98:6:HAL_ADC_ConvHalfCpltCallback	1
+../Core/Src/travelSensor.c:105:6:HAL_ADC_ConvCpltCallback	1

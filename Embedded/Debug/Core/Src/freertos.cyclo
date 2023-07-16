@@ -1,0 +1,4 @@
+../Core/Src/freertos.c:78:6:vApplicationGetIdleTaskMemory	1
+../Core/Src/freertos.c:92:6:MX_FREERTOS_Init	1
+../Core/Src/freertos.c:135:6:StartDefaultTask	1
+../Core/Src/freertos.c:153:6:initSensorRead	1
