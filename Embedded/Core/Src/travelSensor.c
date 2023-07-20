@@ -16,35 +16,41 @@
 #include "travelSensor.h"
 #include "cmsis_os.h"
 #include "stdint.h"
-#include "stdio.h"
 #include "string.h"
 #include "adc.h"
 #include "tim.h"
 #include "File_Handling_RTOS.h"
-#include "fatfs.h"
-#include "spi.h"
-#include "usart.h"
-#include "gpio.h"
-#include "fatfs_sd.h"
-
 /******************************************************************************
 * Module Preprocessor Constants
 *******************************************************************************/
-
-
+/**
+ * @brief travelSensor configuration def
+ *
+ */
 #define ADC_RESOLUTION 4096U
+#define BUFFER_SIZE 256U
 #define FRONT_SENSOR_TRAVEL 300U
 #define REAR_SENSOR_TRAVEL 125U
+/**
+ * @brief Timers for measurement and trigger ADC
+ *
+ */
+#define TRAVEL_SENSOR_ADC_CHANNEL &hadc2
+#define TRAVEL_SENSOR_ADC_TRIGER_TIMER &htim2
+#define TRAVEL_SENSOR_TIMER_SAMPLE_CHECK &htim6
+/**
+ * @brief System definition
+ * @note if no system change to NO_FREE_RTOS
+ *
+ */
+#define FREE_RTOS
 
-
-#define DATA_BUFF_READY  1U
-#define DATA_BUFF_EMPTY	 0U
 
 /**
  * Debug define
  */
 
-#define CHECK_SAMPLE_TIME 0
+#define NO_CHECK_SAMPLE_TIME  /** To check time in SVV delete NO_ */
 /******************************************************************************
 * Module Preprocessor Macros
 *******************************************************************************/
@@ -56,6 +62,9 @@
 /******************************************************************************
 * Module Variable Definitions
 *******************************************************************************/
+/**
+*@brief - store ADC data buffers
+*/
 int16_t adcDataWrite[BUFFER_SIZE];
 int16_t adcRearDataRead[BUFFER_SIZE/2];
 int16_t adcFrontDataRead[BUFFER_SIZE/2];
@@ -63,35 +72,50 @@ static volatile int16_t *inBufPtr;
 static volatile int16_t *outRearBufPtr = &adcRearDataRead[0];
 static volatile int16_t *outFrontBufPtr = &adcFrontDataRead[0];
 
+#ifdef FREE_RTOS
+extern osSemaphoreId travelSensorSemHandle;
+#endif
+
+#ifdef CHECK_SAMPLE_TIME
 volatile int time_start;
 volatile int time_end;
 volatile int previousTime = 0;
 volatile float sample_time = 0;
-
-extern osSemaphoreId travelSensorSemHandle;
-
+#endif
 
 /******************************************************************************
 * Function Prototypes
 *******************************************************************************/
-void startAdcDma (ADC_HandleTypeDef *hadc);
-void processData(void);
-void HAL_ADC_ConvHalfCpltCallback(ADC_HandleTypeDef* hadc);
-void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc);
+/**
+ * @brief convertAdcToTravel - convert a half ADC buffer to fork/shock travel
+ *
+ * @param adcDataWrite  - half ADC buffer
+ * @param sensorTravel  - define constants(sensor travel)
+ * @return actualTravel
+ */
 static int16_t convertAdcToTravel(volatile int16_t *adcDataWrite, int16_t sensorTravel);
-static uint8_t  sendDataSD(volatile int16_t * frontSensor);
+/**
+ * @brief sendDataSD - sending half ADC buffer to SD Card
+ *
+ * @param file - choose file where to store
+ * @param sensor - choose sensor
+ */
+static void  sendDataSD(char *file,volatile int16_t * sensor);
 /******************************************************************************
 * Function Definitions
 *******************************************************************************/
-void startAdcDma (ADC_HandleTypeDef *hadc){
-	HAL_ADC_Start_DMA(hadc, (uint32_t*)adcDataWrite, BUFFER_SIZE);
-	HAL_TIM_Base_Start(&htim6);
-	HAL_TIM_Base_Start(&htim2);
+void startAdcDma (void){
+	HAL_ADC_Start_DMA(TRAVEL_SENSOR_ADC_CHANNEL, (uint32_t*)adcDataWrite, BUFFER_SIZE);
+	HAL_TIM_Base_Start(TRAVEL_SENSOR_TIMER_SAMPLE_CHECK);
+	HAL_TIM_Base_Start(TRAVEL_SENSOR_ADC_TRIGER_TIMER);
 }
 
-void processData(void){
+void processData(char *sensorFront, char *sensorRear){
+#ifdef FREE_RTOS
 	osSemaphoreWait(travelSensorSemHandle, osWaitForever);
-	sendDataSD(outFrontBufPtr);
+#endif
+	sendDataSD(sensorRear,outRearBufPtr);
+	sendDataSD(sensorFront,outFrontBufPtr);
 }
 
 void HAL_ADC_ConvHalfCpltCallback(ADC_HandleTypeDef* hadc){
@@ -102,11 +126,13 @@ void HAL_ADC_ConvHalfCpltCallback(ADC_HandleTypeDef* hadc){
 		outRearBufPtr[n/2] = convertAdcToTravel(&inBufPtr[n], REAR_SENSOR_TRAVEL);
 		outFrontBufPtr[n/2] = convertAdcToTravel(&inBufPtr[n + 1], FRONT_SENSOR_TRAVEL);
 	}
+#ifdef FREE_RTOS
 	osSemaphoreRelease(travelSensorSemHandle);
+#endif
 }
 
 void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc){
-#if CHECK_SAMPLE_TIME == 1
+#ifdef CHECK_SAMPLE_TIME
 	previousTime = time_end;
 	time_end = __HAL_TIM_GET_COUNTER(&htim6);
 	sample_time = ((time_end - previousTime)/2)/(float)(BUFFER_SIZE/2);
@@ -119,7 +145,9 @@ void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc){
 		outRearBufPtr[n/2] = convertAdcToTravel(&inBufPtr[n], REAR_SENSOR_TRAVEL);
 		outFrontBufPtr[n/2] = convertAdcToTravel(&inBufPtr[n + 1], FRONT_SENSOR_TRAVEL);
 	}
+#ifdef FREE_RTOS
 	osSemaphoreRelease(travelSensorSemHandle);
+#endif
 }
 
 static int16_t convertAdcToTravel(volatile int16_t *adcDataWrite, int16_t sensorTravel){
@@ -127,12 +155,12 @@ static int16_t convertAdcToTravel(volatile int16_t *adcDataWrite, int16_t sensor
 	return (*adcDataWrite*sensorTravel/ADC_RESOLUTION);
 }
 
-static uint8_t sendDataSD(volatile int16_t * frontSensor){
+static void sendDataSD(char *file,volatile int16_t * sensor){
 	char buffer[BUFFER_SIZE+1];
 	memset(buffer,0,BUFFER_SIZE+1);
 	int i;
 	for (i = 0; i < (BUFFER_SIZE)/4; i++){
-		sprintf(buffer + strlen(buffer), "%d ", frontSensor[i]);
+		sprintf(buffer + strlen(buffer), "%d ", sensor[i]);
 	}
 	size_t size = strlen(buffer)+1;
 	char newBuff[size];
@@ -140,9 +168,8 @@ static uint8_t sendDataSD(volatile int16_t * frontSensor){
 	strncpy(newBuff, buffer,sizeof(newBuff));
 	newBuff[size] = '\0';
 	Mount_SD("/");
-	Update_File("ADC_DATA.TXT", newBuff);
+	Update_File(file, newBuff);
 	Unmount_SD("/");
-	return (1);
 }
 
 /*************** END OF FUNCTIONS ***************************************************************************/

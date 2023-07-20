@@ -47,7 +47,8 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-
+#define FILE_NAME_SIZE 20
+#define SD_INIT_TIME 10
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -57,7 +58,7 @@
 
 /* Private variables ---------------------------------------------------------*/
 /* USER CODE BEGIN Variables */
-
+static uint8_t path = 0;
 /* USER CODE END Variables */
 osThreadId defaultTaskHandle;
 osThreadId sensorReadHandle;
@@ -180,19 +181,36 @@ void StartDefaultTask(void const * argument)
 void initSensorRead(void const * argument)
 {
   /* USER CODE BEGIN initSensorRead */
+/**
+ * Create different file name per measurement
+ */
+	char dir[FILE_NAME_SIZE];
+	char frontSensor[FILE_NAME_SIZE];
+	char rearSensor[FILE_NAME_SIZE];
+	sprintf(dir,"Data%d",path);
+	sprintf(frontSensor,"Data%d/FRONT%d.txt",path,path);
+	sprintf(rearSensor,"Data%d/Rear%d.txt",path,path);
+	path++;
+	/**
+	 * Mount SD Card and create dir and files for Travel sensors
+	 */
 	Mount_SD("/");
 	Format_SD();
-	Create_File("ADC_DATA.TXT");
-	Create_Dir("TEMP.TXT)");
+	Create_Dir(dir);
+	Create_File(frontSensor);
+	Create_File(rearSensor);
 	Unmount_SD("/");
-	osDelayUntil(osKernelSysTick(), 10);
-	startAdcDma(&hadc2);
+	/**
+	 * Wait for system initialize
+	 */
+	osDelayUntil((uint32_t*)osKernelSysTick(), SD_INIT_TIME);
+	startAdcDma();
 
   /* Infinite loop */
   for(;;)
   {
 
-	processData();
+	processData(frontSensor,rearSensor);
     osDelay(1);
   }
   /* USER CODE END initSensorRead */
@@ -209,8 +227,6 @@ void SdCardInit(void const * argument)
 {
   /* USER CODE BEGIN SdCardInit */
 
-
-	int index = 1;
 /* Infinite loop */
   for(;;)
   {

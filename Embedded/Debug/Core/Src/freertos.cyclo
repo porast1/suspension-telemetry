@@ -1,5 +1,5 @@
-../Core/Src/freertos.c:92:6:vApplicationGetIdleTaskMemory	1
-../Core/Src/freertos.c:106:6:MX_FREERTOS_Init	1
-../Core/Src/freertos.c:162:6:StartDefaultTask	1
-../Core/Src/freertos.c:180:6:initSensorRead	1
-../Core/Src/freertos.c:208:6:SdCardInit	1
+../Core/Src/freertos.c:93:6:vApplicationGetIdleTaskMemory	1
+../Core/Src/freertos.c:107:6:MX_FREERTOS_Init	1
+../Core/Src/freertos.c:163:6:StartDefaultTask	1
+../Core/Src/freertos.c:181:6:initSensorRead	1
+../Core/Src/freertos.c:226:6:SdCardInit	1
