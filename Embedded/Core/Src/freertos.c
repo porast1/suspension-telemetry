@@ -30,8 +30,14 @@
 #include "stdint.h"
 #include "dma.h"
 #include "tim.h"
+#include "spi.h"
+#include "usart.h"
+#include "gpio.h"
+#include "fatfs.h"
 
 #include "travelSensor.h"
+#include "fatfs_sd.h"
+#include "File_Handling_RTOS.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -57,6 +63,13 @@ osThreadId defaultTaskHandle;
 osThreadId sensorReadHandle;
 uint32_t sensorReadBuffer[ 4096 ];
 osStaticThreadDef_t sensorReadControlBlock;
+osThreadId SdCardHandle;
+uint32_t SdCardBuffer[ 256 ];
+osStaticThreadDef_t SdCardControlBlock;
+osSemaphoreId travelSensorSemHandle;
+osStaticSemaphoreDef_t travelSensorSemControlBlock;
+osSemaphoreId SendDataHandle;
+osStaticSemaphoreDef_t SendDataControlBlock;
 
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN FunctionPrototypes */
@@ -65,6 +78,7 @@ osStaticThreadDef_t sensorReadControlBlock;
 
 void StartDefaultTask(void const * argument);
 void initSensorRead(void const * argument);
+void SdCardInit(void const * argument);
 
 void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
 
@@ -98,6 +112,15 @@ void MX_FREERTOS_Init(void) {
   /* add mutexes, ... */
   /* USER CODE END RTOS_MUTEX */
 
+  /* Create the semaphores(s) */
+  /* definition and creation of travelSensorSem */
+  osSemaphoreStaticDef(travelSensorSem, &travelSensorSemControlBlock);
+  travelSensorSemHandle = osSemaphoreCreate(osSemaphore(travelSensorSem), 1);
+
+  /* definition and creation of SendData */
+  osSemaphoreStaticDef(SendData, &SendDataControlBlock);
+  SendDataHandle = osSemaphoreCreate(osSemaphore(SendData), 1);
+
   /* USER CODE BEGIN RTOS_SEMAPHORES */
   /* add semaphores, ... */
   /* USER CODE END RTOS_SEMAPHORES */
@@ -118,6 +141,10 @@ void MX_FREERTOS_Init(void) {
   /* definition and creation of sensorRead */
   osThreadStaticDef(sensorRead, initSensorRead, osPriorityNormal, 0, 4096, sensorReadBuffer, &sensorReadControlBlock);
   sensorReadHandle = osThreadCreate(osThread(sensorRead), NULL);
+
+  /* definition and creation of SdCard */
+  osThreadStaticDef(SdCard, SdCardInit, osPriorityHigh, 0, 256, SdCardBuffer, &SdCardControlBlock);
+  SdCardHandle = osThreadCreate(osThread(SdCard), NULL);
 
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
@@ -153,17 +180,44 @@ void StartDefaultTask(void const * argument)
 void initSensorRead(void const * argument)
 {
   /* USER CODE BEGIN initSensorRead */
-	startAdcDma(&hadc1);
-	/*uint16_t adcControlData[5];
-	HAL_ADC_Start_DMA(&hadc1, (uint32_t*)adcControlData, 5);
-	HAL_TIM_Base_Start(&htim2);*/
+	Mount_SD("/");
+	Format_SD();
+	Create_File("ADC_DATA.TXT");
+	Create_Dir("TEMP.TXT)");
+	Unmount_SD("/");
+	osDelayUntil(osKernelSysTick(), 10);
+	startAdcDma(&hadc2);
+
   /* Infinite loop */
   for(;;)
   {
+
 	processData();
-    osDelay(1000);
+    osDelay(1);
   }
   /* USER CODE END initSensorRead */
+}
+
+/* USER CODE BEGIN Header_SdCardInit */
+/**
+* @brief Function implementing the SdCard thread.
+* @param argument: Not used
+* @retval None
+*/
+/* USER CODE END Header_SdCardInit */
+void SdCardInit(void const * argument)
+{
+  /* USER CODE BEGIN SdCardInit */
+
+
+	int index = 1;
+/* Infinite loop */
+  for(;;)
+  {
+
+	  osDelay(200);
+  }
+  /* USER CODE END SdCardInit */
 }
 
 /* Private application code --------------------------------------------------*/

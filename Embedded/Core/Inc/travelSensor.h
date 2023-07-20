@@ -26,7 +26,7 @@
 /**
  * This constant is
  */
-
+#define BUFFER_SIZE 256U
 
 /******************************************************************************
 * Configuration Constants
