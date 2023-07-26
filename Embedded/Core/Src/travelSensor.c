@@ -1,9 +1,9 @@
 /*******************************************************************************
-* Title                 :   Automotive academy Nov 22
+* Title                 :   Suspension Telemetry
 * Filename              :   travelSensor.c
 * Author                :   patryk.grzywnowicz@gmail.com
 * Compiler              :   GCC
-* Target                :   Car simulator
+* Target                :   data_acquisition_module
 *******************************************************************************/
 
 /** \file travelSensor.c
@@ -27,10 +27,15 @@
  * @brief travelSensor configuration def
  *
  */
+#define SD_INIT_TIME 10
+
 #define ADC_RESOLUTION 4096U
 #define BUFFER_SIZE 256U
 #define FRONT_SENSOR_TRAVEL 300U
 #define REAR_SENSOR_TRAVEL 125U
+
+#define FRONT_SUSPENSION_TRAVEL 300U
+#define REAR_SUSPENSION_TRAVEL 125U
 /**
  * @brief Timers for measurement and trigger ADC
  *
@@ -105,9 +110,15 @@ static void  sendDataSD(char *file,volatile int16_t * sensor);
 * Function Definitions
 *******************************************************************************/
 void startAdcDma (void){
+	osDelayUntil((uint32_t*)osKernelSysTick(), SD_INIT_TIME);
 	HAL_ADC_Start_DMA(TRAVEL_SENSOR_ADC_CHANNEL, (uint32_t*)adcDataWrite, BUFFER_SIZE);
 	HAL_TIM_Base_Start(TRAVEL_SENSOR_TIMER_SAMPLE_CHECK);
 	HAL_TIM_Base_Start(TRAVEL_SENSOR_ADC_TRIGER_TIMER);
+}
+void stopAdcDma (void){
+	HAL_ADC_Stop_DMA(TRAVEL_SENSOR_ADC_CHANNEL);
+	HAL_TIM_Base_Stop(TRAVEL_SENSOR_TIMER_SAMPLE_CHECK);
+	HAL_TIM_Base_Stop(TRAVEL_SENSOR_ADC_TRIGER_TIMER);
 }
 
 void processData(char *sensorFront, char *sensorRear){
@@ -116,6 +127,21 @@ void processData(char *sensorFront, char *sensorRear){
 #endif
 	sendDataSD(sensorRear,outRearBufPtr);
 	sendDataSD(sensorFront,outFrontBufPtr);
+}
+void processDataSag(uint16_t* sagRearFront){
+#ifdef FREE_RTOS
+	osSemaphoreWait(travelSensorSemHandle, osWaitForever);
+#endif
+	(uint32_t*)sagRearFront;
+	for(int i = 0; i < BUFFER_SIZE/4; i++){
+		sagRearFront[0] += outRearBufPtr[i];
+		sagRearFront[1] += outFrontBufPtr[i];
+	}
+	sagRearFront[0] = sagRearFront[0]/(BUFFER_SIZE/4);
+	sagRearFront[1] = sagRearFront[1]/(BUFFER_SIZE/4);
+
+	sagRearFront[0] = 100*(sagRearFront[0]/(float)REAR_SUSPENSION_TRAVEL);
+	sagRearFront[1] = 100*(sagRearFront[1]/(float)FRONT_SUSPENSION_TRAVEL);
 }
 
 void HAL_ADC_ConvHalfCpltCallback(ADC_HandleTypeDef* hadc){

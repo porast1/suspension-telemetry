@@ -1,36 +1,44 @@
 /****************************************************************************
-* Title                 :   Suspension Telemetry
-* Filename              :   travelSensor.h
+* Title                 :   Suspension Telemetry 
+* Filename              :   button.h
 * Author                :   patryk.grzywnowicz@gmail.com
 * Compiler              :   GCC
 * Target                :   data_acquisition_module
 * Notes                 :   None
 *****************************************************************************/
 
-/** \file travelSensor.h
+/** \file button.h
  *  \brief This module contains ...
  * 
  *  This is the header file for the definition for tasks that ...
  */
-#ifndef INC_TRAVELSENSOR_H_
-#define INC_TRAVELSENSOR_H_
+#ifndef INC_BUTTON_H_
+#define INC_BUTTON_H_
 
 /******************************************************************************
 * Includes
 *******************************************************************************/
-#include "main.h"
-#include "ff.h"
+
+
 /******************************************************************************
 * Preprocessor Constants
 *******************************************************************************/
 /**
  * This constant is
  */
-
+typedef enum button{
+	BUTTON_SELECT = 0U,
+	BUTTON_UP     = 1U,
+	BUTTON_DOWN   = 2U,
+	BUTTON_LEFT   = 3U,
+	BUTTON_RIGHT  = 4U,
+	BUTTON_SNA    = 5U
+}button_t;
 
 /******************************************************************************
 * Configuration Constants
 *******************************************************************************/
+
 
 /******************************************************************************
 * Macros
@@ -50,33 +58,7 @@
 /******************************************************************************
 * Function Prototypes
 *******************************************************************************/
-/**
- * @brief init DMA and ADC
- *
- */
-void startAdcDma (void);
-/**
- * @brief sending a finished data
- *
- * @param sensorFront - file for front sensor
- * @param sensorRear - file for front sensor
- */
-void processData(char *sensorFront, char *sensorRear);
-
-void processDataSag(uint16_t* sagRearFront);
-
-/**
- * @brief Half buffer data ready interrupt
- *
- * @param hadc
- */
-void HAL_ADC_ConvHalfCpltCallback(ADC_HandleTypeDef* hadc);
-/**
- * @brief complete buffer data ready interrupt
- *
- * @param hadc
- */
-void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc);
-#endif /* INC_TRAVELSENSOR_H_ */
+button_t readButton(void);
+#endif /* INC_BUTTON_H_ */
 
 /*** End of File **************************************************************/

@@ -1,6 +1,8 @@
-../Core/Src/travelSensor.c:107:6:startAdcDma	8	static
-../Core/Src/travelSensor.c:113:6:processData	16	static
-../Core/Src/travelSensor.c:121:6:HAL_ADC_ConvHalfCpltCallback	32	static
-../Core/Src/travelSensor.c:134:6:HAL_ADC_ConvCpltCallback	32	static
-../Core/Src/travelSensor.c:153:16:convertAdcToTravel	16	static
-../Core/Src/travelSensor.c:158:13:sendDataSD	320	dynamic
+../Core/Src/travelSensor.c:112:6:startAdcDma	8	static
+../Core/Src/travelSensor.c:118:6:stopAdcDma	8	static
+../Core/Src/travelSensor.c:124:6:processData	16	static
+../Core/Src/travelSensor.c:131:6:processDataSag	24	static
+../Core/Src/travelSensor.c:147:6:HAL_ADC_ConvHalfCpltCallback	32	static
+../Core/Src/travelSensor.c:160:6:HAL_ADC_ConvCpltCallback	32	static
+../Core/Src/travelSensor.c:179:16:convertAdcToTravel	16	static
+../Core/Src/travelSensor.c:184:13:sendDataSD	320	dynamic

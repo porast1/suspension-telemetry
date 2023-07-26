@@ -7,7 +7,7 @@
 
 #include "File_Handling_RTOS.h"
 #include "stm32f4xx_hal.h"
-
+#include "ff.h"
 
 extern UART_HandleTypeDef huart2;
 #define UART &huart2
@@ -92,32 +92,48 @@ FRESULT Scan_SD (char* pat)
 }
 
 /* Only supports removing files from home directory */
-FRESULT Format_SD (void)
+FRESULT Format_SD(void)
 {
     DIR dir;
-    char *path = pvPortMalloc(20*sizeof (char));
-    sprintf (path, "%s","/");
+    FILINFO fno;
+    char *path = pvPortMalloc(20 * sizeof(char));
+    sprintf(path, "%s", "/Data0");
 
-    fresult = f_opendir(&dir, path);                       /* Open the directory */
+    fresult = f_opendir(&dir, path);
+
     if (fresult == FR_OK)
     {
-        for (;;)
+        while (1)
         {
             fresult = f_readdir(&dir, &fno);                   /* Read a directory item */
             if (fresult != FR_OK || fno.fname[0] == 0) break;  /* Break on error or end of dir */
-            if (fno.fattrib & AM_DIR)     /* It is a directory */
+            if (!(strcmp(".", fno.fname)) || !(strcmp("..", fno.fname)))
             {
-            	if (!(strcmp ("SYSTEM~1", fno.fname))) continue;
-            	fresult = f_unlink(fno.fname);
-            	if (fresult == FR_DENIED) continue;
+                continue; // Skip current and parent directories
+            }
+            // Create full path to the file or subdirectory
+            sprintf(path, "/Data0/%s", fno.fname);
+            if (fno.fattrib & AM_DIR) /* It is a directory */
+            {
+                // Recursive call to delete subdirectories and their contents
+                fresult = Format_SD();
+                if (fresult != FR_OK) break;
             }
             else
-            {   /* It is a file. */
-               fresult = f_unlink(fno.fname);
+            { /* It is a file. */
+                fresult = f_unlink(path);
+                if (fresult != FR_OK) break;
             }
         }
         f_closedir(&dir);
     }
+
+    // Remove the empty "/Data0" directory
+    if (fresult == FR_OK)
+    {
+        fresult = f_unlink("/Data0");
+    }
+
     vPortFree(path);
     return fresult;
 }

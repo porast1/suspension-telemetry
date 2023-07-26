@@ -1,25 +1,25 @@
 /****************************************************************************
-* Title                 :   Suspension Telemetry
-* Filename              :   travelSensor.h
+* Title                 :   Suspension Telemetry 
+* Filename              :   menu.h
 * Author                :   patryk.grzywnowicz@gmail.com
 * Compiler              :   GCC
 * Target                :   data_acquisition_module
 * Notes                 :   None
 *****************************************************************************/
 
-/** \file travelSensor.h
+/** \file menu.h
  *  \brief This module contains ...
  * 
  *  This is the header file for the definition for tasks that ...
  */
-#ifndef INC_TRAVELSENSOR_H_
-#define INC_TRAVELSENSOR_H_
+#ifndef INC_MENU_H_
+#define INC_MENU_H_
 
 /******************************************************************************
 * Includes
 *******************************************************************************/
-#include "main.h"
-#include "ff.h"
+#include "button.h"
+
 /******************************************************************************
 * Preprocessor Constants
 *******************************************************************************/
@@ -31,6 +31,7 @@
 /******************************************************************************
 * Configuration Constants
 *******************************************************************************/
+
 
 /******************************************************************************
 * Macros
@@ -50,33 +51,8 @@
 /******************************************************************************
 * Function Prototypes
 *******************************************************************************/
-/**
- * @brief init DMA and ADC
- *
- */
-void startAdcDma (void);
-/**
- * @brief sending a finished data
- *
- * @param sensorFront - file for front sensor
- * @param sensorRear - file for front sensor
- */
-void processData(char *sensorFront, char *sensorRear);
-
-void processDataSag(uint16_t* sagRearFront);
-
-/**
- * @brief Half buffer data ready interrupt
- *
- * @param hadc
- */
-void HAL_ADC_ConvHalfCpltCallback(ADC_HandleTypeDef* hadc);
-/**
- * @brief complete buffer data ready interrupt
- *
- * @param hadc
- */
-void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc);
-#endif /* INC_TRAVELSENSOR_H_ */
+void menuSelector(button_t button);
+void menuCalculateBlock(void);
+#endif /* INC_MENU_H_ */
 
 /*** End of File **************************************************************/
