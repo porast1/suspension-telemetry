@@ -1,11 +1,11 @@
 /****************************************************************************
-* Title                 :   Suspension Telemetry
-* Filename              :   travelSensor.h
-* Author                :   patryk.grzywnowicz@gmail.com
-* Compiler              :   GCC
-* Target                :   data_acquisition_module
-* Notes                 :   None
-*****************************************************************************/
+ * Title                 :   Suspension Telemetry
+ * Filename              :   travelSensor.h
+ * Author                :   patryk.grzywnowicz@gmail.com
+ * Compiler              :   GCC
+ * Target                :   data_acquisition_module
+ * Notes                 :   None
+ *****************************************************************************/
 
 /** \file travelSensor.h
  *  \brief This module contains ...
@@ -16,46 +16,42 @@
 #define INC_TRAVELSENSOR_H_
 
 /******************************************************************************
-* Includes
-*******************************************************************************/
+ * Includes
+ *******************************************************************************/
 #include "main.h"
 #include "ff.h"
 /******************************************************************************
-* Preprocessor Constants
-*******************************************************************************/
+ * Preprocessor Constants
+ *******************************************************************************/
 /**
  * This constant is
  */
 
+/******************************************************************************
+ * Configuration Constants
+ *******************************************************************************/
 
 /******************************************************************************
-* Configuration Constants
-*******************************************************************************/
+ * Macros
+ *******************************************************************************/
 
 /******************************************************************************
-* Macros
-*******************************************************************************/
-
-
-/******************************************************************************
-* Typedefs
-*******************************************************************************/
-
+ * Typedefs
+ *******************************************************************************/
 
 /******************************************************************************
-* Variables
-*******************************************************************************/
-
+ * Variables
+ *******************************************************************************/
 
 /******************************************************************************
-* Function Prototypes
-*******************************************************************************/
+ * Function Prototypes
+ *******************************************************************************/
 /**
  * @brief init DMA and ADC
  *
  */
-void startAdcDma (void);
-void stopAdcDma (void);
+void startAdcDma(void);
+void stopAdcDma(void);
 /**
  * @brief sending a finished data
  *
@@ -64,20 +60,20 @@ void stopAdcDma (void);
  */
 void processData(char *sensorFront, char *sensorRear);
 
-void processDataSag(uint16_t* sagRearFront);
+void processDataSag(uint16_t *sagRearFront);
 
 /**
  * @brief Half buffer data ready interrupt
  *
  * @param hadc
  */
-void HAL_ADC_ConvHalfCpltCallback(ADC_HandleTypeDef* hadc);
+void HAL_ADC_ConvHalfCpltCallback(ADC_HandleTypeDef *hadc);
 /**
  * @brief complete buffer data ready interrupt
  *
  * @param hadc
  */
-void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc);
+void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef *hadc);
 #endif /* INC_TRAVELSENSOR_H_ */
 
 /*** End of File **************************************************************/

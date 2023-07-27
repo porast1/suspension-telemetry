@@ -18,11 +18,11 @@
 #define CMD55    (0x40+55)    /* APP_CMD */
 #define CMD58    (0x40+58)    /* READ_OCR */
 
-DSTATUS SD_disk_initialize (BYTE pdrv);
-DSTATUS SD_disk_status (BYTE pdrv);
-DRESULT SD_disk_read (BYTE pdrv, BYTE* buff, DWORD sector, UINT count);
-DRESULT SD_disk_write (BYTE pdrv, const BYTE* buff, DWORD sector, UINT count);
-DRESULT SD_disk_ioctl (BYTE pdrv, BYTE cmd, void* buff);
+DSTATUS SD_disk_initialize(BYTE pdrv);
+DSTATUS SD_disk_status(BYTE pdrv);
+DRESULT SD_disk_read(BYTE pdrv, BYTE *buff, DWORD sector, UINT count);
+DRESULT SD_disk_write(BYTE pdrv, const BYTE *buff, DWORD sector, UINT count);
+DRESULT SD_disk_ioctl(BYTE pdrv, BYTE cmd, void *buff);
 
 #define SPI_TIMEOUT 1000
 

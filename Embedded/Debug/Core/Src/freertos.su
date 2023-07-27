@@ -1,6 +1,6 @@
 ../Core/Src/freertos.c:105:6:vApplicationGetIdleTaskMemory	24	static
-../Core/Src/freertos.c:119:6:MX_FREERTOS_Init	152	static
-../Core/Src/freertos.c:183:6:buttonTaskInit	16	static
-../Core/Src/freertos.c:205:6:initSensorRead	16	static
-../Core/Src/freertos.c:226:6:SdCardInit	16	static
-../Core/Src/freertos.c:250:6:menuProcessDataInit	16	static
+../Core/Src/freertos.c:120:6:MX_FREERTOS_Init	152	static
+../Core/Src/freertos.c:189:6:buttonTaskInit	16	static
+../Core/Src/freertos.c:212:6:initSensorRead	16	static
+../Core/Src/freertos.c:232:6:SdCardInit	16	static
+../Core/Src/freertos.c:258:6:menuProcessDataInit	16	static
