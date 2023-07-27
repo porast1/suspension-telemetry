@@ -66,6 +66,7 @@ char rearSensor[FILE_NAME_SIZE];
 void menuSelector(button_t button){
 
 	switch(selector){
+
 		case(MENU_START):
 			if(BUTTON_LEFT == button){
 				selector = MENU_SAG;
@@ -80,6 +81,7 @@ void menuSelector(button_t button){
 			}
 			stopAdcDma();
 			break;
+
 		case(MENU_SAG):
 			if(BUTTON_SELECT == button){
 				startAdcDma();
@@ -90,6 +92,7 @@ void menuSelector(button_t button){
 				puts("nacisnij select aby rozpoczac pomiar\n");
 			}
 			break;
+
 		case(MENU_SAG_START):
 			if(BUTTON_SELECT == button){
 
@@ -100,6 +103,7 @@ void menuSelector(button_t button){
 				puts("nacisnij select aby wrocic do menu start");
 			}
 			break;
+
 		case(MENU_MEASURMENT):
 			if(BUTTON_SELECT == button){
 				setPath(dir, frontSensor, rearSensor, path);
@@ -112,6 +116,7 @@ void menuSelector(button_t button){
 				puts("nacisnij select aby rozpoczac pomiar\n");
 				}
 			break;
+
 		case(MENU_MEASURMENT_START):
 			if(BUTTON_SELECT == button){
 				selector = MENU_START;
@@ -121,6 +126,7 @@ void menuSelector(button_t button){
 				puts("nacisnij select aby wrocic do menu start");
 			}
 			break;
+
 		default:
 	}
 
