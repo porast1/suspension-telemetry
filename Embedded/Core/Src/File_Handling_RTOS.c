@@ -16,6 +16,8 @@ extern UART_HandleTypeDef huart2;
 
 /* =============================>>>>>>>> NO CHANGES AFTER THIS LINE =====================================>>>>>>> */
 
+
+
 FATFS fs;  // file system
 FIL fil; // File
 FILINFO fno;
@@ -27,6 +29,21 @@ FATFS *pfs;
 DWORD fre_clust;
 uint32_t total, free_space;
 
+void setPath(char* dir, char *frontSensor, char* rearSensor, uint8_t path){
+	sprintf(dir,"Data%d",path);
+	sprintf(frontSensor,"Data%d/FRONT%d.txt",path,path);
+	sprintf(rearSensor,"Data%d/Rear%d.txt",path,path);
+}
+void createNewFile(char* dir, char* frontSensor, char* rearSensor, uint8_t* pathPtr){
+	uint8_t path = *pathPtr;
+	Mount_SD("/");
+	Format_SD(path);
+	Create_Dir(dir);
+	Create_File(frontSensor);
+	Create_File(rearSensor);
+	Unmount_SD("/");
+	(*pathPtr)++;
+}
 
 void Send_Uart (char *string)
 {
@@ -92,13 +109,12 @@ FRESULT Scan_SD (char* pat)
 }
 
 /* Only supports removing files from home directory */
-FRESULT Format_SD(void)
+FRESULT Format_SD(uint8_t dirNumber)
 {
     DIR dir;
     FILINFO fno;
     char *path = pvPortMalloc(20 * sizeof(char));
-    sprintf(path, "%s", "/Data0");
-
+    sprintf(path, "/Data%d", dirNumber);
     fresult = f_opendir(&dir, path);
 
     if (fresult == FR_OK)
@@ -109,18 +125,18 @@ FRESULT Format_SD(void)
             if (fresult != FR_OK || fno.fname[0] == 0) break;  /* Break on error or end of dir */
             if (!(strcmp(".", fno.fname)) || !(strcmp("..", fno.fname)))
             {
-                continue; // Skip current and parent directories
+                continue;
             }
-            // Create full path to the file or subdirectory
-            sprintf(path, "/Data0/%s", fno.fname);
+
+            sprintf(path, "/Data%d/%s",dirNumber, fno.fname);
             if (fno.fattrib & AM_DIR) /* It is a directory */
             {
-                // Recursive call to delete subdirectories and their contents
-                fresult = Format_SD();
+
+                fresult = Format_SD(dirNumber);
                 if (fresult != FR_OK) break;
             }
             else
-            { /* It is a file. */
+            {
                 fresult = f_unlink(path);
                 if (fresult != FR_OK) break;
             }
@@ -128,14 +144,16 @@ FRESULT Format_SD(void)
         f_closedir(&dir);
     }
 
-    // Remove the empty "/Data0" directory
+
     if (fresult == FR_OK)
     {
-        fresult = f_unlink("/Data0");
+    	memset(path, 0, 20);
+    	sprintf(path, "/Data%d", dirNumber);
+        fresult = f_unlink(path);
     }
 
     vPortFree(path);
-    return fresult;
+    return (fresult);
 }
 
 

@@ -78,6 +78,7 @@ void menuSelector(button_t button){
 			else {
 				puts("jestes w menu start, kliknij:\n1.Pomiar Sagu\n2.Rozpocznij pomiary pracy zawieszenia\n");
 			}
+			stopAdcDma();
 			break;
 		case(MENU_SAG):
 			if(BUTTON_SELECT == button){
@@ -101,29 +102,10 @@ void menuSelector(button_t button){
 			break;
 		case(MENU_MEASURMENT):
 			if(BUTTON_SELECT == button){
+				setPath(dir, frontSensor, rearSensor, path);
+				createNewFile(dir, frontSensor, rearSensor, &path);
+				startAdcDma();
 				selector = MENU_MEASURMENT_START;
-				/**
-				 * Create different file name per measurement
-				 */
-
-					sprintf(dir,"Data%d",path);
-					sprintf(frontSensor,"Data%d/FRONT%d.txt",path,path);
-					sprintf(rearSensor,"Data%d/Rear%d.txt",path,path);
-					path++;
-					/**
-					 * Mount SD Card and create dir and files for Travel sensors
-					 */
-					Mount_SD("/");
-					Format_SD();
-					Create_Dir(dir);
-					Create_File(frontSensor);
-					Create_File(rearSensor);
-					Unmount_SD("/");
-					/**
-					 * Wait for system initialize
-					 */
-
-					startAdcDma();
 				puts("pomiar ciagly rozpoczety, kliknij select aby zakonczyc\n");
 			}
 			else{

@@ -14,7 +14,8 @@
 #include "fatfs_sd.h"
 
 
-
+void setPath(char* dir, char *frontSensor, char* rearSensor, uint8_t path);
+void createNewFile(char* dir, char* frontSensor, char* rearSensor,uint8_t* path);
 
 /* mounts the sd card*/
 void Mount_SD (const TCHAR* path);
@@ -26,7 +27,7 @@ void Unmount_SD (const TCHAR* path);
 FRESULT Scan_SD (char* pat);
 
 /* Only supports removing files from home directory. Directory remover to be added soon */
-FRESULT Format_SD (void);
+FRESULT Format_SD (uint8_t dirNumber);
 
 /* write the data to the file
  * @ name : is the path to the file*/

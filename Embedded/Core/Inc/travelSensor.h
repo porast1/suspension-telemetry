@@ -55,6 +55,7 @@
  *
  */
 void startAdcDma (void);
+void stopAdcDma (void);
 /**
  * @brief sending a finished data
  *
