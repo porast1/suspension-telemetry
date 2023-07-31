@@ -116,13 +116,14 @@ void menuSelector(button_t button)
 		{
 			startAdcDma();
 			travelPressureSensorCalibration();
+			puts("nacisnij right aby wrocic do menu start\n");
 
 		}
 		else if (BUTTON_RIGHT == button)
 		{
 			selector = MENU_START;
 			puts(
-								"jestes w menu start, kliknij:\n1.Pomiar Sagu\n2.Rozpocznij pomiary pracy zawieszenia\n");
+					"jestes w menu start, kliknij:\n1.Pomiar Sagu\n2.Rozpocznij pomiary pracy zawieszenia\n");
 		}
 		else
 		{

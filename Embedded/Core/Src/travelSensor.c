@@ -33,6 +33,7 @@
 #define BUFFER_SIZE 512U
 #define NUMBER_OF_SENSORS 4U
 #define HALF_CONV_BUFF_SIZE 8U
+
 #define CONVERT_TO_PERCENT  100U
 #define CONVERT_MPa_to_PSI  145U
 #define PRESSURE_SENSOR_MAX_VALUE 6U
@@ -245,7 +246,7 @@ void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef *hadc)
 #ifdef CHECK_SAMPLE_TIME
 	previousTime = time_end;
 	time_end = __HAL_TIM_GET_COUNTER(&htim6);
-	sample_time = ((time_end - previousTime)/2)/(float)(BUFFER_SIZE/2);
+	sample_time = ((time_end - previousTime)/NUMBER_OF_SENSORS)/(float)(BUFFER_SIZE/NUMBER_OF_SENSORS);
 	printf("semFullTime: %f\n", sample_time);
 #endif
 
