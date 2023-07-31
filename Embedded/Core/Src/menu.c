@@ -33,6 +33,7 @@ typedef enum menu
 {
 	MENU_START = 0U,
 	MENU_SAG,
+	MENU_CALIBRATION,
 	MENU_SAG_START,
 	MENU_MEASURMENT,
 	MENU_MEASURMENT_START
@@ -56,6 +57,8 @@ static uint8_t path = 0;
 char dir[FILE_NAME_SIZE];
 char frontSensor[FILE_NAME_SIZE];
 char rearSensor[FILE_NAME_SIZE];
+char frontPressureSensor[FILE_NAME_SIZE];
+char rearPressureSensor[FILE_NAME_SIZE];
 /******************************************************************************
  * Function Prototypes
  *******************************************************************************/
@@ -73,7 +76,8 @@ void menuSelector(button_t button)
 		if (BUTTON_LEFT == button)
 		{
 			selector = MENU_SAG;
-			puts("jestes w menu sag, kliknij select aby rozpoczac pomiar\n");
+			puts(
+					"jestes w menu sag, kliknij select aby rozpoczac pomiar\nkliknij left aby rozoczac kalibracje\n");
 		}
 		else if (BUTTON_RIGHT == button)
 		{
@@ -96,12 +100,35 @@ void menuSelector(button_t button)
 			selector = MENU_SAG_START;
 			puts("pomiar rozpoczety, kliknij select aby zakonczyc\n");
 		}
+		else if (BUTTON_LEFT == button)
+		{
+			selector = MENU_CALIBRATION;
+			puts(
+					"jestes w menu Calibration, kliknij select aby rozpoczac kalibracje\n");
+		}
 		else
 		{
 			puts("nacisnij select aby rozpoczac pomiar\n");
 		}
 		break;
+	case (MENU_CALIBRATION):
+		if (BUTTON_SELECT == button)
+		{
+			startAdcDma();
+			travelPressureSensorCalibration();
 
+		}
+		else if (BUTTON_RIGHT == button)
+		{
+			selector = MENU_START;
+			puts(
+								"jestes w menu start, kliknij:\n1.Pomiar Sagu\n2.Rozpocznij pomiary pracy zawieszenia\n");
+		}
+		else
+		{
+			puts("nacisnij select aby rozpoczac pomiar\n");
+		}
+		break;
 	case (MENU_SAG_START):
 		if (BUTTON_SELECT == button)
 		{
@@ -119,8 +146,10 @@ void menuSelector(button_t button)
 	case (MENU_MEASURMENT):
 		if (BUTTON_SELECT == button)
 		{
-			setPath(dir, frontSensor, rearSensor, path);
-			createNewFile(dir, frontSensor, rearSensor, &path);
+			setPath(dir, frontSensor, rearSensor, frontPressureSensor,
+					rearPressureSensor, path);
+			createNewFile(dir, frontSensor, rearSensor, frontPressureSensor,
+					rearPressureSensor, &path);
 			startAdcDma();
 			selector = MENU_MEASURMENT_START;
 			puts("pomiar ciagly rozpoczety, kliknij select aby zakonczyc\n");
@@ -154,13 +183,18 @@ void menuCalculateBlock(void)
 	{
 
 	case (MENU_SAG_START):
-		uint16_t result[2] =
+		int16_t result[2] =
 		{ 0 };
-		processDataSag(result);
+		int16_t resultPressure[2] =
+		{ 0 };
+		processDataSag(result, resultPressure);
 		printf("REAR: %d\nFRONT: %d\n", result[0], result[1]);
+		printf("REAR_PRESSURE: %d\nFRONT_PRESSURE: %d\n", resultPressure[0],
+				resultPressure[1]);
 		break;
 	case (MENU_MEASURMENT_START):
-		processData(frontSensor, rearSensor);
+		processData(frontSensor, rearSensor, frontPressureSensor,
+				rearPressureSensor);
 		break;
 	default:
 	}

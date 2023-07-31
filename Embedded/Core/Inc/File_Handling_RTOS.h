@@ -13,9 +13,10 @@
 #include "stdio.h"
 #include "fatfs_sd.h"
 
-void setPath(char *dir, char *frontSensor, char *rearSensor, uint8_t path);
+void setPath(char *dir, char *frontSensor, char *rearSensor,
+		char *frontPressureSensor, char *rearPressureSensor, uint8_t path);
 void createNewFile(char *dir, char *frontSensor, char *rearSensor,
-		uint8_t *path);
+		char *frontPressureSensor, char *rearPressureSensor, uint8_t *pathPtr);
 
 /* mounts the sd card*/
 void Mount_SD(const TCHAR *path);

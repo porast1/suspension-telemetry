@@ -58,10 +58,11 @@ void stopAdcDma(void);
  * @param sensorFront - file for front sensor
  * @param sensorRear - file for front sensor
  */
-void processData(char *sensorFront, char *sensorRear);
+void processData(char *sensorFront, char *sensorRear, char *sensorPressureFront,
+		char *sensorPressureRear);
 
-void processDataSag(uint16_t *sagRearFront);
-
+void processDataSag(int16_t *sagRearFront, int16_t *pressureRearFront);
+void travelPressureSensorCalibration(void);
 /**
  * @brief Half buffer data ready interrupt
  *

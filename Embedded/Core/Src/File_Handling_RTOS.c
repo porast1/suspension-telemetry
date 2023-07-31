@@ -25,14 +25,17 @@ FATFS *pfs;
 DWORD fre_clust;
 uint32_t total, free_space;
 
-void setPath(char *dir, char *frontSensor, char *rearSensor, uint8_t path)
+void setPath(char *dir, char *frontSensor, char *rearSensor,
+		char *frontPressureSensor, char *rearPressureSensor, uint8_t path)
 {
 	sprintf(dir, "Data%d", path);
 	sprintf(frontSensor, "Data%d/FRONT%d.txt", path, path);
 	sprintf(rearSensor, "Data%d/Rear%d.txt", path, path);
+	sprintf(frontPressureSensor, "Data%d/F_PSI%d.txt", path, path);
+	sprintf(rearPressureSensor, "Data%d/R_PSI%d.txt", path, path);
 }
 void createNewFile(char *dir, char *frontSensor, char *rearSensor,
-		uint8_t *pathPtr)
+		char *frontPressureSensor, char *rearPressureSensor, uint8_t *pathPtr)
 {
 	uint8_t path = *pathPtr;
 	Mount_SD("/");
@@ -40,6 +43,8 @@ void createNewFile(char *dir, char *frontSensor, char *rearSensor,
 	Create_Dir(dir);
 	Create_File(frontSensor);
 	Create_File(rearSensor);
+	Create_File(frontPressureSensor);
+	Create_File(rearPressureSensor);
 	Unmount_SD("/");
 	(*pathPtr)++;
 }
