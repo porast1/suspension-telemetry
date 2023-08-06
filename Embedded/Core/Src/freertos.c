@@ -40,6 +40,7 @@
 #include "File_Handling_RTOS.h"
 #include "button.h"
 #include "menu.h"
+#include "liquidcrystal_i2c.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -64,17 +65,20 @@
 button_t buttonMenu = 5;
 /* USER CODE END Variables */
 osThreadId buttonTaskHandle;
-uint32_t buttonTaskBuffer[128];
+uint32_t buttonTaskBuffer[ 128 ];
 osStaticThreadDef_t buttonTaskControlBlock;
 osThreadId sensorReadHandle;
-uint32_t sensorReadBuffer[2048];
+uint32_t sensorReadBuffer[ 2048 ];
 osStaticThreadDef_t sensorReadControlBlock;
 osThreadId SdCardHandle;
-uint32_t SdCardBuffer[256];
+uint32_t SdCardBuffer[ 256 ];
 osStaticThreadDef_t SdCardControlBlock;
 osThreadId menuProcessDataHandle;
-uint32_t menuProcessDataBuffer[2048];
+uint32_t menuProcessDataBuffer[ 2048 ];
 osStaticThreadDef_t menuProcessDataControlBlock;
+osThreadId lcdTaskHandle;
+uint32_t lcdTaskBuffer[ 128 ];
+osStaticThreadDef_t lcdTaskControlBlock;
 osSemaphoreId travelSensorSemHandle;
 osStaticSemaphoreDef_t travelSensorSemControlBlock;
 osSemaphoreId SendDataHandle;
@@ -87,16 +91,16 @@ osStaticSemaphoreDef_t buttonSemControlBlock;
 
 /* USER CODE END FunctionPrototypes */
 
-void buttonTaskInit(void const *argument);
-void initSensorRead(void const *argument);
-void SdCardInit(void const *argument);
-void menuProcessDataInit(void const *argument);
+void buttonTaskInit(void const * argument);
+void initSensorRead(void const * argument);
+void SdCardInit(void const * argument);
+void menuProcessDataInit(void const * argument);
+void lcdTaskInit(void const * argument);
 
 void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
 
 /* GetIdleTaskMemory prototype (linked to static allocation support) */
-void vApplicationGetIdleTaskMemory(StaticTask_t **ppxIdleTaskTCBBuffer,
-		StackType_t **ppxIdleTaskStackBuffer, uint32_t *pulIdleTaskStackSize);
+void vApplicationGetIdleTaskMemory( StaticTask_t **ppxIdleTaskTCBBuffer, StackType_t **ppxIdleTaskStackBuffer, uint32_t *pulIdleTaskStackSize );
 
 /* USER CODE BEGIN GET_IDLE_TASK_MEMORY */
 static StaticTask_t xIdleTaskTCBBuffer;
@@ -113,69 +117,68 @@ void vApplicationGetIdleTaskMemory(StaticTask_t **ppxIdleTaskTCBBuffer,
 /* USER CODE END GET_IDLE_TASK_MEMORY */
 
 /**
- * @brief  FreeRTOS initialization
- * @param  None
- * @retval None
- */
-void MX_FREERTOS_Init(void)
-{
-	/* USER CODE BEGIN Init */
+  * @brief  FreeRTOS initialization
+  * @param  None
+  * @retval None
+  */
+void MX_FREERTOS_Init(void) {
+  /* USER CODE BEGIN Init */
 
-	/* USER CODE END Init */
+  /* USER CODE END Init */
 
-	/* USER CODE BEGIN RTOS_MUTEX */
+  /* USER CODE BEGIN RTOS_MUTEX */
 	/* add mutexes, ... */
-	/* USER CODE END RTOS_MUTEX */
+  /* USER CODE END RTOS_MUTEX */
 
-	/* Create the semaphores(s) */
-	/* definition and creation of travelSensorSem */
-	osSemaphoreStaticDef(travelSensorSem, &travelSensorSemControlBlock);
-	travelSensorSemHandle = osSemaphoreCreate(osSemaphore(travelSensorSem), 1);
+  /* Create the semaphores(s) */
+  /* definition and creation of travelSensorSem */
+  osSemaphoreStaticDef(travelSensorSem, &travelSensorSemControlBlock);
+  travelSensorSemHandle = osSemaphoreCreate(osSemaphore(travelSensorSem), 1);
 
-	/* definition and creation of SendData */
-	osSemaphoreStaticDef(SendData, &SendDataControlBlock);
-	SendDataHandle = osSemaphoreCreate(osSemaphore(SendData), 1);
+  /* definition and creation of SendData */
+  osSemaphoreStaticDef(SendData, &SendDataControlBlock);
+  SendDataHandle = osSemaphoreCreate(osSemaphore(SendData), 1);
 
-	/* definition and creation of buttonSem */
-	osSemaphoreStaticDef(buttonSem, &buttonSemControlBlock);
-	buttonSemHandle = osSemaphoreCreate(osSemaphore(buttonSem), 1);
+  /* definition and creation of buttonSem */
+  osSemaphoreStaticDef(buttonSem, &buttonSemControlBlock);
+  buttonSemHandle = osSemaphoreCreate(osSemaphore(buttonSem), 1);
 
-	/* USER CODE BEGIN RTOS_SEMAPHORES */
+  /* USER CODE BEGIN RTOS_SEMAPHORES */
 	/* add semaphores, ... */
-	/* USER CODE END RTOS_SEMAPHORES */
+  /* USER CODE END RTOS_SEMAPHORES */
 
-	/* USER CODE BEGIN RTOS_TIMERS */
+  /* USER CODE BEGIN RTOS_TIMERS */
 	/* start timers, add new ones, ... */
-	/* USER CODE END RTOS_TIMERS */
+  /* USER CODE END RTOS_TIMERS */
 
-	/* USER CODE BEGIN RTOS_QUEUES */
+  /* USER CODE BEGIN RTOS_QUEUES */
 	/* add queues, ... */
-	/* USER CODE END RTOS_QUEUES */
+  /* USER CODE END RTOS_QUEUES */
 
-	/* Create the thread(s) */
-	/* definition and creation of buttonTask */
-	osThreadStaticDef(buttonTask, buttonTaskInit, osPriorityNormal, 0, 128,
-			buttonTaskBuffer, &buttonTaskControlBlock);
-	buttonTaskHandle = osThreadCreate(osThread(buttonTask), NULL);
+  /* Create the thread(s) */
+  /* definition and creation of buttonTask */
+  osThreadStaticDef(buttonTask, buttonTaskInit, osPriorityNormal, 0, 128, buttonTaskBuffer, &buttonTaskControlBlock);
+  buttonTaskHandle = osThreadCreate(osThread(buttonTask), NULL);
 
-	/* definition and creation of sensorRead */
-	osThreadStaticDef(sensorRead, initSensorRead, osPriorityNormal, 0, 2048,
-			sensorReadBuffer, &sensorReadControlBlock);
-	sensorReadHandle = osThreadCreate(osThread(sensorRead), NULL);
+  /* definition and creation of sensorRead */
+  osThreadStaticDef(sensorRead, initSensorRead, osPriorityNormal, 0, 2048, sensorReadBuffer, &sensorReadControlBlock);
+  sensorReadHandle = osThreadCreate(osThread(sensorRead), NULL);
 
-	/* definition and creation of SdCard */
-	osThreadStaticDef(SdCard, SdCardInit, osPriorityHigh, 0, 256, SdCardBuffer,
-			&SdCardControlBlock);
-	SdCardHandle = osThreadCreate(osThread(SdCard), NULL);
+  /* definition and creation of SdCard */
+  osThreadStaticDef(SdCard, SdCardInit, osPriorityHigh, 0, 256, SdCardBuffer, &SdCardControlBlock);
+  SdCardHandle = osThreadCreate(osThread(SdCard), NULL);
 
-	/* definition and creation of menuProcessData */
-	osThreadStaticDef(menuProcessData, menuProcessDataInit, osPriorityNormal, 0,
-			2048, menuProcessDataBuffer, &menuProcessDataControlBlock);
-	menuProcessDataHandle = osThreadCreate(osThread(menuProcessData), NULL);
+  /* definition and creation of menuProcessData */
+  osThreadStaticDef(menuProcessData, menuProcessDataInit, osPriorityNormal, 0, 2048, menuProcessDataBuffer, &menuProcessDataControlBlock);
+  menuProcessDataHandle = osThreadCreate(osThread(menuProcessData), NULL);
 
-	/* USER CODE BEGIN RTOS_THREADS */
+  /* definition and creation of lcdTask */
+  osThreadStaticDef(lcdTask, lcdTaskInit, osPriorityNormal, 0, 128, lcdTaskBuffer, &lcdTaskControlBlock);
+  lcdTaskHandle = osThreadCreate(osThread(lcdTask), NULL);
+
+  /* USER CODE BEGIN RTOS_THREADS */
 	/* add threads, ... */
-	/* USER CODE END RTOS_THREADS */
+  /* USER CODE END RTOS_THREADS */
 
 }
 
@@ -186,9 +189,9 @@ void MX_FREERTOS_Init(void)
  * @retval None
  */
 /* USER CODE END Header_buttonTaskInit */
-void buttonTaskInit(void const *argument)
+void buttonTaskInit(void const * argument)
 {
-	/* USER CODE BEGIN buttonTaskInit */
+  /* USER CODE BEGIN buttonTaskInit */
 	/* Infinite loop */
 	for (;;)
 	{
@@ -199,7 +202,7 @@ void buttonTaskInit(void const *argument)
 		}
 		osDelay(30);
 	}
-	/* USER CODE END buttonTaskInit */
+  /* USER CODE END buttonTaskInit */
 }
 
 /* USER CODE BEGIN Header_initSensorRead */
@@ -209,9 +212,9 @@ void buttonTaskInit(void const *argument)
  * @retval None
  */
 /* USER CODE END Header_initSensorRead */
-void initSensorRead(void const *argument)
+void initSensorRead(void const * argument)
 {
-	/* USER CODE BEGIN initSensorRead */
+  /* USER CODE BEGIN initSensorRead */
 
 	/* Infinite loop */
 	for (;;)
@@ -219,7 +222,7 @@ void initSensorRead(void const *argument)
 
 		osDelay(30);
 	}
-	/* USER CODE END initSensorRead */
+  /* USER CODE END initSensorRead */
 }
 
 /* USER CODE BEGIN Header_SdCardInit */
@@ -229,9 +232,9 @@ void initSensorRead(void const *argument)
  * @retval None
  */
 /* USER CODE END Header_SdCardInit */
-void SdCardInit(void const *argument)
+void SdCardInit(void const * argument)
 {
-	/* USER CODE BEGIN SdCardInit */
+  /* USER CODE BEGIN SdCardInit */
 	puts(
 			"jestes w menu start, kliknij:\n1.Pomiar Sagu\n2.Rozpocznij pomiary pracy zawieszenia\n");
 	/* Infinite loop */
@@ -245,7 +248,7 @@ void SdCardInit(void const *argument)
 		osSemaphoreWait(buttonSemHandle, osWaitForever);
 		osDelay(20);
 	}
-	/* USER CODE END SdCardInit */
+  /* USER CODE END SdCardInit */
 }
 
 /* USER CODE BEGIN Header_menuProcessDataInit */
@@ -255,16 +258,67 @@ void SdCardInit(void const *argument)
  * @retval None
  */
 /* USER CODE END Header_menuProcessDataInit */
-void menuProcessDataInit(void const *argument)
+void menuProcessDataInit(void const * argument)
 {
-	/* USER CODE BEGIN menuProcessDataInit */
+  /* USER CODE BEGIN menuProcessDataInit */
 	/* Infinite loop */
 	for (;;)
 	{
 		menuCalculateBlock();
 		osDelay(10);
 	}
-	/* USER CODE END menuProcessDataInit */
+  /* USER CODE END menuProcessDataInit */
+}
+
+/* USER CODE BEGIN Header_lcdTaskInit */
+/**
+* @brief Function implementing the lcdTask thread.
+* @param argument: Not used
+* @retval None
+*/
+/* USER CODE END Header_lcdTaskInit */
+void lcdTaskInit(void const * argument)
+{
+  /* USER CODE BEGIN lcdTaskInit */
+  /* Infinite loop */
+	  HD44780_Init(2);
+	  HD44780_Clear();
+	  HD44780_SetCursor(0,0);
+	  HD44780_PrintStr("HELLO");
+	  HD44780_SetCursor(10,1);
+	  HD44780_PrintStr("WORLD");
+	  osDelay(2000);
+
+	  HD44780_Clear();
+	  HD44780_SetCursor(0,0);
+	  HD44780_PrintStr("HELLO");
+	  osDelay(2000);
+	  HD44780_NoBacklight();
+	  osDelay(2000);
+	  HD44780_Backlight();
+
+	  osDelay(2000);
+	  HD44780_Cursor();
+	  osDelay(2000);
+	  HD44780_Blink();
+	  osDelay(5000);
+	  HD44780_NoBlink();
+	  osDelay(2000);
+	  HD44780_NoCursor();
+	  osDelay(2000);
+
+	  HD44780_NoDisplay();
+	  osDelay(2000);
+	  HD44780_Display();
+
+	  HD44780_Clear();
+	  HD44780_SetCursor(0,0);
+  for(;;)
+  {
+
+    osDelay(1);
+  }
+  /* USER CODE END lcdTaskInit */
 }
 
 /* Private application code --------------------------------------------------*/
