@@ -57,7 +57,8 @@ Core/Src/menu.o: ../Core/Src/menu.c ../Core/Inc/menu.h \
  ../Middlewares/Third_Party/FatFs/src/ff_gen_drv.h \
  ../Middlewares/Third_Party/FatFs/src/diskio.h \
  ../Middlewares/Third_Party/FatFs/src/ff.h ../FATFS/Target/user_diskio.h \
- ../Core/Inc/fatfs_sd.h ../Core/Inc/travelSensor.h ../Core/Inc/main.h
+ ../Core/Inc/fatfs_sd.h ../Core/Inc/travelSensor.h ../Core/Inc/main.h \
+ ../Core/Inc/liquidcrystal_i2c.h
 ../Core/Inc/menu.h:
 ../Core/Inc/button.h:
 ../Core/Inc/button.h:
@@ -125,3 +126,4 @@ Core/Src/menu.o: ../Core/Src/menu.c ../Core/Inc/menu.h \
 ../Core/Inc/fatfs_sd.h:
 ../Core/Inc/travelSensor.h:
 ../Core/Inc/main.h:
+../Core/Inc/liquidcrystal_i2c.h:

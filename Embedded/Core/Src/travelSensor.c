@@ -206,9 +206,9 @@ void processDataSag(int16_t *sagRearFront, int16_t *pressureRearFront)
 			/ (BUFFER_SIZE / HALF_CONV_BUFF_SIZE);
 
 	sagRearFront[0] = CONVERT_TO_PERCENT
-			* (sagRearFront[0] / (float) REAR_SUSPENSION_TRAVEL);
+			* (sagRearFront[0] / ((float) (REAR_SUSPENSION_TRAVEL - calibrationValues.rearTravelSensor)));
 	sagRearFront[1] = CONVERT_TO_PERCENT
-			* (sagRearFront[1] / (float) FRONT_SUSPENSION_TRAVEL);
+			* (sagRearFront[1] / ((float) (FRONT_SUSPENSION_TRAVEL - calibrationValues.frontTravelSensor)));
 }
 
 void HAL_ADC_ConvHalfCpltCallback(ADC_HandleTypeDef *hadc)

@@ -195,7 +195,7 @@ void buttonTaskInit(void const * argument)
 	/* Infinite loop */
 	for (;;)
 	{
-		buttonMenu = readButton();
+		/*buttonMenu = readButton(); for live expression*/
 		if ( MAX_ACTIVE_BUTTON >= buttonMenu)
 		{
 			osSemaphoreRelease(buttonSemHandle);
@@ -235,8 +235,16 @@ void initSensorRead(void const * argument)
 void SdCardInit(void const * argument)
 {
   /* USER CODE BEGIN SdCardInit */
-	puts(
-			"jestes w menu start, kliknij:\n1.Pomiar Sagu\n2.Rozpocznij pomiary pracy zawieszenia\n");
+	 HD44780_Init(2);
+	 HD44780_Clear();
+	 HD44780_SetCursor(0,0);
+	 HD44780_PrintStr("SAG");
+	 HD44780_SetCursor(0,1);
+	 HD44780_PrintStr("LEFT");
+	 HD44780_SetCursor(9,0);
+	 HD44780_PrintStr("MESSURE");
+	 HD44780_SetCursor(11,1);
+	 HD44780_PrintStr("RIGHT");
 	/* Infinite loop */
 	for (;;)
 	{
@@ -244,6 +252,7 @@ void SdCardInit(void const * argument)
 		if (MAX_ACTIVE_BUTTON >= buttonMenu)
 		{
 			menuSelector(buttonMenu);
+			buttonMenu = BUTTON_SNA; /*for live expression*/
 		}
 		osSemaphoreWait(buttonSemHandle, osWaitForever);
 		osDelay(20);
@@ -281,38 +290,7 @@ void lcdTaskInit(void const * argument)
 {
   /* USER CODE BEGIN lcdTaskInit */
   /* Infinite loop */
-	  HD44780_Init(2);
-	  HD44780_Clear();
-	  HD44780_SetCursor(0,0);
-	  HD44780_PrintStr("HELLO");
-	  HD44780_SetCursor(10,1);
-	  HD44780_PrintStr("WORLD");
-	  osDelay(2000);
 
-	  HD44780_Clear();
-	  HD44780_SetCursor(0,0);
-	  HD44780_PrintStr("HELLO");
-	  osDelay(2000);
-	  HD44780_NoBacklight();
-	  osDelay(2000);
-	  HD44780_Backlight();
-
-	  osDelay(2000);
-	  HD44780_Cursor();
-	  osDelay(2000);
-	  HD44780_Blink();
-	  osDelay(5000);
-	  HD44780_NoBlink();
-	  osDelay(2000);
-	  HD44780_NoCursor();
-	  osDelay(2000);
-
-	  HD44780_NoDisplay();
-	  osDelay(2000);
-	  HD44780_Display();
-
-	  HD44780_Clear();
-	  HD44780_SetCursor(0,0);
   for(;;)
   {
 

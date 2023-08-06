@@ -3,5 +3,5 @@
 ../Core/Src/freertos.c:192:6:buttonTaskInit	2
 ../Core/Src/freertos.c:215:6:initSensorRead	1
 ../Core/Src/freertos.c:235:6:SdCardInit	2
-../Core/Src/freertos.c:261:6:menuProcessDataInit	1
-../Core/Src/freertos.c:280:6:lcdTaskInit	1
+../Core/Src/freertos.c:270:6:menuProcessDataInit	1
+../Core/Src/freertos.c:289:6:lcdTaskInit	1

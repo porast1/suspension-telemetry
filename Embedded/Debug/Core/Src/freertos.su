@@ -3,5 +3,5 @@
 ../Core/Src/freertos.c:192:6:buttonTaskInit	16	static
 ../Core/Src/freertos.c:215:6:initSensorRead	16	static
 ../Core/Src/freertos.c:235:6:SdCardInit	16	static
-../Core/Src/freertos.c:261:6:menuProcessDataInit	16	static
-../Core/Src/freertos.c:280:6:lcdTaskInit	16	static
+../Core/Src/freertos.c:270:6:menuProcessDataInit	16	static
+../Core/Src/freertos.c:289:6:lcdTaskInit	16	static
