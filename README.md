@@ -1,6 +1,6 @@
 # data_acquisition_module
 
-The project consists in creating a system for testing suspension work and suggesting better settings. I came up with the idea out of passion and curiosity :)
+The project consists in creating a system for testing suspension work and suggesting better settings. I love extreme cycling so came up with the idea out of passion and curiosity :)
 
 The general concept of the idea, the embedded part:
 - Using linear potentiometers will take place the main travel measurement
