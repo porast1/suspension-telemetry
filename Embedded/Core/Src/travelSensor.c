@@ -60,7 +60,7 @@
  * Debug define
  */
 
-#define NO_CHECK_SAMPLE_TIME  /** To check time in SwV delete NO_ */
+#define CHECK_SAMPLE_TIME  /** To check time in SwV delete NO_ */
 /******************************************************************************
  * Module Preprocessor Macros
  *******************************************************************************/
