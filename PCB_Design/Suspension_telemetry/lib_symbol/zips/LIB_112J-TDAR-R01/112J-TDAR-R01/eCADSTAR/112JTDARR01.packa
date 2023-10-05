@@ -1,0 +1,13 @@
+(unit MM)
+
+(package "112J-TDAR-R01"
+    (type UNDEF)
+    (uver 2)
+    (cuser "SamacSys")
+    (uuser "SamacSys")
+    (utime 2020-08-12-11:57:50)
+    (mountForm default
+        (footprintRef "112JTDARR01")
+        (spec "System")
+    )
+)

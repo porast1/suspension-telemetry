@@ -1,0 +1,16 @@
+.530480510 :1 ;1.25mm Pitch, PicoBlade PCB Header, Single Row, Right-Angle, Through Hole, Tin (Sn) Plating, Friction Lock, 5 Circuits, Tray, 2.30mm PC Tail Length
+"530480510"
+*STM J
+*NGS
+*PLB 1="1" 2="2" 3="3" 4="4" 5="5"
+*MXP 5
+*DFN 530480510
+~!TME Electronic Components Part Number (-)
+~!TME Electronic Components Price/Stock (-)
+~!Manufacturer_Name (Molex)
+~!Manufacturer_Part_Number (530480510)
+~!Link Datasheet (https://www.molex.com/pdm_docs/sd/530480210_sd.pdf)
+~!Height (3.5mm)
+~!3D_Model (530480510)
+"530480510"
+1.1!U 2.1!U 3.1!U 4.1!U 5.1!U 

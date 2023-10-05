@@ -1,0 +1,11 @@
+FILE_TYPE = MULTI_PHYS_TABLE;
+
+PART 'DR73_6R8_R'
+CLASS = DISCRETE
+{========================================================================================}
+:"MANUFACTURER_NAME", "MANUFACTURER_PART_NUMBER"= "PART_NUMBER", "JEDEC_TYPE", "PACK_TYPE", "TTI_PART_NUMBER", "TTI_PRICE/STOCK", "DESCRIPTION", "DATASHEET";
+{========================================================================================}
+ "COILTRONICS", "DR73-6R8-R" (!) = "", "INDM7676X355N", "Other", "", "", "POWER INDUCTOR +/-20% 6.8H 2.55A", ""
+END_PART
+
+END.

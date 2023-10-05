@@ -1,0 +1,10 @@
+(unit MM)
+
+(package "INDM7676X355N"
+    (type UNDEF)
+    (uver 2)
+    (mountForm default
+        (footprintRef "INDM7676X355N")
+        (spec "default")
+    )
+)

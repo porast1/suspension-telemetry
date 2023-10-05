@@ -1,0 +1,134 @@
+
+(EDIF
+  (rename &ABS07_32_768KHZ_9_T "ABS07_32_768KHZ_9_T")
+  (EDIFVersion 2 0 0)
+  (EDIFLevel 0)
+  (keywordMap (keywordLevel 0))
+  (status
+    (written
+      (timestamp 2023 10 04 08 35 51)
+      (dataOrigin "267787/1231078/2.50/2/2/Crystal or Oscillator")
+      (program "SamacSys ECAD Model ABS07_32_768KHZ_9_T"
+        (version "5.1"))))
+  (library
+  (rename &ABS07_32_768KHZ_9_T "ABS07_32_768KHZ_9_T")
+    (EDIFLevel 0)
+    (technology
+      (numberDefinition (scale 1 (e 254 -6) (unit DISTANCE)))
+      (userData GRIDRESOLUTION (integer 50 50))
+      (figureGroup DEFAULT (pathWidth 10) (textHeight 100))
+      (figureGroup PROPERTY (pathWidth 10) (textHeight 90))
+      (figureGroup PINNUMBER (pathWidth 10) (textHeight 90))
+      (figureGroup PINNAME (pathWidth 10) (textHeight 90))
+      (figureGroup COMMENT (pathWidth 10) (textHeight 90))
+      (figureGroup PIN (pathWidth 10) (textHeight 90))
+      (figureGroup GRAPHIC (pathWidth 10) (textHeight 100))
+    )
+    (cell
+      (rename &ABS07_32_768KHZ_9_T "ABS07_32_768KHZ_9_T")
+      (cellType GENERIC)
+      (view
+        (rename NORMAL "Normal")
+        (viewType SCHEMATIC)
+        (interface
+          (designator "Y")
+          (property (rename PACKAGENAME "PackageName") (string "ABS07_32_768KHZ_9_T"))
+          (property (rename ISHETEROGENEOUS "IsHeterogeneous") (string "False"))
+          (property (rename DEVICESINVIEW "DevicesInView") (string "1"))
+          (property (rename DEVICESINPACKAGE "DevicesInPackage") (string "1"))
+          (property (rename DEVICEDESIGNATOR "DeviceDesignator") (string "A"))
+          (property (rename DEVICENUMBERING "DeviceNumbering") (string "Alpha"))
+          (property (rename PCB_32_FOOTPRINT "PCB Footprint") (string "ABS07"))
+          (property (rename &TME_Electronic_Components_Part_Number "TME Electronic Components Part Number") (string ""))
+          (property (rename &TME_Electronic_Components_Price_Stock "TME Electronic Components Price/Stock") (string ""))
+          (property (rename &Manufacturer_Name "Manufacturer_Name") (string "ABRACON"))
+          (property (rename &Manufacturer_Part_Number "Manufacturer_Part_Number") (string "ABS07-32.768KHZ-9-T"))
+          (property (rename &Description "Description") (string "32.768 kHz +/-20ppm Crystal 9pF 70 kOhms 2-SMD, No Lead"))
+          (property (rename &Datasheet_Link "Datasheet Link") (string "https://abracon.com/Resonators/ABS07.pdf"))
+          (property (rename &Height "Height") (string "0.9 mm"))
+          (property (rename &_60__32_VALUE_32__62_ "Value") (string "ABS07_32_768KHZ_9_T"))
+          (property (rename VALUE "Value") (string "Value"))
+          (port
+            (rename &1 "1")
+            (designator "1")
+            (property (rename ORDER "Order") (string "0") (owner "OrCAD"))
+          )
+          (port
+            (rename &2 "2")
+            (designator "2")
+            (property (rename ORDER "Order") (string "1") (owner "OrCAD"))
+          )
+          (symbol
+            (portImplementation
+              (name &1)
+              (keywordDisplay DESIGNATOR (display PINNUMBER))
+              (figure PIN (path (pointList (pt -100 -100) (pt 0 -100))))
+              (connectLocation (figure GRAPHIC (dot (pt -100 -100))))
+            )
+            (portImplementation
+              (name &2)
+              (keywordDisplay DESIGNATOR (display PINNUMBER))
+              (figure PIN (path (pointList (pt 200 -100) (pt 300 -100))))
+              (connectLocation (figure GRAPHIC (dot (pt 300 -100))))
+            )
+            (figure GRAPHIC
+              (figureGroupOverride GRAPHIC
+                (pathWidth 10))
+              (path
+                (pointList
+                  (pt 20 0)
+                  (pt 20 -200)
+                )
+              )
+            )
+            (figure GRAPHIC
+              (figureGroupOverride GRAPHIC
+                (pathWidth 10))
+              (path
+                (pointList
+                  (pt 180 0)
+                  (pt 180 -200)
+                )
+              )
+            )
+            (figure GRAPHIC
+              (figureGroupOverride GRAPHIC
+                (pathWidth 10))
+              (path
+                (pointList
+                  (pt 60 40)
+                  (pt 60 -240)
+                  (pt 140 -240)
+                  (pt 140 40)
+                  (pt 60 40)
+                )
+              )
+            )
+            (figure GRAPHIC
+              (figureGroupOverride GRAPHIC
+                (pathWidth 10))
+              (path
+                (pointList
+                  (pt 180 -100)
+                  (pt 200 -100)
+                )
+              )
+            )
+            (figure GRAPHIC
+              (figureGroupOverride GRAPHIC
+                (pathWidth 10))
+              (path
+                (pointList
+                  (pt 20 -100)
+                  (pt 0 -100)
+                )
+              )
+            )
+            (keywordDisplay DESIGNATOR (display PROPERTY (justify 24) (orientation R0) (origin (pt 250 80))))
+            (propertyDisplay &_60__32_VALUE_32__62_ (display PROPERTY (justify 24) (orientation R0) (origin (pt 250 -20))))
+          )
+        )
+      )
+    )
+  )
+)

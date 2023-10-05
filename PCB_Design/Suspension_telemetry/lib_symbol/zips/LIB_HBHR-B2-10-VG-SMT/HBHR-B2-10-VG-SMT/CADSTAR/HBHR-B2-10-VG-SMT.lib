@@ -1,0 +1,16 @@
+.HBHR-B2-10-VG-SMT :1 ;Socket; IDC; male; PIN: 10; vertical; SMT; 1.27mm; Layout: 2x5
+HBHRB210VGSMT
+*STM J
+*NGS
+*PLB 1="1" 2="2" 3="3" 4="4" 5="5" 6="6" 7="7" 8="8" 9="9" 10="10"
+*MXP 10
+*DFN HBHR-B2-10-VG-SMT
+~!TME Electronic Components Part Number (-)
+~!TME Electronic Components Price/Stock (-)
+~!Manufacturer_Name (Adam Tech)
+~!Manufacturer_Part_Number (HBHR-B2-10-VG-SMT)
+~!Link Datasheet (https://www.tme.eu/Document/f0773974da5cb69f05b89f0736d15334/HBHR-B2-XX-VG-SMT.pdf)
+~!Height (6.081mm)
+~!3D_Model (HBHR-B2-10-VG-SMT)
+HBHR-B2-10-VG-SMT
+1.1!U 2.1!U 3.1!U 4.1!U 5.1!U 6.1!U 7.1!U 8.1!U 9.1!U 10.1!U 

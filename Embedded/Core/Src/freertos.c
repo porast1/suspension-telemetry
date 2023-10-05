@@ -31,9 +31,9 @@
 #include "dma.h"
 #include "tim.h"
 #include "spi.h"
-#include "usart.h"
 #include "gpio.h"
 #include "fatfs.h"
+#include "i2c.h"
 
 #include "travelSensor.h"
 #include "fatfs_sd.h"
@@ -41,6 +41,7 @@
 #include "button.h"
 #include "menu.h"
 #include "liquidcrystal_i2c.h"
+#include "ADXL345.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -52,6 +53,7 @@
 /* USER CODE BEGIN PD */
 
 #define MAX_ACTIVE_BUTTON 4U
+#define adxl_address 0x53 << 1
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -79,6 +81,9 @@ osStaticThreadDef_t menuProcessDataControlBlock;
 osThreadId lcdTaskHandle;
 uint32_t lcdTaskBuffer[ 128 ];
 osStaticThreadDef_t lcdTaskControlBlock;
+osThreadId adxlTaskHandle;
+uint32_t adxlTaskBuffer[ 256 ];
+osStaticThreadDef_t adxlTaskControlBlock;
 osSemaphoreId travelSensorSemHandle;
 osStaticSemaphoreDef_t travelSensorSemControlBlock;
 osSemaphoreId SendDataHandle;
@@ -96,7 +101,9 @@ void initSensorRead(void const * argument);
 void SdCardInit(void const * argument);
 void menuProcessDataInit(void const * argument);
 void lcdTaskInit(void const * argument);
+void adxlTaskInit(void const * argument);
 
+extern void MX_USB_DEVICE_Init(void);
 void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
 
 /* GetIdleTaskMemory prototype (linked to static allocation support) */
@@ -176,6 +183,10 @@ void MX_FREERTOS_Init(void) {
   osThreadStaticDef(lcdTask, lcdTaskInit, osPriorityNormal, 0, 128, lcdTaskBuffer, &lcdTaskControlBlock);
   lcdTaskHandle = osThreadCreate(osThread(lcdTask), NULL);
 
+  /* definition and creation of adxlTask */
+  osThreadStaticDef(adxlTask, adxlTaskInit, osPriorityNormal, 0, 256, adxlTaskBuffer, &adxlTaskControlBlock);
+  adxlTaskHandle = osThreadCreate(osThread(adxlTask), NULL);
+
   /* USER CODE BEGIN RTOS_THREADS */
 	/* add threads, ... */
   /* USER CODE END RTOS_THREADS */
@@ -191,6 +202,8 @@ void MX_FREERTOS_Init(void) {
 /* USER CODE END Header_buttonTaskInit */
 void buttonTaskInit(void const * argument)
 {
+  /* init code for USB_DEVICE */
+  MX_USB_DEVICE_Init();
   /* USER CODE BEGIN buttonTaskInit */
 	/* Infinite loop */
 	for (;;)
@@ -297,6 +310,39 @@ void lcdTaskInit(void const * argument)
     osDelay(1);
   }
   /* USER CODE END lcdTaskInit */
+}
+
+/* USER CODE BEGIN Header_adxlTaskInit */
+/**
+* @brief Function implementing the adxlTask thread.
+* @param argument: Not used
+* @retval None
+*/
+/* USER CODE END Header_adxlTaskInit */
+void adxlTaskInit(void const * argument)
+{
+  /* USER CODE BEGIN adxlTaskInit */
+	int16_t x,y,z;
+	uint8_t data_rec[6];
+	float xg, yg, zg;
+	adxl_init();
+
+  /* Infinite loop */
+  for(;;)
+  {
+	  adxl_read_values (0x32);
+	  HAL_I2C_Mem_Read (&hi2c1, adxl_address, 0x32, 1, (uint8_t *)data_rec, 6, 100);
+	  x = ((data_rec[1]<<8)|data_rec[0]);
+	  y = ((data_rec[3]<<8)|data_rec[2]);
+	  z = ((data_rec[5]<<8)|data_rec[4]);
+
+	  xg = x * 0.0078;
+	  yg = y * 0.0078;
+	  zg = z * 0.0078;
+	  printf("X: %f\nY: %f\nZ: %f\n", xg, yg, zg);
+    osDelay(10);
+  }
+  /* USER CODE END adxlTaskInit */
 }
 
 /* Private application code --------------------------------------------------*/

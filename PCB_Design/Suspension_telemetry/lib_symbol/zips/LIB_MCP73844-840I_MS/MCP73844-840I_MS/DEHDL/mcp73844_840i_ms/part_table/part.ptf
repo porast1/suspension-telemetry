@@ -1,0 +1,11 @@
+FILE_TYPE = MULTI_PHYS_TABLE;
+
+PART 'MCP73844_840I_MS'
+CLASS = IC
+{========================================================================================}
+:"MANUFACTURER_NAME", "MANUFACTURER_PART_NUMBER"= "PART_NUMBER", "JEDEC_TYPE", "PACK_TYPE", "TME_ELECTRONIC_COMPONENTS_PART_NUMBER", "TME_ELECTRONIC_COMPONENTS_PRICE/STOCK", "DESCRIPTION", "DATASHEET", "HEIGHT";
+{========================================================================================}
+ "Microchip", "MCP73844-840I/MS" (!) = "", "SOP65P490X110-8N", "Small Outline Packages", "", "", "Li-Ion Charge Controller 8.4V MSOP8", "http://ww1.microchip.com/downloads/en/DeviceDoc/21823D.pdf", "1.1 mm"
+END_PART
+
+END.

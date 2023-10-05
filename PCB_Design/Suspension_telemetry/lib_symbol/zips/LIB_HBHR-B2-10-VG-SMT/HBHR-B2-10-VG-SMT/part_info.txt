@@ -1,0 +1,9 @@
+Manufacturer=Adam Tech
+PartNumber=HBHR-B2-10-VG-SMT
+PartCategory=Connector
+PackageCategory=Other
+PinCount=10
+Version=1.2
+Released=2023-06-17 03:42:26
+Downloaded=2023-10-03 11:47:58
+3D=Y

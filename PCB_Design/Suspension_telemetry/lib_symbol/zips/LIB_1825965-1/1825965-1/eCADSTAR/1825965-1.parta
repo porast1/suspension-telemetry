@@ -1,0 +1,66 @@
+(Japanese_coding: sjis)
+(function "ECS_191829"
+    (uver 1)
+    (cuser "SamacSys")
+    (uuser "SamacSys")
+    (ctime 2020-04-26-10:05:23)
+    (utime 2023-07-24-12:18:04)
+    (interface
+        (port "1" (symbPinId 1) (portType INOUT))
+        (port "2" (symbPinId 2) (portType INOUT))
+    )
+    (property "symbolName" "1825965-1")
+)
+
+
+(pinAssign "ECS_191829"
+    (uver 1)
+    (cuser "SamacSys")
+    (uuser "SamacSys")
+    (ctime 2020-04-26-10:05:23)
+    (utime 2023-07-24-12:18:04)
+    (interface
+        (port "1" (symbPinId 1) (portName "NO") (portType INOUT))
+        (port "2" (symbPinId 2) (portName "COM") (portType INOUT))
+    )
+    (internal
+        (funcInst (functionRef "ECS_191829")
+                (port "1" (match "1"))
+                (port "2" (match "2"))
+        )
+    )
+    (property "usePowerBox" "No")
+    (property "symbolName" "1825965-1")
+)
+
+
+(part "1825965-1"
+    (uver 1)
+    (cuser "SamacSys")
+    (uuser "SamacSys")
+    (ctime 2020-04-26-10:05:23)
+    (utime 2023-07-24-12:18:04)
+    (packageRef "1825965-1")
+    (pinAssignRef "ECS_191829")
+    (interface
+        (port "1" (symbPinId 1) (portName "NO") (portType INOUT))
+        (port "2" (symbPinId 2) (portName "COM") (portType INOUT))
+    )
+    (partClass UNDEF)
+    (useInSchema Y)
+    (useInLayout Y)
+    (inPartsList Y)
+    (partType NORMAL)
+    (placeRestriction FREE)
+    (property "enetNonSeries" "YES")
+    (property "refDesPrefix" "S")
+    (property "description" "Switch Tactile N.O. SPST Rectangular Button PC Pins 0.05A 24VDC 20000Cycles 1.3N Thru-Hole Loose")
+    (property "TME_Electronic_Components_Part_Number" "")
+    (property "TME_Electronic_Components_Price/Stock" "")
+    (property "Manufacturer_Name" "TE Connectivity")
+    (property "Manufacturer_Part_Number" "1825965-1")
+    (property "Datasheet_Link" "https://www.arrow.com/en/products/1825965-1/te-connectivity")
+    (property "compAreaTopHeight" 5)
+)
+
+

@@ -1,0 +1,160 @@
+;Proteus Design Interchange Format
+(PDIF
+ (vendor "SamacSys Limited")
+ (version 1 0)
+ (library
+  (part "HBHR-B2-10-VG-SMT"
+   (description "Socket; IDC; male; PIN: 10; vertical; SMT; 1.27mm; Layout: 2x5")
+   (family "CON")
+   (package "HBHRB210VGSMT")
+   (attribute "Datasheet Link" "https://www.tme.eu/Document/f0773974da5cb69f05b89f0736d15334/HBHR-B2-XX-VG-SMT.pdf")
+   (attribute "Geometry.Height" "6.081mm")
+   (attribute "TME Electronic Components Part Number" "")
+   (attribute "TME Electronic Components Price/Stock" "")
+   (attribute "Manufacturer_Name" "Adam Tech")
+   (attribute "Manufacturer_Part_Number" "HBHR-B2-10-VG-SMT")
+   (gate
+    (symbol "HBHR-B2-10-VG-SMT")
+    (pin "1" 1 PS)
+    (pin "2" 2 PS)
+    (pin "3" 3 PS)
+    (pin "4" 4 PS)
+    (pin "5" 5 PS)
+    (pin "6" 6 PS)
+    (pin "7" 7 PS)
+    (pin "8" 8 PS)
+    (pin "9" 9 PS)
+    (pin "10" 10 PS)
+   )
+  )
+  (symbol "HBHR-B2-10-VG-SMT"
+   (units THOU)
+   (origin (pt 0 0))
+   (graphic
+    (stroke 10)
+    (path (pt 200 100) (pt 700 100) (pt 700 -500) (pt 200 -500) (pt 200 100) (closed))
+   )
+   (terminal
+    (body (symbol "PIN") (pt 0 0) (rot 0) (mir 0) (visible true))
+    (name (pt 230 0) (rot 0) (just MIDDLE LEFT) (visible true))
+    (number (pt 140 20) (rot 0) (just BOTTOM RIGHT) (visible true)))
+   (terminal
+    (body (symbol "PIN") (pt 900 0) (rot 0) (mir X) (visible true))
+    (name (pt 230 0) (rot 0) (just MIDDLE LEFT) (visible true))
+    (number (pt 140 20) (rot 0) (just BOTTOM RIGHT) (visible true)))
+   (terminal
+    (body (symbol "PIN") (pt 0 -100) (rot 0) (mir 0) (visible true))
+    (name (pt 230 0) (rot 0) (just MIDDLE LEFT) (visible true))
+    (number (pt 140 20) (rot 0) (just BOTTOM RIGHT) (visible true)))
+   (terminal
+    (body (symbol "PIN") (pt 900 -100) (rot 0) (mir X) (visible true))
+    (name (pt 230 0) (rot 0) (just MIDDLE LEFT) (visible true))
+    (number (pt 140 20) (rot 0) (just BOTTOM RIGHT) (visible true)))
+   (terminal
+    (body (symbol "PIN") (pt 0 -200) (rot 0) (mir 0) (visible true))
+    (name (pt 230 0) (rot 0) (just MIDDLE LEFT) (visible true))
+    (number (pt 140 20) (rot 0) (just BOTTOM RIGHT) (visible true)))
+   (terminal
+    (body (symbol "PIN") (pt 900 -200) (rot 0) (mir X) (visible true))
+    (name (pt 230 0) (rot 0) (just MIDDLE LEFT) (visible true))
+    (number (pt 140 20) (rot 0) (just BOTTOM RIGHT) (visible true)))
+   (terminal
+    (body (symbol "PIN") (pt 0 -300) (rot 0) (mir 0) (visible true))
+    (name (pt 230 0) (rot 0) (just MIDDLE LEFT) (visible true))
+    (number (pt 140 20) (rot 0) (just BOTTOM RIGHT) (visible true)))
+   (terminal
+    (body (symbol "PIN") (pt 900 -300) (rot 0) (mir X) (visible true))
+    (name (pt 230 0) (rot 0) (just MIDDLE LEFT) (visible true))
+    (number (pt 140 20) (rot 0) (just BOTTOM RIGHT) (visible true)))
+   (terminal
+    (body (symbol "PIN") (pt 0 -400) (rot 0) (mir 0) (visible true))
+    (name (pt 230 0) (rot 0) (just MIDDLE LEFT) (visible true))
+    (number (pt 140 20) (rot 0) (just BOTTOM RIGHT) (visible true)))
+   (terminal
+    (body (symbol "PIN") (pt 900 -400) (rot 0) (mir X) (visible true))
+    (name (pt 230 0) (rot 0) (just MIDDLE LEFT) (visible true))
+    (number (pt 140 20) (rot 0) (just BOTTOM RIGHT) (visible true)))
+  )
+  (symbol "PIN"
+   (units THOU)
+   (origin (pt 0 0))
+   (graphic
+    (stroke 10)
+    (path (pt 0 0) (pt 200 0))))
+  (symbol "PINSHORT"
+   (units THOU)
+   (origin (pt 0 0))
+   (graphic
+    (stroke 10)
+    (path (pt 0 0) (pt 100 0))))
+  (package "HBHRB210VGSMT"
+   (units MM)
+   (layer TASM
+    (graphic
+     (stroke 0.1)
+     (path
+      (closed true)
+      (pt -6.275 2.5)
+      (pt 6.275 2.5)
+      (pt 6.275 -2.5)
+      (pt -6.275 -2.5)
+      (pt -6.275 2.5))))
+   (layer OCCA
+    (graphic
+     (stroke 0.1)
+     (path
+      (closed true)
+      (pt -7.275 4.3)
+      (pt 7.275 4.3)
+      (pt 7.275 -4.3)
+      (pt -7.275 -4.3)
+      (pt -7.275 4.3))))
+   (layer TSLK
+    (graphic
+     (stroke 0.1)
+     (path
+      (closed true)
+      (pt -2.54 -3.8)
+      (arc (pt -2.540 -3.800) (pt -2.590 -3.900) (pt -2.490 -3.800) (start 180.0) (sweep 90.0))
+      (pt -2.54 -3.9)
+      (arc (pt -2.540 -3.900) (pt -2.590 -3.900) (pt -2.490 -3.800) (start 180.0) (sweep -90.0))
+      (pt -2.54 -3.8))))
+   (layer TSLK
+    (graphic
+     (stroke 0.2)
+     (path
+      (closed false)
+      (pt 3.2 2.5)
+      (pt 6.275 2.5)
+      (pt 6.275 -2.5)
+      (pt 3.2 -2.5))))
+   (layer TSLK
+    (graphic
+     (stroke 0.2)
+     (path
+      (closed false)
+      (pt -3.2 -2.5)
+      (pt -6.275 -2.5)
+      (pt -6.275 2.5)
+      (pt -3.2 2.5))))
+   (leg 1 (pt -2.540 -2.000) (padstack 0))
+   (leg 2 (pt -2.540 2.000) (padstack 0))
+   (leg 3 (pt -1.270 -2.000) (padstack 0))
+   (leg 4 (pt -1.270 2.000) (padstack 0))
+   (leg 5 (pt 0.000 -2.000) (padstack 0))
+   (leg 6 (pt 0.000 2.000) (padstack 0))
+   (leg 7 (pt 1.270 -2.000) (padstack 0))
+   (leg 8 (pt 1.270 2.000) (padstack 0))
+   (leg 9 (pt 2.540 -2.000) (padstack 0))
+   (leg 10 (pt 2.540 2.000) (padstack 0))
+   (padstack 0
+    (plated false)
+    (pad (layer TCOP) (rectf 0.740 2.600 0 0 90.000))
+   )
+   (model "HBHR-B2-10-VG-SMT.stp"
+    (euler 0 0 0)
+    (offset 0 0 0)
+   )
+  )
+ )
+)

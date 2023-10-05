@@ -1,0 +1,16 @@
+.1825965-1 :1 ;Switch Tactile N.O. SPST Rectangular Button PC Pins 0.05A 24VDC 20000Cycles 1.3N Thru-Hole Loose
+"18259651"
+*STM S
+*NGS
+*PLB 1="NO" 2="COM"
+*MXP 2
+*DFN 1825965-1
+~!TME Electronic Components Part Number (-)
+~!TME Electronic Components Price/Stock (-)
+~!Manufacturer_Name (TE Connectivity)
+~!Manufacturer_Part_Number (1825965-1)
+~!Link Datasheet (https://www.arrow.com/en/products/1825965-1/te-connectivity)
+~!Height (5mm)
+~!3D_Model (1825965-1)
+"1825965-1"
+1.1!U 2.1!U 

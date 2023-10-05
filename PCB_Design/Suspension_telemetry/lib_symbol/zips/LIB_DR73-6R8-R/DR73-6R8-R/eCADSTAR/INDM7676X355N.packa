@@ -1,0 +1,13 @@
+(unit MM)
+
+(package "DR73-6R8-R"
+    (type UNDEF)
+    (uver 2)
+    (cuser "SamacSys")
+    (uuser "SamacSys")
+    (utime 2018-06-06-11:10:45)
+    (mountForm default
+        (footprintRef "INDM7676X355N")
+        (spec "System")
+    )
+)

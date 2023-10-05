@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--/267787/1231078/2.50/2/2/Crystal or Oscillator/-->
+<quadcept_library>
+  <setting unit="mil" />
+  <textstyle name="Default" height="47.244094488189" strokewidth="7.8740157480315" charwidth="47.244094488189" />
+  <textstyle name="Dimension" height="19.6850393700787" strokewidth="0" charwidth="19.6850393700787" />
+  <textstyle name="H127W0635TH00762" height="50" strokewidth="3" charwidth="25" />
+  <textstyle name="H15W15TH02" height="59.0551181102362" strokewidth="7.8740157480315" charwidth="59.0551181102362" />
+  <padstyle name="r190_110" surface="True" plated="False" isvia="False" nopaste="False" nomask="True" complex="False" holesize="0">
+    <padshape layer="TOP" shape="rectangle" width="43.307086614173" height="74.803149606298" />
+    <padshape layer="TOP_SOLDER_MASK" shape="rectangle" width="51.181102362204" height="82.67716535433" />
+    <padshape layer="TOP_SOLDER_PASTE" shape="rectangle" width="43.307086614173" height="74.803149606298" />
+  </padstyle>
+  <footprint name="ABS07" originx="0" originy="0" pickpointx="0" pickpointy="0">
+    <pcbpin number="1" name="1" style="r190_110" originx="-49.212598425196" originy="0" rotation="0" />
+    <pcbpin number="2" name="2" style="r190_110" originx="49.212598425196" originy="0" rotation="0" />
+    <line layer="TOP_ASSEMBLY" originx="-62.992125984251" originy="29.527559055118" endx="62.992125984251" endy="29.527559055118" width="7.8740157480314" />
+    <line layer="TOP_ASSEMBLY" originx="62.992125984251" originy="29.527559055118" endx="62.992125984251" endy="-29.527559055118" width="7.8740157480314" />
+    <line layer="TOP_ASSEMBLY" originx="62.992125984251" originy="-29.527559055118" endx="-62.992125984251" endy="-29.527559055118" width="7.8740157480314" />
+    <line layer="TOP_ASSEMBLY" originx="-62.992125984251" originy="-29.527559055118" endx="-62.992125984251" endy="29.527559055118" width="7.8740157480314" />
+    <line layer="TOP_PLACE_BOUND" originx="-110.23622047244" originy="76.771653543306" endx="110.23622047244" endy="76.771653543306" width="3.9370078740157" />
+    <line layer="TOP_PLACE_BOUND" originx="110.23622047244" originy="76.771653543306" endx="110.23622047244" endy="-76.771653543306" width="3.9370078740157" />
+    <line layer="TOP_PLACE_BOUND" originx="110.23622047244" originy="-76.771653543306" endx="-110.23622047244" endy="-76.771653543306" width="3.9370078740157" />
+    <line layer="TOP_PLACE_BOUND" originx="-110.23622047244" originy="-76.771653543306" endx="-110.23622047244" endy="76.771653543306" width="3.9370078740157" />
+    <line layer="TOP_SILKSCREEN" originx="-15.748031496063" originy="29.527559055118" endx="15.748031496063" endy="29.527559055118" width="3.9370078740157" />
+    <line layer="TOP_SILKSCREEN" originx="-15.748031496063" originy="-29.527559055118" endx="15.748031496063" endy="-29.527559055118" width="3.9370078740157" />
+  </footprint>
+  <symbol name="ABS07-32.768KHZ-9-T" originx="0" originy="0">
+    <line originx="120" originy="100" endx="120" endy="-100" width="0" />
+    <line originx="280" originy="100" endx="280" endy="-100" width="0" />
+    <line originx="160" originy="140" endx="160" endy="-140" width="0" />
+    <line originx="240" originy="-140" endx="160" endy="-140" width="0" />
+    <line originx="240" originy="-140" endx="240" endy="140" width="0" />
+    <line originx="160" originy="140" endx="240" endy="140" width="0" />
+    <line originx="280" originy="0" endx="300" endy="0" width="0" />
+    <line originx="120" originy="0" endx="100" endy="0" width="0" />
+    <sympin number="1" originx="100" originy="0" rotation="180" length="100" width="7.8740157480315" flipped="False">
+      <text name="pinname" originx="140" originy="10" style="Default" rotation="0" justify="left" flipped="False" hidden="True" data="1" />
+      <text name="pindes" originx="60" originy="10" style="Default" rotation="0" justify="lowerright" flipped="False" hidden="False" data="1" />
+    </sympin>
+    <sympin number="2" originx="300" originy="0" rotation="0" length="100" width="7.8740157480315" flipped="False">
+      <text name="pinname" originx="260" originy="10" style="Default" rotation="0" justify="right" flipped="False" hidden="True" data="2" />
+      <text name="pindes" originx="340" originy="10" style="Default" rotation="0" justify="lowerleft" flipped="False" hidden="False" data="2" />
+    </sympin>
+  </symbol>
+  <component name="ABS07-32.768KHZ-9-T" designatorprefix="Y" height="35.433070866141" footprint="ABS07">
+    <comppin designator="1" sympin="1" pinswap="0" gateswap="0" gate="1" group="1" side="" type="Any" name="1" />
+    <comppin designator="2" sympin="2" pinswap="0" gateswap="0" gate="1" group="1" side="" type="Any" name="2" />
+    <attached_symbol gate="1" name="ABS07-32.768KHZ-9-T" />
+    <pinmap designator="1" footprintpin="1" />
+    <pinmap designator="2" footprintpin="2" />
+    <text name="Datasheet" originx="0" originy="0" style="Default" rotation="0" justify="" flipped="False" hidden="True" data="https://abracon.com/Resonators/ABS07.pdf" />
+    <text name="Description" originx="0" originy="0" style="Default" rotation="0" justify="" flipped="False" hidden="True" data="32.768 kHz +/-20ppm Crystal 9pF 70 kOhms 2-SMD, No Lead" />
+    <text name="TME Electronic Components Part Number" originx="0" originy="0" style="Default" rotation="0" justify="" flipped="False" hidden="True" data="" />
+    <text name="TME Electronic Components Price/Stock" originx="0" originy="0" style="Default" rotation="0" justify="" flipped="False" hidden="True" data="" />
+    <text name="Manufacturer_Name" originx="0" originy="0" style="Default" rotation="0" justify="" flipped="False" hidden="True" data="ABRACON" />
+    <text name="Manufacturer_Part_Number" originx="350" originy="150" style="Default" rotation="0" justify="left" flipped="False" hidden="False" data="ABS07-32.768KHZ-9-T" />
+  </component>
+</quadcept_library>

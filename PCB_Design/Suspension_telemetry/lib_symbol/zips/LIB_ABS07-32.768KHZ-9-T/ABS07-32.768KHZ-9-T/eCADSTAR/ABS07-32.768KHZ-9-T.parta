@@ -1,0 +1,66 @@
+(Japanese_coding: sjis)
+(function "ECS_267787"
+    (uver 1)
+    (cuser "SamacSys")
+    (uuser "SamacSys")
+    (ctime 2017-06-25-21:36:45)
+    (utime 2023-05-09-08:49:00)
+    (interface
+        (port "1" (symbPinId 1) (portType INOUT))
+        (port "2" (symbPinId 2) (portType INOUT))
+    )
+    (property "symbolName" "ABS07-32_768KHZ-9-T")
+)
+
+
+(pinAssign "ECS_267787"
+    (uver 1)
+    (cuser "SamacSys")
+    (uuser "SamacSys")
+    (ctime 2017-06-25-21:36:45)
+    (utime 2023-05-09-08:49:00)
+    (interface
+        (port "1" (symbPinId 1) (portName "1") (portType INOUT))
+        (port "2" (symbPinId 2) (portName "2") (portType INOUT))
+    )
+    (internal
+        (funcInst (functionRef "ECS_267787")
+                (port "1" (match "1"))
+                (port "2" (match "2"))
+        )
+    )
+    (property "usePowerBox" "No")
+    (property "symbolName" "ABS07-32_768KHZ-9-T")
+)
+
+
+(part "ABS07-32_768KHZ-9-T"
+    (uver 1)
+    (cuser "SamacSys")
+    (uuser "SamacSys")
+    (ctime 2017-06-25-21:36:45)
+    (utime 2023-05-09-08:49:00)
+    (packageRef "ABS07-32_768KHZ-9-T")
+    (pinAssignRef "ECS_267787")
+    (interface
+        (port "1" (symbPinId 1) (portName "1") (portType INOUT))
+        (port "2" (symbPinId 2) (portName "2") (portType INOUT))
+    )
+    (partClass UNDEF)
+    (useInSchema Y)
+    (useInLayout Y)
+    (inPartsList Y)
+    (partType NORMAL)
+    (placeRestriction FREE)
+    (property "enetNonSeries" "YES")
+    (property "refDesPrefix" "Y")
+    (property "description" "32.768 kHz +/-20ppm Crystal 9pF 70 kOhms 2-SMD, No Lead")
+    (property "TME_Electronic_Components_Part_Number" "")
+    (property "TME_Electronic_Components_Price/Stock" "")
+    (property "Manufacturer_Name" "ABRACON")
+    (property "Manufacturer_Part_Number" "ABS07-32.768KHZ-9-T")
+    (property "Datasheet_Link" "https://abracon.com/Resonators/ABS07.pdf")
+    (property "compAreaTopHeight" 0.9)
+)
+
+

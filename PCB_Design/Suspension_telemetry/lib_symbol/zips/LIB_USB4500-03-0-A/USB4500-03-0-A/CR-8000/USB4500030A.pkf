@@ -1,0 +1,10 @@
+(unit MM)
+
+(package "USB4500030A"
+    (type UNDEF)
+    (uver 2)
+    (mountForm default
+        (footprintRef "USB4500030A")
+        (spec "default")
+    )
+)

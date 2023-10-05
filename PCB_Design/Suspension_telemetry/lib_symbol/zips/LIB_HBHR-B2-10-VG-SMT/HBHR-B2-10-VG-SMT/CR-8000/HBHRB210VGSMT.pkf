@@ -1,0 +1,10 @@
+(unit MM)
+
+(package "HBHRB210VGSMT"
+    (type UNDEF)
+    (uver 2)
+    (mountForm default
+        (footprintRef "HBHRB210VGSMT")
+        (spec "default")
+    )
+)

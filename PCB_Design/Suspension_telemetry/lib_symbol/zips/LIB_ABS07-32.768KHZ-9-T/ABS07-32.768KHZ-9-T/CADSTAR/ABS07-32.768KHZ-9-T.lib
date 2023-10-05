@@ -1,0 +1,16 @@
+.ABS07-32.768KHZ-9-T :1 ;32.768 kHz +/-20ppm Crystal 9pF 70 kOhms 2-SMD, No Lead
+ABS07
+*STM Y
+*NGS
+*PLB 1="1" 2="2"
+*MXP 2
+*DFN ABS07-32.768KHZ-9-T
+~!TME Electronic Components Part Number (-)
+~!TME Electronic Components Price/Stock (-)
+~!Manufacturer_Name (ABRACON)
+~!Manufacturer_Part_Number (ABS07-32.768KHZ-9-T)
+~!Link Datasheet (https://abracon.com/Resonators/ABS07.pdf)
+~!Height (0.9mm)
+~!3D_Model (ABS07-32.768KHZ-9-T)
+ABS07-32.768KHZ-9-T
+1.1!U 2.1!U 

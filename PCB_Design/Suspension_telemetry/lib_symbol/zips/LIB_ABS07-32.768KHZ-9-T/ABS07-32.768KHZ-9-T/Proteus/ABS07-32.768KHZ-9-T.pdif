@@ -1,0 +1,114 @@
+;Proteus Design Interchange Format
+(PDIF
+ (vendor "SamacSys Limited")
+ (version 1 0)
+ (library
+  (part "ABS07-32.768KHZ-9-T"
+   (description "32.768 kHz +/-20ppm Crystal 9pF 70 kOhms 2-SMD, No Lead")
+   (family "OSC")
+   (package "ABS07")
+   (attribute "Datasheet Link" "https://abracon.com/Resonators/ABS07.pdf")
+   (attribute "Geometry.Height" "0.9mm")
+   (attribute "TME Electronic Components Part Number" "")
+   (attribute "TME Electronic Components Price/Stock" "")
+   (attribute "Manufacturer_Name" "ABRACON")
+   (attribute "Manufacturer_Part_Number" "ABS07-32.768KHZ-9-T")
+   (gate
+    (symbol "ABS07-32.768KHZ-9-T")
+    (pin "1" 1 PS)
+    (pin "2" 2 PS)
+   )
+  )
+  (symbol "ABS07-32.768KHZ-9-T"
+   (units THOU)
+   (origin (pt 0 0))
+   (graphic
+    (stroke 10)
+    (path (pt 120 100) (pt 120 -100))
+   )
+   (graphic
+    (stroke 10)
+    (path (pt 280 100) (pt 280 -100))
+   )
+   (graphic
+    (stroke 10)
+    (path (pt 160 140) (pt 160 -140) (pt 240 -140) (pt 240 140) (pt 160 140) (closed))
+   )
+   (graphic
+    (stroke 10)
+    (path (pt 280 0) (pt 300 0))
+   )
+   (graphic
+    (stroke 10)
+    (path (pt 120 0) (pt 100 0))
+   )
+   (terminal
+    (body (symbol "PINSHORT") (pt 0 0) (rot 0) (mir 0) (visible true))
+    (name (pt 140 10) (rot 0) (just MIDDLE LEFT) (visible false))
+    (number (pt 60 10) (rot 0) (just BOTTOM RIGHT) (visible true)))
+   (terminal
+    (body (symbol "PINSHORT") (pt 400 0) (rot 0) (mir X) (visible true))
+    (name (pt 140 10) (rot 0) (just MIDDLE LEFT) (visible false))
+    (number (pt 60 10) (rot 0) (just BOTTOM RIGHT) (visible true)))
+  )
+  (symbol "PIN"
+   (units THOU)
+   (origin (pt 0 0))
+   (graphic
+    (stroke 10)
+    (path (pt 0 0) (pt 200 0))))
+  (symbol "PINSHORT"
+   (units THOU)
+   (origin (pt 0 0))
+   (graphic
+    (stroke 10)
+    (path (pt 0 0) (pt 100 0))))
+  (package "ABS07"
+   (units MM)
+   (layer TASM
+    (graphic
+     (stroke 0.2)
+     (path
+      (closed true)
+      (pt -1.6 0.75)
+      (pt 1.6 0.75)
+      (pt 1.6 -0.75)
+      (pt -1.6 -0.75)
+      (pt -1.6 0.75))))
+   (layer OCCA
+    (graphic
+     (stroke 0.1)
+     (path
+      (closed true)
+      (pt -2.8 1.95)
+      (pt 2.8 1.95)
+      (pt 2.8 -1.95)
+      (pt -2.8 -1.95)
+      (pt -2.8 1.95))))
+   (layer TSLK
+    (graphic
+     (stroke 0.1)
+     (path
+      (closed false)
+      (pt -0.4 0.75)
+      (pt 0.4 0.75))))
+   (layer TSLK
+    (graphic
+     (stroke 0.1)
+     (path
+      (closed false)
+      (pt -0.4 -0.75)
+      (pt 0.4 -0.75))))
+   (leg 1 (pt -1.250 0.000) (padstack 0))
+   (leg 2 (pt 1.250 0.000) (padstack 0))
+   (padstack 0
+    (plated false)
+    (pad (layer TCOP) (rectf 1.100 1.900 0 0 90.000))
+   )
+   (model "ABS07-32.768KHZ-9-T.stp"
+    (euler 90 0 0)
+    (offset 0 0 0)
+   )
+  )
+ )
+)

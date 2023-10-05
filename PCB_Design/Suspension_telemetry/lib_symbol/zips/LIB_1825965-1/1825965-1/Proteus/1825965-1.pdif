@@ -1,0 +1,105 @@
+;Proteus Design Interchange Format
+(PDIF
+ (vendor "SamacSys Limited")
+ (version 1 0)
+ (library
+  (part "1825965-1"
+   (description "Switch Tactile N.O. SPST Rectangular Button PC Pins 0.05A 24VDC 20000Cycles 1.3N Thru-Hole Loose")
+   (family "SWI")
+   (package "18259651")
+   (attribute "Datasheet Link" "https://www.arrow.com/en/products/1825965-1/te-connectivity")
+   (attribute "Geometry.Height" "5mm")
+   (attribute "TME Electronic Components Part Number" "")
+   (attribute "TME Electronic Components Price/Stock" "")
+   (attribute "Manufacturer_Name" "TE Connectivity")
+   (attribute "Manufacturer_Part_Number" "1825965-1")
+   (gate
+    (symbol "1825965-1")
+    (pin "NO" 1 PS)
+    (pin "COM" 2 PS)
+   )
+  )
+  (symbol "1825965-1"
+   (units THOU)
+   (origin (pt 0 0))
+   (graphic
+    (stroke 10)
+    (path (pt 200 100) (pt 700 100) (pt 700 -200) (pt 200 -200) (pt 200 100) (closed))
+   )
+   (terminal
+    (body (symbol "PIN") (pt 0 0) (rot 0) (mir 0) (visible true))
+    (name (pt 230 0) (rot 0) (just MIDDLE LEFT) (visible true))
+    (number (pt 140 20) (rot 0) (just BOTTOM RIGHT) (visible true)))
+   (terminal
+    (body (symbol "PIN") (pt 0 -100) (rot 0) (mir 0) (visible true))
+    (name (pt 230 0) (rot 0) (just MIDDLE LEFT) (visible true))
+    (number (pt 140 20) (rot 0) (just BOTTOM RIGHT) (visible true)))
+  )
+  (symbol "PIN"
+   (units THOU)
+   (origin (pt 0 0))
+   (graphic
+    (stroke 10)
+    (path (pt 0 0) (pt 200 0))))
+  (symbol "PINSHORT"
+   (units THOU)
+   (origin (pt 0 0))
+   (graphic
+    (stroke 10)
+    (path (pt 0 0) (pt 100 0))))
+  (package "18259651"
+   (units MM)
+   (layer TASM
+    (graphic
+     (stroke 0.2)
+     (path
+      (closed true)
+      (pt 0.25 1.75)
+      (pt 6.25 1.75)
+      (pt 6.25 -1.75)
+      (pt 0.25 -1.75)
+      (pt 0.25 1.75))))
+   (layer OCCA
+    (graphic
+     (stroke 0.1)
+     (path
+      (closed true)
+      (pt -1.93 2.75)
+      (pt 8.43 2.75)
+      (pt 8.43 -2.75)
+      (pt -1.93 -2.75)
+      (pt -1.93 2.75))))
+   (layer TSLK
+    (graphic
+     (stroke 0.1)
+     (path
+      (closed false)
+      (pt 0.25 1.2)
+      (pt 0.25 1.75)
+      (pt 6.25 1.75)
+      (pt 6.25 1.2))))
+   (layer TSLK
+    (graphic
+     (stroke 0.1)
+     (path
+      (closed false)
+      (pt 0.25 -1.2)
+      (pt 0.25 -1.75)
+      (pt 6.25 -1.75)
+      (pt 6.25 -1.2))))
+   (leg 1 (pt 0.000 0.000) (padstack 0))
+   (leg 2 (pt 6.500 0.000) (padstack 0))
+   (padstack 0
+    (hole 1.24)
+    (plated true)
+    (pad (layer TCOP) (round 1.860))
+    (pad (layer INNER) (round 1.860))
+    (pad (layer BCOP) (round 1.860))
+   )
+   (model "1825965-1.stp"
+    (euler 90 0 0)
+    (offset 3.25 0 -0.10000000149011612)
+   )
+  )
+ )
+)

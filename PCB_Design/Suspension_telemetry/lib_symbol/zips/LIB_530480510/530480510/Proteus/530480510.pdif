@@ -1,0 +1,140 @@
+;Proteus Design Interchange Format
+(PDIF
+ (vendor "SamacSys Limited")
+ (version 1 0)
+ (library
+  (part "530480510"
+   (description "1.25mm Pitch, PicoBlade PCB Header, Single Row, Right-Angle, Through Hole, Tin (Sn) Plating, Friction Lock, 5 Circuits, Tray, 2.30mm PC Tail Length")
+   (family "CON")
+   (package "530480510")
+   (attribute "Datasheet Link" "https://www.molex.com/pdm_docs/sd/530480210_sd.pdf")
+   (attribute "Geometry.Height" "3.5mm")
+   (attribute "TME Electronic Components Part Number" "")
+   (attribute "TME Electronic Components Price/Stock" "")
+   (attribute "Manufacturer_Name" "Molex")
+   (attribute "Manufacturer_Part_Number" "530480510")
+   (gate
+    (symbol "530480510")
+    (pin "1" 1 PS)
+    (pin "2" 2 PS)
+    (pin "3" 3 PS)
+    (pin "4" 4 PS)
+    (pin "5" 5 PS)
+   )
+  )
+  (symbol "530480510"
+   (units THOU)
+   (origin (pt 0 0))
+   (graphic
+    (stroke 10)
+    (path (pt 200 100) (pt 600 100) (pt 600 -500) (pt 200 -500) (pt 200 100) (closed))
+   )
+   (terminal
+    (body (symbol "PIN") (pt 0 -400) (rot 0) (mir 0) (visible true))
+    (name (pt 230 0) (rot 0) (just MIDDLE LEFT) (visible true))
+    (number (pt 140 20) (rot 0) (just BOTTOM RIGHT) (visible true)))
+   (terminal
+    (body (symbol "PIN") (pt 0 -300) (rot 0) (mir 0) (visible true))
+    (name (pt 230 0) (rot 0) (just MIDDLE LEFT) (visible true))
+    (number (pt 140 20) (rot 0) (just BOTTOM RIGHT) (visible true)))
+   (terminal
+    (body (symbol "PIN") (pt 0 -200) (rot 0) (mir 0) (visible true))
+    (name (pt 230 0) (rot 0) (just MIDDLE LEFT) (visible true))
+    (number (pt 140 20) (rot 0) (just BOTTOM RIGHT) (visible true)))
+   (terminal
+    (body (symbol "PIN") (pt 0 -100) (rot 0) (mir 0) (visible true))
+    (name (pt 230 0) (rot 0) (just MIDDLE LEFT) (visible true))
+    (number (pt 140 20) (rot 0) (just BOTTOM RIGHT) (visible true)))
+   (terminal
+    (body (symbol "PIN") (pt 0 0) (rot 0) (mir 0) (visible true))
+    (name (pt 230 0) (rot 0) (just MIDDLE LEFT) (visible true))
+    (number (pt 140 20) (rot 0) (just BOTTOM RIGHT) (visible true)))
+  )
+  (symbol "PIN"
+   (units THOU)
+   (origin (pt 0 0))
+   (graphic
+    (stroke 10)
+    (path (pt 0 0) (pt 200 0))))
+  (symbol "PINSHORT"
+   (units THOU)
+   (origin (pt 0 0))
+   (graphic
+    (stroke 10)
+    (path (pt 0 0) (pt 100 0))))
+  (package "530480510"
+   (units MM)
+   (layer TASM
+    (graphic
+     (stroke 0.127)
+     (path
+      (closed true)
+      (pt -6.5 4.45)
+      (pt 1.5 4.45)
+      (pt 1.5 -1.05)
+      (pt -6.5 -1.05)
+      (pt -6.5 4.45))))
+   (layer TSLK
+    (graphic
+     (stroke 0.127)
+     (path
+      (closed true)
+      (pt -6.5 4.45)
+      (pt 1.5 4.45)
+      (pt 1.5 -1.05)
+      (pt -6.5 -1.05)
+      (pt -6.5 4.45))))
+   (layer TSLK
+    (graphic
+     (stroke 0.127)
+     (path
+      (closed true)
+      (pt 3 0.5)
+      (pt 3 -0.5)
+      (pt 2 0)
+      (pt 3 0.5))))
+   (layer TASM
+    (graphic
+     (stroke 0.127)
+     (path
+      (closed true)
+      (pt 3 0.5)
+      (pt 3 -0.5)
+      (pt 2 0)
+      (pt 3 0.5))))
+   (layer OCCA
+    (graphic
+     (stroke 0.05)
+     (path
+      (closed true)
+      (pt -7.77 5.72)
+      (pt 2.77 5.72)
+      (pt 2.77 -2.32)
+      (pt -7.77 -2.32)
+      (pt -7.77 5.72))))
+   (leg 1 (pt 0 0) (padstack 1))
+   (leg 2 (pt -1.25 0) (padstack 0))
+   (leg 3 (pt -2.5 0) (padstack 0))
+   (leg 4 (pt -3.75 0) (padstack 0))
+   (leg 5 (pt -5 0) (padstack 0))
+   (padstack 0
+    (hole 0.5)
+    (plated true)
+    (pad (layer TCOP) (round 0.85))
+    (pad (layer INNER) (round 0.85))
+    (pad (layer BCOP) (round 0.85))
+   )
+   (padstack 1
+    (hole 0.5)
+    (plated true)
+    (pad (layer TCOP) (square 0.85))
+    (pad (layer INNER) (round 0.85))
+    (pad (layer BCOP) (square 0.85))
+   )
+   (model "530480510.stp"
+    (euler 0 0 180)
+    (offset -2.5 5.449999809265137 0.23999999463558197)
+   )
+  )
+ )
+)

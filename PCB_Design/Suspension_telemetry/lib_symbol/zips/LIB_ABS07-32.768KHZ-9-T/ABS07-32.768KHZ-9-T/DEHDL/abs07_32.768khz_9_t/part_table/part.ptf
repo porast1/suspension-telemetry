@@ -1,0 +1,11 @@
+FILE_TYPE = MULTI_PHYS_TABLE;
+
+PART 'ABS07_32.768KHZ_9_T'
+CLASS = DISCRETE
+{========================================================================================}
+:"MANUFACTURER_NAME", "MANUFACTURER_PART_NUMBER"= "PART_NUMBER", "JEDEC_TYPE", "PACK_TYPE", "TME_ELECTRONIC_COMPONENTS_PART_NUMBER", "TME_ELECTRONIC_COMPONENTS_PRICE/STOCK", "DESCRIPTION", "DATASHEET", "HEIGHT";
+{========================================================================================}
+ "ABRACON", "ABS07-32.768KHZ-9-T" (!) = "", "ABS07", "Other", "", "", "32.768 kHz +/-20ppm Crystal 9pF 70 kOhms 2-SMD, No Lead", "https://abracon.com/Resonators/ABS07.pdf", "0.9 mm"
+END_PART
+
+END.

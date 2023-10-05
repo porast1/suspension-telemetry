@@ -1,0 +1,13 @@
+(unit MM)
+
+(package "ABS07-32_768KHZ-9-T"
+    (type UNDEF)
+    (uver 2)
+    (cuser "SamacSys")
+    (uuser "SamacSys")
+    (utime 2023-04-14-15:56:35)
+    (mountForm default
+        (footprintRef "ABS07")
+        (spec "System")
+    )
+)

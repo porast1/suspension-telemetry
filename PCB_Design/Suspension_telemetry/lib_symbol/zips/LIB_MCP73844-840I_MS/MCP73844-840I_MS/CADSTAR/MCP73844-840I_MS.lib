@@ -1,0 +1,16 @@
+.MCP73844-840I_MS :1 ;Li-Ion Charge Controller 8.4V MSOP8
+SOP65P490X110-8N
+*STM IC
+*NGS
+*PLB 1="SENSE" 2="VDD" 3="STAT1" 4="EN" 5="TIMER" 6="VSS" 7="VBAT" 8="DRV"
+*MXP 8
+*DFN MCP73844-840I_MS
+~!TME Electronic Components Part Number (-)
+~!TME Electronic Components Price/Stock (-)
+~!Manufacturer_Name (Microchip)
+~!Manufacturer_Part_Number (MCP73844-840I/MS)
+~!Link Datasheet (http://ww1.microchip.com/downloads/en/DeviceDoc/21823D.pdf)
+~!Height (1.1mm)
+~!3D_Model (MCP73844-840I_MS)
+MCP73844-840I_MS
+1.1!U 2.1!U 3.1!U 4.1!U 8.1!U 7.1!U 6.1!U 5.1!U 

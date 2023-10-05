@@ -1,0 +1,244 @@
+;Proteus Design Interchange Format
+(PDIF
+ (vendor "SamacSys Limited")
+ (version 1 0)
+ (library
+  (part "USB4500-03-0-A"
+   (description "GCT (GLOBAL CONNECTOR TECHNOLOGY) - USB4500-03-0-A - USB Connector, USB Type C, USB 2.0, Receptacle, 16 Ways, Surface Mount, Through Hole Mount")
+   (family "CON")
+   (package "USB4500030A")
+   (attribute "Datasheet Link" "https://componentsearchengine.com/Datasheets/2/USB4500-03-0-A.pdf")
+   (attribute "TME Electronic Components Part Number" "")
+   (attribute "TME Electronic Components Price/Stock" "")
+   (attribute "Manufacturer_Name" "GCT (GLOBAL CONNECTOR TECHNOLOGY)")
+   (attribute "Manufacturer_Part_Number" "USB4500-03-0-A")
+   (gate
+    (symbol "USB4500-03-0-A")
+    (pin "GND_1" A1 PS)
+    (pin "VBUS_1" A4 PS)
+    (pin "CC1" A5 PS)
+    (pin "DP1" A6 PS)
+    (pin "DN1" A7 PS)
+    (pin "SBU1" A8 PS)
+    (pin "VBUS_2" A9 PS)
+    (pin "GND_2" A12 PS)
+    (pin "CC2" B5 PS)
+    (pin "DP2" B6 PS)
+    (pin "DN2" B7 PS)
+    (pin "SBU2" B8 PS)
+    (pin "MH1" MH1 PS)
+    (pin "MH2" MH2 PS)
+    (pin "MH3" MH3 PS)
+    (pin "MH4" MH4 PS)
+   )
+  )
+  (symbol "USB4500-03-0-A"
+   (units THOU)
+   (origin (pt 0 0))
+   (graphic
+    (stroke 10)
+    (path (pt 200 100) (pt 1000 100) (pt 1000 -800) (pt 200 -800) (pt 200 100) (closed))
+   )
+   (terminal
+    (body (symbol "PIN") (pt 0 0) (rot 0) (mir 0) (visible true))
+    (name (pt 230 0) (rot 0) (just MIDDLE LEFT) (visible true))
+    (number (pt 140 20) (rot 0) (just BOTTOM RIGHT) (visible true)))
+   (terminal
+    (body (symbol "PIN") (pt 0 -100) (rot 0) (mir 0) (visible true))
+    (name (pt 230 0) (rot 0) (just MIDDLE LEFT) (visible true))
+    (number (pt 140 20) (rot 0) (just BOTTOM RIGHT) (visible true)))
+   (terminal
+    (body (symbol "PIN") (pt 0 -200) (rot 0) (mir 0) (visible true))
+    (name (pt 230 0) (rot 0) (just MIDDLE LEFT) (visible true))
+    (number (pt 140 20) (rot 0) (just BOTTOM RIGHT) (visible true)))
+   (terminal
+    (body (symbol "PIN") (pt 0 -300) (rot 0) (mir 0) (visible true))
+    (name (pt 230 0) (rot 0) (just MIDDLE LEFT) (visible true))
+    (number (pt 140 20) (rot 0) (just BOTTOM RIGHT) (visible true)))
+   (terminal
+    (body (symbol "PIN") (pt 0 -400) (rot 0) (mir 0) (visible true))
+    (name (pt 230 0) (rot 0) (just MIDDLE LEFT) (visible true))
+    (number (pt 140 20) (rot 0) (just BOTTOM RIGHT) (visible true)))
+   (terminal
+    (body (symbol "PIN") (pt 0 -500) (rot 0) (mir 0) (visible true))
+    (name (pt 230 0) (rot 0) (just MIDDLE LEFT) (visible true))
+    (number (pt 140 20) (rot 0) (just BOTTOM RIGHT) (visible true)))
+   (terminal
+    (body (symbol "PIN") (pt 0 -600) (rot 0) (mir 0) (visible true))
+    (name (pt 230 0) (rot 0) (just MIDDLE LEFT) (visible true))
+    (number (pt 140 20) (rot 0) (just BOTTOM RIGHT) (visible true)))
+   (terminal
+    (body (symbol "PIN") (pt 0 -700) (rot 0) (mir 0) (visible true))
+    (name (pt 230 0) (rot 0) (just MIDDLE LEFT) (visible true))
+    (number (pt 140 20) (rot 0) (just BOTTOM RIGHT) (visible true)))
+   (terminal
+    (body (symbol "PIN") (pt 1200 0) (rot 0) (mir X) (visible true))
+    (name (pt 230 0) (rot 0) (just MIDDLE LEFT) (visible true))
+    (number (pt 140 20) (rot 0) (just BOTTOM RIGHT) (visible true)))
+   (terminal
+    (body (symbol "PIN") (pt 1200 -100) (rot 0) (mir X) (visible true))
+    (name (pt 230 0) (rot 0) (just MIDDLE LEFT) (visible true))
+    (number (pt 140 20) (rot 0) (just BOTTOM RIGHT) (visible true)))
+   (terminal
+    (body (symbol "PIN") (pt 1200 -200) (rot 0) (mir X) (visible true))
+    (name (pt 230 0) (rot 0) (just MIDDLE LEFT) (visible true))
+    (number (pt 140 20) (rot 0) (just BOTTOM RIGHT) (visible true)))
+   (terminal
+    (body (symbol "PIN") (pt 1200 -300) (rot 0) (mir X) (visible true))
+    (name (pt 230 0) (rot 0) (just MIDDLE LEFT) (visible true))
+    (number (pt 140 20) (rot 0) (just BOTTOM RIGHT) (visible true)))
+   (terminal
+    (body (symbol "PIN") (pt 1200 -400) (rot 0) (mir X) (visible true))
+    (name (pt 230 0) (rot 0) (just MIDDLE LEFT) (visible true))
+    (number (pt 140 20) (rot 0) (just BOTTOM RIGHT) (visible true)))
+   (terminal
+    (body (symbol "PIN") (pt 1200 -500) (rot 0) (mir X) (visible true))
+    (name (pt 230 0) (rot 0) (just MIDDLE LEFT) (visible true))
+    (number (pt 140 20) (rot 0) (just BOTTOM RIGHT) (visible true)))
+   (terminal
+    (body (symbol "PIN") (pt 1200 -600) (rot 0) (mir X) (visible true))
+    (name (pt 230 0) (rot 0) (just MIDDLE LEFT) (visible true))
+    (number (pt 140 20) (rot 0) (just BOTTOM RIGHT) (visible true)))
+   (terminal
+    (body (symbol "PIN") (pt 1200 -700) (rot 0) (mir X) (visible true))
+    (name (pt 230 0) (rot 0) (just MIDDLE LEFT) (visible true))
+    (number (pt 140 20) (rot 0) (just BOTTOM RIGHT) (visible true)))
+  )
+  (symbol "PIN"
+   (units THOU)
+   (origin (pt 0 0))
+   (graphic
+    (stroke 10)
+    (path (pt 0 0) (pt 200 0))))
+  (symbol "PINSHORT"
+   (units THOU)
+   (origin (pt 0 0))
+   (graphic
+    (stroke 10)
+    (path (pt 0 0) (pt 100 0))))
+  (package "USB4500030A"
+   (units MM)
+   (layer TASM
+    (graphic
+     (stroke 0.1)
+     (path
+      (closed true)
+      (pt -4.47 3.25)
+      (pt 4.47 3.25)
+      (pt 4.47 -3.25)
+      (pt -4.47 -3.25)
+      (pt -4.47 3.25))))
+   (layer OCCA
+    (graphic
+     (stroke 0.1)
+     (path
+      (closed true)
+      (pt -8.045 5.55)
+      (pt 8.045 5.55)
+      (pt 8.045 -4.25)
+      (pt -8.045 -4.25)
+      (pt -8.045 5.55))))
+   (layer TSLK
+    (graphic
+     (stroke 0.2)
+     (path
+      (closed false)
+      (pt -4.47 -2.625)
+      (pt -4.47 -3.25)
+      (pt 4.47 -3.25)
+      (pt 4.47 -2.625))))
+   (layer TSLK
+    (graphic
+     (stroke 0.2)
+     (path
+      (closed false)
+      (pt -4.47 1.875)
+      (pt -4.47 0.075))))
+   (layer TSLK
+    (graphic
+     (stroke 0.2)
+     (path
+      (closed false)
+      (pt 4.47 1.875)
+      (pt 4.47 0.075))))
+   (layer TSLK
+    (graphic
+     (stroke 0.1)
+     (path
+      (closed true)
+      (pt -3.2 4.975)
+      (arc (pt -3.200 4.975) (pt -3.250 4.975) (pt -3.150 5.075) (start 180.0) (sweep -90.0))
+      (pt -3.2 5.075)
+      (arc (pt -3.200 5.075) (pt -3.250 4.975) (pt -3.150 5.075) (start 180.0) (sweep 90.0))
+      (pt -3.2 4.975))))
+   (leg A1 (pt -3.200 4.000) (padstack 1))
+   (leg A4 (pt -2.400 4.000) (padstack 2))
+   (leg A5 (pt -1.250 4.000) (padstack 0))
+   (leg A6 (pt -0.250 4.000) (padstack 0))
+   (leg A7 (pt 0.250 4.000) (padstack 0))
+   (leg A8 (pt 1.250 4.000) (padstack 0))
+   (leg A9 (pt 2.400 4.000) (padstack 7))
+   (leg A12 (pt 3.200 4.000) (padstack 8))
+   (leg B5 (pt 1.750 4.000) (padstack 0))
+   (leg B6 (pt 0.750 4.000) (padstack 0))
+   (leg B7 (pt -0.750 4.000) (padstack 0))
+   (leg B8 (pt -1.750 4.000) (padstack 0))
+   (leg MH1 (pt -5.620 2.850) (padstack 13))
+   (leg MH2 (pt 5.620 2.850) (padstack 14))
+   (leg MH3 (pt -5.620 -1.150) (padstack 15))
+   (leg MH4 (pt 5.620 -1.150) (padstack 16))
+   (padstack 0
+    (plated false)
+    (pad (layer TCOP) (rectf 0.300 1.100 0 0 90.000))
+   )
+   (padstack 1
+    (plated false)
+    (pad (layer TCOP) (rectf 0.600 1.100 0 0 90.000))
+   )
+   (padstack 2
+    (plated false)
+    (pad (layer TCOP) (rectf 0.600 1.100 0 0 90.000))
+   )
+   (padstack 7
+    (plated false)
+    (pad (layer TCOP) (rectf 0.600 1.100 0 0 90.000))
+   )
+   (padstack 8
+    (plated false)
+    (pad (layer TCOP) (rectf 0.600 1.100 0 0 90.000))
+   )
+   (padstack 13
+    (hole 1.52)
+    (plated true)
+    (pad (layer TCOP) (round 2.280))
+    (pad (layer INNER) (round 2.280))
+    (pad (layer BCOP) (round 2.280))
+   )
+   (padstack 14
+    (hole 1.52)
+    (plated true)
+    (pad (layer TCOP) (round 2.280))
+    (pad (layer INNER) (round 2.280))
+    (pad (layer BCOP) (round 2.280))
+   )
+   (padstack 15
+    (hole 1.9)
+    (plated true)
+    (pad (layer TCOP) (round 2.850))
+    (pad (layer INNER) (round 2.850))
+    (pad (layer BCOP) (round 2.850))
+   )
+   (padstack 16
+    (hole 1.9)
+    (plated true)
+    (pad (layer TCOP) (round 2.850))
+    (pad (layer INNER) (round 2.850))
+    (pad (layer BCOP) (round 2.850))
+   )
+   (model "USB4500-03-0-A.stp"
+    (euler 90 0 0)
+    (offset -0.5 -2.950000047683716 0)
+   )
+  )
+ )
+)

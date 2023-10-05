@@ -9,8 +9,13 @@
 #include "stm32f4xx_hal.h"
 #include "ff.h"
 
+#define UART_NO_ACTIVE
+
+#ifdef UART_ACTIVE
 extern UART_HandleTypeDef huart2;
 #define UART &huart2
+#endif
+
 
 /* =============================>>>>>>>> NO CHANGES AFTER THIS LINE =====================================>>>>>>> */
 
@@ -51,25 +56,31 @@ void createNewFile(char *dir, char *frontSensor, char *rearSensor,
 
 void Send_Uart(char *string)
 {
+#ifdef UART_ACTIVE
 	HAL_UART_Transmit(UART, (uint8_t*) string, strlen(string), HAL_MAX_DELAY);
+#endif
 }
 
 void Mount_SD(const TCHAR *path)
 {
 	fresult = f_mount(&fs, path, 1);
+#ifdef UART_ACTIVE
 	if (fresult != FR_OK)
 		Send_Uart("ERROR!!! in mounting SD CARD...\n\n");
 	else
 		Send_Uart("SD CARD mounted successfully...\n");
+#endif
 }
 
 void Unmount_SD(const TCHAR *path)
 {
 	fresult = f_mount(NULL, path, 1);
+#ifdef UART_ACTIVE
 	if (fresult == FR_OK)
 		Send_Uart("SD CARD UNMOUNTED successfully...\n\n\n");
 	else
 		Send_Uart("ERROR!!! in UNMOUNTING SD CARD\n\n\n");
+#endif
 }
 
 /* Start node to be scanned (***also used as work area***) */
@@ -92,10 +103,12 @@ FRESULT Scan_SD(char *pat)
 			{
 				if (!(strcmp("SYSTEM~1", fno.fname)))
 					continue;
+#ifdef UART_ACTIVE
 				char *buf = pvPortMalloc(30 * sizeof(char));
 				sprintf(buf, "Dir: %s\r\n", fno.fname);
 				Send_Uart(buf);
 				vPortFree(buf);
+#endif
 				i = strlen(path);
 				sprintf(&path[i], "/%s", fno.fname);
 				fresult = Scan_SD(path); /* Enter the directory */
@@ -105,10 +118,12 @@ FRESULT Scan_SD(char *pat)
 			}
 			else
 			{ /* It is a file. */
+#ifdef UART_ACTIVE
 				char *buf = pvPortMalloc(30 * sizeof(char));
 				sprintf(buf, "File: %s/%s\n", path, fno.fname);
 				Send_Uart(buf);
 				vPortFree(buf);
+#endif
 			}
 		}
 		f_closedir(&dir);
@@ -174,10 +189,12 @@ FRESULT Write_File(char *name, char *data)
 	fresult = f_stat(name, &fno);
 	if (fresult != FR_OK)
 	{
+#ifdef UART_ACTIVE
 		char *buf = pvPortMalloc(100 * sizeof(char));
 		sprintf(buf, "ERROR!!! *%s* does not exists\n\n", name);
 		Send_Uart(buf);
 		vPortFree(buf);
+#endif
 		return fresult;
 	}
 
@@ -187,11 +204,13 @@ FRESULT Write_File(char *name, char *data)
 		fresult = f_open(&fil, name, FA_OPEN_EXISTING | FA_WRITE);
 		if (fresult != FR_OK)
 		{
+#ifdef UART_ACTIVE
 			char *buf = pvPortMalloc(100 * sizeof(char));
 			sprintf(buf, "ERROR!!! No. %d in opening file *%s*\n\n", fresult,
 					name);
 			Send_Uart(buf);
 			vPortFree(buf);
+#endif
 			return fresult;
 		}
 
@@ -200,32 +219,38 @@ FRESULT Write_File(char *name, char *data)
 			fresult = f_write(&fil, data, strlen(data), &bw);
 			if (fresult != FR_OK)
 			{
+#ifdef UART_ACTIVE
 				char *buf = pvPortMalloc(100 * sizeof(char));
 				sprintf(buf,
 						"ERROR!!! No. %d while writing to the FILE *%s*\n\n",
 						fresult, name);
 				Send_Uart(buf);
 				vPortFree(buf);
+#endif
 			}
 
 			/* Close file */
 			fresult = f_close(&fil);
 			if (fresult != FR_OK)
 			{
+#ifdef UART_ACTIVE
 				char *buf = pvPortMalloc(100 * sizeof(char));
 				sprintf(buf,
 						"ERROR!!! No. %d in closing file *%s* after writing it\n\n",
 						fresult, name);
 				Send_Uart(buf);
 				vPortFree(buf);
+#endif
 			}
 			else
 			{
+#ifdef UART_ACTIVE
 				char *buf = pvPortMalloc(100 * sizeof(char));
 				sprintf(buf, "File *%s* is WRITTEN and CLOSED successfully\n",
 						name);
 				Send_Uart(buf);
 				vPortFree(buf);
+#endif
 			}
 		}
 		return fresult;
@@ -238,10 +263,12 @@ FRESULT Read_File(char *name)
 	fresult = f_stat(name, &fno);
 	if (fresult != FR_OK)
 	{
+#ifdef UART_ACTIVE
 		char *buf = pvPortMalloc(100 * sizeof(char));
 		sprintf(buf, "ERRROR!!! *%s* does not exists\n\n", name);
 		Send_Uart(buf);
 		vPortFree(buf);
+#endif
 		return fresult;
 	}
 
@@ -252,11 +279,13 @@ FRESULT Read_File(char *name)
 
 		if (fresult != FR_OK)
 		{
+#ifdef UART_ACTIVE
 			char *buf = pvPortMalloc(100 * sizeof(char));
 			sprintf(buf, "ERROR!!! No. %d in opening file *%s*\n\n", fresult,
 					name);
 			Send_Uart(buf);
 			vPortFree(buf);
+#endif
 			return fresult;
 		}
 
@@ -267,35 +296,43 @@ FRESULT Read_File(char *name)
 		fresult = f_read(&fil, buffer, f_size(&fil), &br);
 		if (fresult != FR_OK)
 		{
-			char *buf = pvPortMalloc(100 * sizeof(char));
 			vPortFree(buffer);
+#ifdef UART_ACTIVE
+			char *buf = pvPortMalloc(100 * sizeof(char));
 			sprintf(buf, "ERROR!!! No. %d in reading file *%s*\n\n", fresult,
 					name);
 			Send_Uart(buffer);
 			vPortFree(buf);
+#endif
 		}
 
 		else
 		{
+#ifdef UART_ACTIVE
 			Send_Uart(buffer);
+#endif
 			vPortFree(buffer);
 
 			/* Close file */
 			fresult = f_close(&fil);
 			if (fresult != FR_OK)
 			{
+#ifdef UART_ACTIVE
 				char *buf = pvPortMalloc(100 * sizeof(char));
 				sprintf(buf, "ERROR!!! No. %d in closing file *%s*\n\n",
 						fresult, name);
 				Send_Uart(buf);
 				vPortFree(buf);
+#endif
 			}
 			else
 			{
+#ifdef UART_ACTIVE
 				char *buf = pvPortMalloc(100 * sizeof(char));
 				sprintf(buf, "File *%s* CLOSED successfully\n", name);
 				Send_Uart(buf);
 				vPortFree(buf);
+#endif
 			}
 		}
 		return fresult;
@@ -307,11 +344,13 @@ FRESULT Create_File(char *name)
 	fresult = f_stat(name, &fno);
 	if (fresult == FR_OK)
 	{
+#ifdef UART_ACTIVE
 		char *buf = pvPortMalloc(100 * sizeof(char));
 		sprintf(buf, "ERROR!!! *%s* already exists!!!!\n use Update_File \n\n",
 				name);
 		Send_Uart(buf);
 		vPortFree(buf);
+#endif
 		return fresult;
 	}
 	else
@@ -319,38 +358,46 @@ FRESULT Create_File(char *name)
 		fresult = f_open(&fil, name, FA_CREATE_ALWAYS | FA_READ | FA_WRITE);
 		if (fresult != FR_OK)
 		{
+#ifdef UART_ACTIVE
 			char *buf = pvPortMalloc(100 * sizeof(char));
 			sprintf(buf, "ERROR!!! No. %d in creating file *%s*\n\n", fresult,
 					name);
 			Send_Uart(buf);
 			vPortFree(buf);
+#endif
 			return fresult;
 		}
 		else
 		{
+#ifdef UART_ACTIVE
 			char *buf = pvPortMalloc(100 * sizeof(char));
 			sprintf(buf,
 					"*%s* created successfully\n Now use Write_File to write data\n",
 					name);
 			Send_Uart(buf);
 			vPortFree(buf);
+#endif
 		}
 
 		fresult = f_close(&fil);
 		if (fresult != FR_OK)
 		{
+#ifdef UART_ACTIVE
 			char *buf = pvPortMalloc(100 * sizeof(char));
 			sprintf(buf, "ERROR No. %d in closing file *%s*\n\n", fresult,
 					name);
 			Send_Uart(buf);
 			vPortFree(buf);
+#endif
 		}
 		else
 		{
+#ifdef UART_ACTIVE
 			char *buf = pvPortMalloc(100 * sizeof(char));
 			sprintf(buf, "File *%s* CLOSED successfully\n", name);
 			Send_Uart(buf);
 			vPortFree(buf);
+#endif
 		}
 	}
 	return fresult;
@@ -362,11 +409,14 @@ FRESULT Update_File(char *name, char *data)
 	fresult = f_stat(name, &fno);
 	if (fresult != FR_OK)
 	{
+#ifdef UART_ACTIVE
 		char *buf = pvPortMalloc(100 * sizeof(char));
 		sprintf(buf, "ERROR!!! *%s* does not exists\n\n", name);
 		Send_Uart(buf);
 		vPortFree(buf);
+#endif
 		return fresult;
+
 	}
 
 	else
@@ -375,11 +425,13 @@ FRESULT Update_File(char *name, char *data)
 		fresult = f_open(&fil, name, FA_OPEN_APPEND | FA_WRITE);
 		if (fresult != FR_OK)
 		{
+#ifdef UART_ACTIVE
 			char *buf = pvPortMalloc(100 * sizeof(char));
 			sprintf(buf, "ERROR!!! No. %d in opening file *%s*\n\n", fresult,
 					name);
 			Send_Uart(buf);
 			vPortFree(buf);
+#endif
 			return fresult;
 		}
 
@@ -387,37 +439,45 @@ FRESULT Update_File(char *name, char *data)
 		fresult = f_write(&fil, data, strlen(data), &bw);
 		if (fresult != FR_OK)
 		{
+#ifdef UART_ACTIVE
 			char *buf = pvPortMalloc(100 * sizeof(char));
 			sprintf(buf, "ERROR!!! No. %d in writing file *%s*\n\n", fresult,
 					name);
 			Send_Uart(buf);
 			vPortFree(buf);
+#endif
 		}
 
 		else
 		{
+#ifdef UART_ACTIVE
 			char *buf = pvPortMalloc(100 * sizeof(char));
 			sprintf(buf, "*%s* UPDATED successfully\n", name);
 			Send_Uart(buf);
 			vPortFree(buf);
+#endif
 		}
 
 		/* Close file */
 		fresult = f_close(&fil);
 		if (fresult != FR_OK)
 		{
+#ifdef UART_ACTIVE
 			char *buf = pvPortMalloc(100 * sizeof(char));
 			sprintf(buf, "ERROR!!! No. %d in closing file *%s*\n\n", fresult,
 					name);
 			Send_Uart(buf);
 			vPortFree(buf);
+#endif
 		}
 		else
 		{
+#ifdef UART_ACTIVE
 			char *buf = pvPortMalloc(100 * sizeof(char));
 			sprintf(buf, "File *%s* CLOSED successfully\n", name);
 			Send_Uart(buf);
 			vPortFree(buf);
+#endif
 		}
 	}
 	return fresult;
@@ -429,10 +489,12 @@ FRESULT Remove_File(char *name)
 	fresult = f_stat(name, &fno);
 	if (fresult != FR_OK)
 	{
+#ifdef UART_ACTIVE
 		char *buf = pvPortMalloc(100 * sizeof(char));
 		sprintf(buf, "ERROR!!! *%s* does not exists\n\n", name);
 		Send_Uart(buf);
 		vPortFree(buf);
+#endif
 		return fresult;
 	}
 
@@ -441,18 +503,22 @@ FRESULT Remove_File(char *name)
 		fresult = f_unlink(name);
 		if (fresult == FR_OK)
 		{
+#ifdef UART_ACTIVE
 			char *buf = pvPortMalloc(100 * sizeof(char));
 			sprintf(buf, "*%s* has been removed successfully\n", name);
 			Send_Uart(buf);
 			vPortFree(buf);
+#endif
 		}
 
 		else
 		{
+#ifdef UART_ACTIVE
 			char *buf = pvPortMalloc(100 * sizeof(char));
 			sprintf(buf, "ERROR No. %d in removing *%s*\n\n", fresult, name);
 			Send_Uart(buf);
 			vPortFree(buf);
+#endif
 		}
 	}
 	return fresult;
@@ -463,18 +529,22 @@ FRESULT Create_Dir(char *name)
 	fresult = f_mkdir(name);
 	if (fresult == FR_OK)
 	{
+#ifdef UART_ACTIVE
 		char *buf = pvPortMalloc(100 * sizeof(char));
 		sprintf(buf, "*%s* has been created successfully\n", name);
 		Send_Uart(buf);
 		vPortFree(buf);
+#endif
 	}
 	else
 	{
+#ifdef UART_ACTIVE
 		char *buf = pvPortMalloc(100 * sizeof(char));
 		sprintf(buf, "ERROR No. %d in creating directory *%s*\n\n", fresult,
 				name);
 		Send_Uart(buf);
 		vPortFree(buf);
+#endif
 	}
 	return fresult;
 }
@@ -485,14 +555,18 @@ void Check_SD_Space(void)
 	f_getfree("", &fre_clust, &pfs);
 
 	total = (uint32_t) ((pfs->n_fatent - 2) * pfs->csize * 0.5);
+#ifdef UART_ACTIVE
 	char *buf = pvPortMalloc(30 * sizeof(char));
 	sprintf(buf, "SD CARD Total Size: \t%lu\n", total);
 	Send_Uart(buf);
 	vPortFree(buf);
+#endif
 	free_space = (uint32_t) (fre_clust * pfs->csize * 0.5);
+#ifdef UART_ACTIVE
 	buf = pvPortMalloc(30 * sizeof(char));
 	sprintf(buf, "SD CARD Free Space: \t%lu\n", free_space);
 	Send_Uart(buf);
 	vPortFree(buf);
+#endif
 }
 

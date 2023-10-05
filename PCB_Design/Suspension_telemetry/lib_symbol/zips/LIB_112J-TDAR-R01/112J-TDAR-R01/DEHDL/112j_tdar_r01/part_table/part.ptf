@@ -1,0 +1,11 @@
+FILE_TYPE = MULTI_PHYS_TABLE;
+
+PART '112J_TDAR_R01'
+CLASS = IO
+{========================================================================================}
+:"MANUFACTURER_NAME", "MANUFACTURER_PART_NUMBER"= "PART_NUMBER", "JEDEC_TYPE", "PACK_TYPE", "TME_ELECTRONIC_COMPONENTS_PART_NUMBER", "TME_ELECTRONIC_COMPONENTS_PRICE/STOCK", "DESCRIPTION", "DATASHEET", "HEIGHT";
+{========================================================================================}
+ "ATTEND", "112J-TDAR-R01" (!) = "", "112JTDARR01", "Other", "", "", "Connector: for cards; SD Micro; push-push; SMT; gold-plated", "https://cdn.sos.sk/productdata/2c/8b/de324bd3/112j-tdar-r01.pdf", "2 mm"
+END_PART
+
+END.

@@ -1,0 +1,9 @@
+Manufacturer=onsemi
+PartNumber=SI4435DY
+PartCategory=MOSFET (P-Channel)
+PackageCategory=Small Outline Packages
+PinCount=8
+Version=2.1
+Released=2022-02-17 10:53:20
+Downloaded=2023-10-01 18:28:33
+3D=Y

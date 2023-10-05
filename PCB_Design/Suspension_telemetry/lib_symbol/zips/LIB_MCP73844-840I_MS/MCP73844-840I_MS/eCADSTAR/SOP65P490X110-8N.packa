@@ -1,0 +1,13 @@
+(unit MM)
+
+(package "MCP73844-840I_MS"
+    (type UNDEF)
+    (uver 2)
+    (cuser "SamacSys")
+    (uuser "SamacSys")
+    (utime 2019-07-24-09:38:53)
+    (mountForm default
+        (footprintRef "SOP65P490X110-8N")
+        (spec "System")
+    )
+)

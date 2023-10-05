@@ -1,0 +1,9 @@
+EESchema-DOCLIB  Version 2.0
+#
+$CMP ABS07-32.768KHZ-9-T
+D 32.768 kHz +/-20ppm Crystal 9pF 70 kOhms 2-SMD, No Lead
+K
+F https://abracon.com/Resonators/ABS07.pdf
+$ENDCMP
+#
+#End Doc Library

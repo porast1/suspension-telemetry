@@ -1,0 +1,13 @@
+(unit MM)
+
+(package "HBHR-B2-10-VG-SMT"
+    (type UNDEF)
+    (uver 2)
+    (cuser "SamacSys")
+    (uuser "SamacSys")
+    (utime 2023-06-17-03:42:26)
+    (mountForm default
+        (footprintRef "HBHRB210VGSMT")
+        (spec "System")
+    )
+)

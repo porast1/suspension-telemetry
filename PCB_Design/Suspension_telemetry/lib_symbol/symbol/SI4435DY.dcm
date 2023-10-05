@@ -1,0 +1,9 @@
+EESchema-DOCLIB  Version 2.0
+#
+$CMP SI4435DY
+D MOSFET P-Ch 30V 8.8A PowerTrench SOIC8
+K
+F https://www.onsemi.com/pdf/datasheet/si4435dy-d.pdf
+$ENDCMP
+#
+#End Doc Library

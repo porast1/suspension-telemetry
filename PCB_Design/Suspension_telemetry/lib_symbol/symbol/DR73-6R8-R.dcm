@@ -1,0 +1,9 @@
+EESchema-DOCLIB  Version 2.0
+#
+$CMP DR73-6R8-R
+D POWER INDUCTOR +/-20% 6.8H 2.55A
+K
+F 
+$ENDCMP
+#
+#End Doc Library
