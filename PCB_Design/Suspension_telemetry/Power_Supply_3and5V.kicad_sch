@@ -1575,7 +1575,7 @@
   )
 
   (symbol (lib_id "Diode:B240") (at 125.73 88.9 180) (unit 1)
-    (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
+    (in_bom yes) (on_board yes) (dnp no)
     (uuid 4cdbbeb3-e094-4925-9183-16ea864cc6a6)
     (property "Reference" "D3" (at 126.0475 82.55 0)
       (effects (font (size 1.27 1.27)))

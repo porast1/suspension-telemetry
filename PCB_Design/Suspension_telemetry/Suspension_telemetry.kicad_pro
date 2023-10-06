@@ -53,9 +53,18 @@
           "gap": 0.0,
           "via_gap": 0.0,
           "width": 0.0
+        },
+        {
+          "gap": 0.2032,
+          "via_gap": 0.2032,
+          "width": 0.25
         }
       ],
-      "drc_exclusions": [],
+      "drc_exclusions": [
+        "starved_thermal|125476000|97279000|a73a6195-7d8b-4416-8b7d-f4abb3092119|bd9fdeed-c627-4276-bf9f-b038904d21ca|F.Cu",
+        "starved_thermal|133804000|91161000|a73a6195-7d8b-4416-8b7d-f4abb3092119|b0590958-0ca2-45a4-9d9f-bb063257edaf|F.Cu",
+        "starved_thermal|135866500|101854000|a73a6195-7d8b-4416-8b7d-f4abb3092119|57f765c5-8262-4370-9b12-ef8d9b403c01|F.Cu"
+      ],
       "meta": {
         "version": 2
       },
@@ -111,10 +120,10 @@
       },
       "rules": {
         "max_error": 0.005,
-        "min_clearance": 0.3,
-        "min_connection": 0.3,
-        "min_copper_edge_clearance": 0.5,
-        "min_hole_clearance": 0.3,
+        "min_clearance": 0.19999999999999998,
+        "min_connection": 0.19999999999999998,
+        "min_copper_edge_clearance": 0.19999999999999998,
+        "min_hole_clearance": 0.19999999999999998,
         "min_hole_to_hole": 0.3,
         "min_microvia_diameter": 0.3,
         "min_microvia_drill": 0.09999999999999999,
@@ -123,7 +132,7 @@
         "min_text_height": 0.7999999999999999,
         "min_text_thickness": 0.08,
         "min_through_hole_diameter": 0.3,
-        "min_track_width": 0.3,
+        "min_track_width": 0.19999999999999998,
         "min_via_annular_width": 0.09999999999999999,
         "min_via_diameter": 0.5,
         "solder_mask_clearance": 0.0,
@@ -172,7 +181,14 @@
         }
       ],
       "track_widths": [
-        0.0
+        0.0,
+        0.2032,
+        0.25,
+        0.3,
+        0.4,
+        0.5,
+        0.75,
+        1.0
       ],
       "via_dimensions": [
         {
@@ -431,7 +447,9 @@
     "meta": {
       "version": 3
     },
-    "net_colors": null,
+    "net_colors": {
+      "+3.3V": "rgb(255, 0, 255)"
+    },
     "netclass_assignments": null,
     "netclass_patterns": []
   },
@@ -440,7 +458,7 @@
       "gencad": "",
       "idf": "",
       "netlist": "",
-      "specctra_dsn": "",
+      "specctra_dsn": "FREEROUTIN_DSN/Suspension_telemetry.dsn",
       "step": "",
       "vrml": ""
     },
