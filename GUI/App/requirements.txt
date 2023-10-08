@@ -1,1 +1,2 @@
+streamlit
 bokeh==2.4.3
