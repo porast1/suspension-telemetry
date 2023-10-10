@@ -61,7 +61,7 @@
         }
       ],
       "drc_exclusions": [
-        "starved_thermal|125476000|97279000|a73a6195-7d8b-4416-8b7d-f4abb3092119|bd9fdeed-c627-4276-bf9f-b038904d21ca|F.Cu",
+        "starved_thermal|127762000|97255500|a73a6195-7d8b-4416-8b7d-f4abb3092119|bd9fdeed-c627-4276-bf9f-b038904d21ca|F.Cu",
         "starved_thermal|133804000|91161000|a73a6195-7d8b-4416-8b7d-f4abb3092119|b0590958-0ca2-45a4-9d9f-bb063257edaf|F.Cu",
         "starved_thermal|135866500|101854000|a73a6195-7d8b-4416-8b7d-f4abb3092119|57f765c5-8262-4370-9b12-ef8d9b403c01|F.Cu"
       ],
@@ -489,7 +489,7 @@
     },
     "net_format_name": "",
     "page_layout_descr_file": "",
-    "plot_directory": "",
+    "plot_directory": "Draw_Schematic/",
     "spice_current_sheet_as_root": false,
     "spice_external_command": "spice \"%I\"",
     "spice_model_current_sheet_as_root": true,
