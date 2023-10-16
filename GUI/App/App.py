@@ -1,83 +1,17 @@
 import streamlit as st
-import pandas as pd
-import numpy as np
-from streamlit_option_menu import option_menu
-from bokeh.plotting import figure, show, curdoc
-from bokeh.io import output_notebook
-from bokeh.models import ColumnDataSource, Button
-from bokeh.layouts import column
-from scipy.signal import butter,filtfilt
-
+from balance import balance_data, balance_Figure
+import Telemetry as t
+import velocity as vel
+from pressure import pressure_figure, minPressure
+import sessionInit
+from myFFT import my_fft_figure
+from progression import suspension_Progression_Data, travel_progression_figure, progressionDataConvert
 st.set_page_config(layout="wide")
-timePerSample = 5
-timePerSampleAcc = 5
-
-
-def median_filter(data, window_size):
-    filtered_data = []
-    for i in range(len(data)):
-        if i < (len(data) - 3) and  data[i+3] < 0:
-            data[i+3] = 0
-        start = max(0, i - window_size + 1)
-        end = i + 1
-        window = data[start:end]
-        median_value = np.median(window)
-        filtered_data.append(median_value)
-    return filtered_data
-
-def butter_lowpass_filter(data, cutoff, fs, order):
-    nyq = 0.5 * fs
-    normal_cutoff = cutoff / nyq
-    # Get the filter coefficients 
-    b, a = butter(order, normal_cutoff, btype='low', analog=False)
-    y = filtfilt(b, a, data)
-    return y
-
-@st.cache_data
-def load_data(file_path):
-    T = 0.005        # Sample Period
-    fs = 1/T       # sample rate, Hz
-    cutoff = 2      # desired cutoff frequency of the filter, Hz ,  
-    order = 2
-    lista_liczb = []  # Zadeklaruj listę liczbową poza warunkiem
-    if file_path is not None:
-        st.success("Plik został pomyślnie wczytany!")
-        # Utwórz plik tymczasowy i zapisz zawartość UploadedFile do niego
-        with st.empty():
-            with open(file_path.name, "wb") as f:
-                f.write(file_path.read())
-        with open(file_path.name, 'r') as file:
-            content = file.read()
-            lista_liczb = [float(x) for x in content.split()]
-        lista_liczb = median_filter(lista_liczb,4)
-        lista_liczb = butter_lowpass_filter(lista_liczb, cutoff, fs, order)
-    return lista_liczb
-
-
-
-# Inicjalizacja kontekstu sesji
-if 'file_uploaded' not in st.session_state:
-    st.session_state.file_uploaded = False
-if 'travelPressureTime' not in st.session_state:
-    st.session_state.travelPressureTime = None
-if 'accelerometerTime' not in st.session_state:
-    st.session_state.accelerometerTime = None
-if 'dfFrontTravel' not in st.session_state:
-    st.session_state.dfFrontTravel = None
-if 'dfRearTravel' not in st.session_state:
-    st.session_state.dfRearTravel = None
-if 'dfFrontPressure' not in st.session_state:
-    st.session_state.dfFrontPressure = None
-if 'dfRearPressure' not in st.session_state:
-    st.session_state.dfRearPressure = None
-if 'dfAccelerometer' not in st.session_state:
-    st.session_state.dfAccelerometer = None
-
-
+sessionInit.sessionVariablesInit()
 with st.sidebar:
     selected = st.selectbox(
         "Main Menu",
-        ["Load & Process data", "Rebound/Comp", "Pressure", "Statistics"]
+        ["Load & Process data", "Charts & Statistics"]
     )
     frontTravel = None
     rearTravel = None
@@ -93,54 +27,133 @@ with st.sidebar:
         # Upload Front Travel File
     rearPressure = st.file_uploader(".txt file for Rear Pressure", type=["txt"])
         # Upload Front Travel File
-    accelerometer = st.file_uploader(".txt file for accelerometer", type=["txt"])        
-if selected == "Load & Process data" and ((frontTravel is not None and
-    rearTravel is not None) or
-    (frontPressure is not None and
-    rearPressure is not None)):
-    st.title(f"You have selected {selected}")
-
-    st.session_state.dfFrontTravel = load_data(frontTravel)  # Wczytaj dane z pliku tymczasowego
-    st.session_state.dfRearTravel = load_data(rearTravel)  # Wczytaj dane z pliku tymczasowego
-    st.session_state.dfFrontPressure = load_data(frontPressure)  # Wczytaj dane z pliku tymczasowego
-    st.session_state.dfRearPressure = load_data(rearPressure)  # Wczytaj dane z pliku tymczasowego
-    st.session_state.dfAccelerometer = load_data(accelerometer)  # Wczytaj dane z pliku tymczasowego
-    if st.session_state.dfRearPressure and st.session_state.dfFrontPressure is not none:
-        lenTime = min(len(st.session_state.dfFrontTravel),len(st.session_state.dfRearTravel),
-                len(st.session_state.dfFrontPressure), len(st.session_state.dfRearPressure))
-    else:
-        lenTime = min(len(st.session_state.dfFrontTravel),len(st.session_state.dfRearTravel))
-    lenTimeAcc = len(st.session_state.dfAccelerometer)
-
-    st.session_state.travelPressureTime = np.arange(0, timePerSample * lenTime, timePerSample)
-    st.session_state.accelerometerTime = np.arange(0, timePerSample * lenTimeAcc, timePerSampleAcc)
-    st.session_state.dfFrontTravel = st.session_state.dfFrontTravel[:lenTime]
-    st.session_state.dfRearTravel = st.session_state.dfRearTravel[:lenTime]
-    st.session_state.dfFrontPressure =  st.session_state.dfFrontPressure[:lenTime]
-    st.session_state.dfRearPressure =  st.session_state.dfRearPressure[:lenTime]
-    st.session_state.file_uploaded = True  # Ustaw stan sesji na True
-    st.success("Dane Przetworzone")
+    accelerometer = st.file_uploader(".txt file for accelerometer", type=["txt"])
+if selected == "Load & Process data":
+    st.title("How to start:")    
+    st.write("1. Load the data first, if you are using only one shock absorber then load the data for front and rear at the same time, same for pressure")
+if (selected == "Load & Process data") and ((frontTravel and rearTravel) or (frontPressure and rearPressure) or accelerometer):
+    st.title("Choose your setup")
+    sessionInit.yourBikeSetup()
+    lenTime = 1
+    if(frontTravel is not None and
+        rearTravel is not None):
+            lenTime = sessionInit.sessionDataPreparationTravel(frontTravel, rearTravel)
+            st.session_state.suspensionDataUploaded = True  # Ustaw stan sesji na True
+    if(frontPressure is not None and
+        rearPressure is not None):
+            lenTime = sessionInit.sessionDataPreparationPressure(frontPressure, rearPressure)
+            st.session_state.pressureDataUploaded = True  # Ustaw stan sesji na True
+    if(accelerometer is not None):
+            lenTime = sessionInit.sessionDataPreparationAccelerometer(frontPressure, rearPressure)
+            st.session_state.accelerometerDataUploaded = True  # Ustaw stan sesji na True
+    if (st.session_state.accelerometerDataUploaded or st.session_state.pressureDataUploaded or st.session_state.suspensionDataUploaded):
+        sessionInit.cutDataToLenTime(lenTime, st.session_state.suspensionDataUploaded, st.session_state.pressureDataUploaded)
+        st.success("Dane Przetworzone")
+        
 else:
-    if 'dfFrontTravel' not in st.session_state:
-        st.session_state.dfFrontTravel = None
+    sessionInit.sessionVariablesInit()
 
 # Aktualizacja warunku dla widoku "Rebound/Comp"
-if selected == "Rebound/Comp" and st.session_state.file_uploaded:
+if selected == "Charts & Statistics" and st.session_state.suspensionDataUploaded:
+    #Short names of st.session..
+    sampleTimeAdc = 0.005
+    travelPressureTime = st.session_state.travelPressureTime 
+    FrontTravel = st.session_state.dfFrontTravel 
+    RearTravel = st.session_state.dfRearTravel 
+    maxFrontTravel = st.session_state.maxFrontTravel
+    maxRearTravel = st.session_state.maxRearTravel
+    frontVelocity = t.calculate_derivative(FrontTravel, sampleTimeAdc)
+    rearVelocity = t.calculate_derivative(RearTravel, sampleTimeAdc)
+    FrontTravelPercent = 100 * st.session_state.dfFrontTravel/maxFrontTravel
+    RearTravelPercent = 100 * st.session_state.dfRearTravel/maxRearTravel
+    if (st.session_state.pressureDataUploaded):
+        FrontPressure = st.session_state.dfFrontPressure 
+        RearPressure = st.session_state.dfRearPressure 
+        minFrontPressure = minPressure(FrontTravel, FrontPressure)
+        minRearPressure = minPressure(RearTravel, RearPressure)
+    accelerometerTime = st.session_state.accelerometerTime 
+
+
+
     # Title
-    st.title(f"You have selected {selected}")
-    selected_series = st.multiselect("Wybierz serie danych:", ["Front", "Rear"])
-    
-    # Utwórz wykres Bokeh
-    p = figure(title="Wykres Bokeh w Streamlit", x_axis_label="Oś X", y_axis_label="Oś Y")
+    st.title(f"{selected}")
+    st.header("General diagram of suspension work")
+    selectedSeries = st.multiselect("Choose data series:", ["Front", "Rear"])
+    travelFigure = t.travel_figure(selectedSeries,FrontTravel,RearTravel,travelPressureTime)
+    st.bokeh_chart(travelFigure, use_container_width=True)
 
-    if "Front" in selected_series:
-        p.line(x=st.session_state.travelPressureTime, y=st.session_state.dfFrontTravel, line_width=2, legend_label='Front', line_color='blue')
-    if "Rear" in selected_series:
-        p.line(x=st.session_state.travelPressureTime, y=st.session_state.dfRearTravel, line_width=2, legend_label='Rear', line_color='red')
-    st.bokeh_chart(p, use_container_width=True)
+    st.header('Travel/Spring rate')
+    st.write('this graph shows the average - dynamic progression of our suspension based on readings from the travel sensor. Very useful for finding the balance of our suspension in terms of overall hardness. The overall hardness is influenced by the slow-fast compression settings, the suspension hardness and the number of tokens. Therefore, this chart must be considered on the basis of the charts below, first we set the relative balance of the air spring/sag hardness, then the balance settings for compression and come back here to verify the settings')
 
-if selected == "Pressure":
-    st.title(f"You have selected {selected}")
+    progressionSelectedSeries = st.selectbox("Choose figure type:", ["Progression", "Velocity"])
+    progressionSelectedX_axis = st.selectbox("Choose display option:", ["Travel %", "Travel mm"])
+    percentTravel, progressionAvgVelocityFront  = suspension_Progression_Data(FrontTravelPercent, frontVelocity)
+    percentTravel, progressionAvgVelocityRear  = suspension_Progression_Data(RearTravelPercent, rearVelocity)
+    if progressionSelectedSeries == "Velocity":
+        progressionFigure = travel_progression_figure(progressionSelectedX_axis, progressionAvgVelocityFront, progressionAvgVelocityRear, percentTravel, maxFrontTravel, maxRearTravel)
+        st.bokeh_chart(progressionFigure, use_container_width=True)
+    else: 
+        progressionFrontTime = progressionDataConvert(progressionAvgVelocityFront, percentTravel)
+        progressionRearTime = progressionDataConvert(progressionAvgVelocityRear, percentTravel)
+        progressionFigure = travel_progression_figure(progressionSelectedX_axis, progressionFrontTime, progressionRearTime, percentTravel, maxFrontTravel, maxRearTravel)
+        st.bokeh_chart(progressionFigure, use_container_width=True)
+    if (frontPressure is not None and
+        rearPressure is not None):
+        st.subheader("Pressure")
+        st.write("Here you can see the pressure graphs of your suspension, a particularly useful option is 'Progression' which shows the characteristics of pressure progression in the shock absorber chambers. This can be especially useful when setting the number of tokens.")
+        selectedPressure = st.selectbox(
+            "",
+            ["Pressure", "Progression"]
+        )
+        pressureFigure = pressure_figure(FrontTravelPercent,RearTravelPercent,FrontPressure, RearPressure, selectedPressure)
+        st.bokeh_chart(pressureFigure, use_container_width=True)
 
-if selected == "Statistics":
-    st.title(f"You have selected {selected}")
+    st.write('This section describes the hardness of our suspension, the first two graphs tell us in what sections of the travel we spend %% of the time. \nExample: The further to the left = stiffer suspension, to the right = the softer \nor simply: The softer the suspension, the more time we will spend in the upper travel values and vice versa.')
+
+    fs = 1/sampleTimeAdc
+    col1, col2 = st.columns(2)
+    with col1:
+        st.subheader("Front")
+        frontTravelHist = t.travel_histogram_figure(FrontTravel,maxFrontTravel )
+        st.bokeh_chart(frontTravelHist, use_container_width=True)
+        frontTravelFFT = my_fft_figure(FrontTravel,fs)
+        st.bokeh_chart(frontTravelFFT, use_container_width=True)
+    with col2:
+        st.subheader("Rear")
+        frontTravelHist = t.travel_histogram_figure(RearTravel, maxRearTravel)
+        st.bokeh_chart(frontTravelHist, use_container_width=True)
+        rearTravelFFT = my_fft_figure(RearTravel,fs)
+        st.bokeh_chart(rearTravelFFT, use_container_width=True)
+
+    #speed histograms
+    st.header('Damping')
+    st.write('This section describes the suspension speed distribution over time. The percentages in which a given speed occurred in the travel are marked in colors on the sub-bars. The graphs should look somewhat similar for the front and rear suspension, and most importantly, resemble the Gaussian normal distribution curve marked with a red dashed line.')
+    st.subheader('Front')
+    frontVelocityFigure = vel.velocity_histogram_figure(FrontTravel,rearVelocity,15)
+    st.bokeh_chart(frontVelocityFigure, use_container_width=True)
+    st.subheader('Rear')
+    rearVelocityFigure = vel.velocity_histogram_figure(RearTravel,rearVelocity,15)
+    st.bokeh_chart(rearVelocityFigure, use_container_width=True)
+
+    st.header("Balance")
+    st.write('This section describes the front/rear balance characteristics. Using the linear regression curve, we can see the speed at which the piston moves at a given moment of the suspension stroke. Thanks to this, we can precisely set the suspension speed at the front and rear to make it as balanced as possible!')
+    st.subheader('Rebound')
+    a_rebFront, b_rebFront, travelReboundFront = balance_data(frontVelocity, FrontTravel,"Reb")
+    a_rebRear, b_rebRear, travelReboundRear = balance_data(rearVelocity, RearTravel,"Reb")
+    velocityRegressionFrontRebound = a_rebFront * travelReboundFront + b_rebFront
+    velocityRegressionRearRebound = a_rebRear * travelReboundRear + b_rebRear
+    velocityBalanceReboundFigure = balance_Figure(travelReboundFront, travelReboundRear,
+                                                  velocityRegressionFrontRebound,velocityRegressionRearRebound,
+                                                   maxFrontTravel, maxRearTravel, progressionSelectedX_axis )
+    st.bokeh_chart(velocityBalanceReboundFigure, use_container_width=True)
+
+
+    st.subheader('Comp')
+    a_compFront, b_compFront, travelCompressionFront = balance_data(frontVelocity, FrontTravel,"Comp")
+    a_compRear, b_compRear, travelCompressionRear = balance_data(rearVelocity, RearTravel,"Comp")
+    velocityRegressionFrontCompression = a_compFront * travelCompressionFront + b_compFront
+    velocityRegressionRearCompression = a_compRear * travelCompressionRear + b_compRear
+    velocityBalanceCompressionFigure = balance_Figure(travelCompressionFront, travelCompressionRear,
+                                                  velocityRegressionFrontCompression,velocityRegressionRearCompression,
+                                                   maxFrontTravel, maxRearTravel, progressionSelectedX_axis )
+    st.bokeh_chart(velocityBalanceCompressionFigure, use_container_width=True)
