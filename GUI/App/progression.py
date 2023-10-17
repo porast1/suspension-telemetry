@@ -7,24 +7,23 @@ def suspension_Progression_Data(percentTravel, velocity):
     iterationpercentTravel = range(0,101,1)
     percentTravel = np.array(percentTravel)
     velocity = np.array(velocity)
-    velocity = np.insert(velocity, 0, 0)
     avgVelocity = np.empty(0)
     index = np.empty(0)
-    newIndex = np.empty(0)
-    for i in range(len(iterationpercentTravel)):
+    mask = (velocity > 0)
+    indexVelocity = np.where(mask)[0]
+    for i in range(len(iterationpercentTravel) - 1):
+        newIndex = np.empty(0)
         if iterationpercentTravel[i] >= 100:
             mask = (percentTravel >= iterationpercentTravel[i])
-            index = np.where(mask)[0]
         else:
             mask = (percentTravel >= iterationpercentTravel[i]) & (percentTravel < iterationpercentTravel[i+1])
-            index = np.where(mask)[0]
-        for i in range(len(index) - 1):
-            if velocity[index[i]] < 0:
-                newIndex = np.delete(index, i)
-            else:
-                continue
-        np.append(avgVelocity, np.mean(velocity[newIndex]))
-        avgVelocity = np.append(avgVelocity, np.mean(velocity[newIndex]))
+        index = np.where(mask)[0]
+        newIndex = np.intersect1d(indexVelocity, index)
+        if (len(newIndex) > 0):
+            avgVelocity = np.append(avgVelocity, np.mean(velocity[newIndex]))
+        else:
+            avgVelocity = np.append(avgVelocity, 0)
+
     return iterationpercentTravel, avgVelocity
 
     

@@ -39,6 +39,8 @@ def load_data(file_path):
         with open(file_path.name, 'r') as file:
             content = file.read()
             lista_liczb = [float(x) for x in content.split()]
-        lista_liczb = median_filter(lista_liczb,4)
-        lista_liczb = butter_lowpass_filter(lista_liczb, cutoff, fs, order)
-    return lista_liczb
+        data_cleaned = [x for x in lista_liczb if not (np.isnan(x) or np.isinf(x))]
+        data_cleaned = median_filter(data_cleaned,4)
+        data_cleaned = butter_lowpass_filter(data_cleaned, cutoff, fs, order)
+    return data_cleaned
+

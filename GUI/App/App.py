@@ -31,23 +31,24 @@ with st.sidebar:
 if selected == "Load & Process data":
     st.title("How to start:")    
     st.write("1. Load the data first, if you are using only one shock absorber then load the data for front and rear at the same time, same for pressure")
-if (selected == "Load & Process data") and ((frontTravel and rearTravel) or (frontPressure and rearPressure) or accelerometer):
+    #(selected == "Load & Process data") and 
+if ((frontTravel and rearTravel) or (frontPressure and rearPressure)):
     st.title("Choose your setup")
     sessionInit.yourBikeSetup()
-    lenTime = 1
+    lenTime = []
     if(frontTravel is not None and
         rearTravel is not None):
-            lenTime = sessionInit.sessionDataPreparationTravel(frontTravel, rearTravel)
+            lenTime.append(sessionInit.sessionDataPreparationTravel(frontTravel, rearTravel))
             st.session_state.suspensionDataUploaded = True  # Ustaw stan sesji na True
     if(frontPressure is not None and
         rearPressure is not None):
-            lenTime = sessionInit.sessionDataPreparationPressure(frontPressure, rearPressure)
+            lenTime.append(sessionInit.sessionDataPreparationPressure(frontPressure, rearPressure))  
             st.session_state.pressureDataUploaded = True  # Ustaw stan sesji na True
     if(accelerometer is not None):
-            lenTime = sessionInit.sessionDataPreparationAccelerometer(frontPressure, rearPressure)
+            lenTimeAcc = sessionInit.sessionDataPreparationAccelerometer(accelerometer)
             st.session_state.accelerometerDataUploaded = True  # Ustaw stan sesji na True
-    if (st.session_state.accelerometerDataUploaded or st.session_state.pressureDataUploaded or st.session_state.suspensionDataUploaded):
-        sessionInit.cutDataToLenTime(lenTime, st.session_state.suspensionDataUploaded, st.session_state.pressureDataUploaded)
+    if (st.session_state.pressureDataUploaded or st.session_state.suspensionDataUploaded):
+        sessionInit.cutDataToLenTime(min(lenTime), st.session_state.suspensionDataUploaded, st.session_state.pressureDataUploaded)
         st.success("Dane Przetworzone")
         
 else:
@@ -58,20 +59,38 @@ if selected == "Charts & Statistics" and st.session_state.suspensionDataUploaded
     #Short names of st.session..
     sampleTimeAdc = 0.005
     travelPressureTime = st.session_state.travelPressureTime 
-    FrontTravel = st.session_state.dfFrontTravel 
-    RearTravel = st.session_state.dfRearTravel 
+    FrontTravel = st.session_state.dfFrontTravel
+    RearStroke = st.session_state.dfRearTravel
+
     maxFrontTravel = st.session_state.maxFrontTravel
+    maxRearStroke = st.session_state.maxRearStroke
     maxRearTravel = st.session_state.maxRearTravel
+    maxFrontTravelCalculate = t.maxTravel(FrontTravel,10)
+    maxRearStrokeCalculate = t.maxTravel(RearStroke,10)
+
+    if maxFrontTravelCalculate >= maxFrontTravel + 10:
+        maxFrontTravel = int(maxFrontTravelCalculate)
+        st.write('Data from the measurement sensor say that the maximum Front stroke is: ', maxFrontTravel)
+        st.write('the maximum stroke was set according to the value on the sensor')
+    if maxRearStrokeCalculate >= maxRearTravel + 10:
+        maxRearStroke = int(maxRearStrokeCalculate)
+        st.write('Data from the measurement sensor say that the maximum Rear stroke is: ', maxRearStroke)
+        st.write('the maximum stroke was set according to the value on the sensor')
+    
+    normalizer = maxRearTravel/maxRearStroke
+    RearTravel = normalizer * RearStroke
     frontVelocity = t.calculate_derivative(FrontTravel, sampleTimeAdc)
     rearVelocity = t.calculate_derivative(RearTravel, sampleTimeAdc)
-    FrontTravelPercent = 100 * st.session_state.dfFrontTravel/maxFrontTravel
-    RearTravelPercent = 100 * st.session_state.dfRearTravel/maxRearTravel
+    FrontTravelPercent = 100 * FrontTravel/maxFrontTravel
+    RearTravelPercent = 100 * RearTravel/maxRearTravel
     if (st.session_state.pressureDataUploaded):
         FrontPressure = st.session_state.dfFrontPressure 
         RearPressure = st.session_state.dfRearPressure 
         minFrontPressure = minPressure(FrontTravel, FrontPressure)
         minRearPressure = minPressure(RearTravel, RearPressure)
     accelerometerTime = st.session_state.accelerometerTime 
+
+    stepDamping = 100
 
 
 
@@ -129,10 +148,10 @@ if selected == "Charts & Statistics" and st.session_state.suspensionDataUploaded
     st.header('Damping')
     st.write('This section describes the suspension speed distribution over time. The percentages in which a given speed occurred in the travel are marked in colors on the sub-bars. The graphs should look somewhat similar for the front and rear suspension, and most importantly, resemble the Gaussian normal distribution curve marked with a red dashed line.')
     st.subheader('Front')
-    frontVelocityFigure = vel.velocity_histogram_figure(FrontTravel,rearVelocity,15)
+    frontVelocityFigure = vel.velocity_histogram_figure(FrontTravel,frontVelocity,stepDamping)
     st.bokeh_chart(frontVelocityFigure, use_container_width=True)
     st.subheader('Rear')
-    rearVelocityFigure = vel.velocity_histogram_figure(RearTravel,rearVelocity,15)
+    rearVelocityFigure = vel.velocity_histogram_figure(RearTravel,rearVelocity,stepDamping)
     st.bokeh_chart(rearVelocityFigure, use_container_width=True)
 
     st.header("Balance")
@@ -142,7 +161,7 @@ if selected == "Charts & Statistics" and st.session_state.suspensionDataUploaded
     a_rebRear, b_rebRear, travelReboundRear = balance_data(rearVelocity, RearTravel,"Reb")
     velocityRegressionFrontRebound = a_rebFront * travelReboundFront + b_rebFront
     velocityRegressionRearRebound = a_rebRear * travelReboundRear + b_rebRear
-    velocityBalanceReboundFigure = balance_Figure(travelReboundFront, travelReboundRear,
+    velocityBalanceReboundFigure = balance_Figure(a_rebFront, a_rebRear, travelReboundFront, travelReboundRear,
                                                   velocityRegressionFrontRebound,velocityRegressionRearRebound,
                                                    maxFrontTravel, maxRearTravel, progressionSelectedX_axis )
     st.bokeh_chart(velocityBalanceReboundFigure, use_container_width=True)
@@ -153,7 +172,7 @@ if selected == "Charts & Statistics" and st.session_state.suspensionDataUploaded
     a_compRear, b_compRear, travelCompressionRear = balance_data(rearVelocity, RearTravel,"Comp")
     velocityRegressionFrontCompression = a_compFront * travelCompressionFront + b_compFront
     velocityRegressionRearCompression = a_compRear * travelCompressionRear + b_compRear
-    velocityBalanceCompressionFigure = balance_Figure(travelCompressionFront, travelCompressionRear,
+    velocityBalanceCompressionFigure = balance_Figure(a_compFront, a_compRear, travelCompressionFront, travelCompressionRear,
                                                   velocityRegressionFrontCompression,velocityRegressionRearCompression,
                                                    maxFrontTravel, maxRearTravel, progressionSelectedX_axis )
     st.bokeh_chart(velocityBalanceCompressionFigure, use_container_width=True)

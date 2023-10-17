@@ -2,14 +2,13 @@ import numpy as np
 import math as m
 from bokeh.plotting import figure
 from bokeh.models import ColumnDataSource
-import statistics
 def travel_figure(selected_series, frontTravelData,rearTravelData, time):
     p = figure(
-    height = 350,
+    height = 300,
     min_border_left=70,
     min_border_right=50,
     sizing_mode="stretch_both",
-    x_axis_label="Time (%)",
+    x_axis_label="Time (s)",
     y_axis_label='Travel (mm)',
     toolbar_location='above',
     tools='xpan,xwheel_zoom,box_zoom,reset, hover, save',
@@ -43,7 +42,7 @@ def travel_histogram_figure(data, maxTravel):
     max_data = round(max(data), 2)
 
     # Tworzenie źródła danych dla tekstu
-    text_source = ColumnDataSource(data=dict(x=[max_data, average], y=[np.max(hist), np.max(hist)], text=[f'Max: {max_data}', f'Avg: {average}']))
+    text_source = ColumnDataSource(data=dict(x=[max_data, average], y=[np.max(hist)/2, np.max(hist)/2], text=[f'Max: {max_data}', f'Avg: {average}']))
 
     p = figure(
         height=300,
@@ -64,7 +63,7 @@ def travel_histogram_figure(data, maxTravel):
     p.segment(x0=[max_data, average], y0=[0,0], x1=[max_data, average], y1=[np.max(hist), np.max(hist)], line_width=2, line_dash="dashed", line_color=["red", "green"])
 
     # Wyświetlanie tekstu z wartościami
-    p.text(x='x', y='y', text='text', source=text_source, text_align="left", text_baseline="middle")
+    p.text(x='x', y='y', text='text', source=text_source, angle=1.5708, text_baseline="bottom",text_font_size="9pt")
     return p
 
 def calculate_derivative(samples, dt):
@@ -79,3 +78,9 @@ def calculate_derivative(samples, dt):
     return derivative
 
 
+def maxTravel(data, n):
+    top_n_max_indices = np.argpartition(data, -n)[-n:]  # Znajdź indeksy n największych wartości
+    top_n_max_values = data[top_n_max_indices]  # Wybierz wartości na podstawie indeksów
+
+    average_of_top_n_max_values = np.mean(top_n_max_values)
+    return average_of_top_n_max_values

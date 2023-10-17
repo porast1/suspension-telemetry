@@ -2,8 +2,8 @@ import streamlit as st
 from filters import load_data
 import numpy as np
 
-timePerSample = 5
-timePerSampleAcc = 5
+timePerSample = 0.005
+timePerSampleAcc = 0.005
 
 def sessionVariablesInit():
     # Inicjalizacja kontekstu sesji
@@ -39,9 +39,8 @@ def yourBikeSetup():
     st.session_state.maxRearStroke = st.number_input("Add max Rear stroke:",0,300,78)
 
 def sessionDataPreparationTravel(frontTravel,rearTravel):
-    rearTravelNormalizer = st.session_state.maxRearTravel/st.session_state.maxRearStroke
     st.session_state.dfFrontTravel = load_data(frontTravel)  # Wczytaj dane z pliku tymczasowego
-    st.session_state.dfRearTravel = rearTravelNormalizer * load_data(rearTravel)  # Wczytaj dane z pliku tymczasowego
+    st.session_state.dfRearTravel =load_data(rearTravel)  # Wczytaj dane z pliku tymczasowego
     lenTime = min(len(st.session_state.dfFrontTravel),len(st.session_state.dfRearTravel))
     return lenTime
 
@@ -49,15 +48,14 @@ def sessionDataPreparationPressure(frontPressure,rearPressure):
 
     st.session_state.dfFrontPressure = load_data(frontPressure)  # Wczytaj dane z pliku tymczasowego
     st.session_state.dfRearPressure = load_data(rearPressure)  # Wczytaj dane z pliku tymczasowego
-    lenTime = min(len(st.session_state.dfFrontTravel),len(st.session_state.dfRearTravel),
-                len(st.session_state.dfFrontPressure), len(st.session_state.dfRearPressure))
+    lenTime = min(len(st.session_state.dfFrontPressure), len(st.session_state.dfRearPressure))
     return lenTime
 
 
 def sessionDataPreparationAccelerometer(accelerometer):
     st.session_state.dfAccelerometer = load_data(accelerometer)  # Wczytaj dane z pliku tymczasowego
     lenTimeAcc = len(st.session_state.dfAccelerometer)
-    st.session_state.accelerometerTime = np.arange(0, timePerSample * lenTimeAcc, timePerSampleAcc)
+    st.session_state.accelerometerTime = np.arange(0, timePerSampleAcc * lenTimeAcc, timePerSampleAcc)
 
 def cutDataToLenTime(lenTime, travelState, pressureState):
     if travelState:

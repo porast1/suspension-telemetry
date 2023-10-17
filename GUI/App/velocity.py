@@ -25,8 +25,7 @@ def velocity_histogram_figure(travel, velocity, step):
     iterationVelocity = range(-20*step,20*step,step)
     travel = np.array(travel)
     velocity = np.array(velocity)
-    # Wstawienie 0 na początek tablicy NumPy
-    #velocity = np.insert(velocity, 0, 0)
+
 
     for i in range(len(iterationTravel)):
         if iterationTravel[i] >= 90:
@@ -115,25 +114,25 @@ def velocity_histogram_figure(travel, velocity, step):
     avgReb = sum(x for x in velocity if x < 0) / count_reb
 
     # Tworzenie źródła danych dla tekstu
-    text_source_comp = ColumnDataSource(data=dict(x=[avgComp], y=[max(pdf)], text=[f'AVG Comp: {avgComp:.2f}']))
-    text_source_reb = ColumnDataSource(data=dict(x=[avgReb], y=[max(pdf)], text=[f'AVG Rebound: {avgReb:.2f}']))
+    text_source_comp = ColumnDataSource(data=dict(x=[avgComp], y=[max(pdf)/2], text=[f'AVG Comp: {avgComp:.2f}']))
+    text_source_reb = ColumnDataSource(data=dict(x=[avgReb], y=[max(pdf)/2], text=[f'AVG Rebound: {avgReb:.2f}']))
 
     if maxVelocityComp < iterationVelocity[-1]:
-        text_source_MaxComp = ColumnDataSource(data=dict(x=[maxVelocityComp], y=[max(pdf)], text=[f'MAX Comp: {maxVelocityComp:.2f}']))
+        text_source_MaxComp = ColumnDataSource(data=dict(x=[maxVelocityComp], y=[max(pdf)/2], text=[f'MAX Comp: {maxVelocityComp:.2f}']))
     else:
-        text_source_MaxComp = ColumnDataSource(data=dict(x=[iterationVelocity[-2]], y=[max(pdf)], text=[f'AVG Comp: {avgComp:.2f}']))
+        text_source_MaxComp = ColumnDataSource(data=dict(x=[iterationVelocity[-2]], y=[max(pdf)/2], text=[f'AVG Comp: {avgComp:.2f}']))
 
     if maxVelocityReb > iterationVelocity[0]:
-        text_source_MaxReb = ColumnDataSource(data=dict(x=[maxVelocityReb], y=[max(pdf)], text=[f'MAX Reb: {maxVelocityReb:.2f}']))
+        text_source_MaxReb = ColumnDataSource(data=dict(x=[maxVelocityReb], y=[max(pdf)/2], text=[f'MAX Reb: {maxVelocityReb:.2f}']))
     else:
-        text_source_MaxReb = ColumnDataSource(data=dict(x=[iterationVelocity[1]], y=[max(pdf)], text=[f'Max Reb: {maxVelocityReb:.2f}']))
+        text_source_MaxReb = ColumnDataSource(data=dict(x=[iterationVelocity[1]], y=[max(pdf)/2], text=[f'Max Reb: {maxVelocityReb:.2f}']))
     # Dodawanie linii przerywanych z informacją o średnich wartościach
     p.segment(x0=[avgComp, avgReb, maxVelocityComp,maxVelocityReb], y0=[0, 0, 0, 0], x1=[avgComp, avgReb, maxVelocityComp,maxVelocityReb], y1=[max(pdf), max(pdf),max(pdf), max(pdf)], line_width=2, line_dash="dashed", line_color=["grey", "grey","grey", "grey"])
 
     # Dodawanie tekstu z informacją o średnich wartościach
-    p.text(x='x', y='y', text='text', source=text_source_comp, text_align="left", text_baseline="up", text_font_size="6pt")
-    p.text(x='x', y='y', text='text', source=text_source_reb, text_align="left", text_baseline="up", text_font_size="6pt")
-    p.text(x='x', y='y', text='text', source=text_source_MaxComp, text_align="left", text_baseline="up", text_font_size="6pt")
-    p.text(x='x', y='y', text='text', source=text_source_MaxReb, text_align="left", text_baseline="up", text_font_size="6pt")
+    p.text(x='x', y='y', text='text', source=text_source_comp, text_align="left",angle=1.5708, text_baseline="top", text_font_size="6pt")
+    p.text(x='x', y='y', text='text', source=text_source_reb, text_align="left",angle=1.5708, text_baseline="bottom", text_font_size="6pt")
+    p.text(x='x', y='y', text='text', source=text_source_MaxComp, text_align="left",angle=1.5708, text_baseline="top", text_font_size="6pt")
+    p.text(x='x', y='y', text='text', source=text_source_MaxReb, text_align="left",angle=1.5708, text_baseline="bottom", text_font_size="6pt")
     return p
 
