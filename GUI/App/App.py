@@ -133,13 +133,19 @@ if selected == "Charts & Statistics" and st.session_state.suspensionDataUploaded
     col1, col2 = st.columns(2)
     with col1:
         st.subheader("Front")
-        frontTravelHist = t.travel_histogram_figure(FrontTravel,maxFrontTravel )
+        if(progressionSelectedX_axis == "Travel mm"):
+            frontTravelHist = t.travel_histogram_figure(FrontTravel, maxFrontTravel, progressionSelectedX_axis)
+        else:
+             frontTravelHist = t.travel_histogram_figure(FrontTravelPercent,maxFrontTravel,progressionSelectedX_axis)
         st.bokeh_chart(frontTravelHist, use_container_width=True)
         frontTravelFFT = my_fft_figure(FrontTravel,fs)
         st.bokeh_chart(frontTravelFFT, use_container_width=True)
     with col2:
         st.subheader("Rear")
-        frontTravelHist = t.travel_histogram_figure(RearTravel, maxRearTravel)
+        if(progressionSelectedX_axis == "Travel mm"):
+            frontTravelHist = t.travel_histogram_figure(RearTravel,maxRearTravel,progressionSelectedX_axis )
+        else:
+             frontTravelHist = t.travel_histogram_figure(RearTravelPercent,maxRearTravel, progressionSelectedX_axis)
         st.bokeh_chart(frontTravelHist, use_container_width=True)
         rearTravelFFT = my_fft_figure(RearTravel,fs)
         st.bokeh_chart(rearTravelFFT, use_container_width=True)

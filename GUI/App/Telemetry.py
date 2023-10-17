@@ -21,43 +21,61 @@ def travel_figure(selected_series, frontTravelData,rearTravelData, time):
         p.line(x=time, y=rearTravelData, line_width=2, legend_label='Rear', line_color='red')
     return p
 
-def travel_histogram_data(signal, maxStroke):
-    deltaBin = int(maxStroke * 0.05)
-    bins = list(range(0, maxStroke - 1,int(deltaBin)))
-    hist = np.zeros(len(bins))
-    total_count = len(signal)
-    for value in signal:
-        for i in range(len(bins) - 1):
-            if value >= bins[-1]:
-                hist[-1] +=1
-            elif bins[i] <= value <= bins[i + 1]:  # Poprawiony warunek
-                hist[i] += 1
-    hist = hist / total_count * 100.0
-    return hist, bins
+def travel_histogram_data(travel,maxTravel,char:str):
+
+    n = len(travel)
+    iterationTravel = range(0,100,5)
+    travel = np.array(travel)
+    hist = np.empty(0)
+    for i in range(len(iterationTravel)):
+        if iterationTravel[i] >= 95:
+            mask = (travel >= iterationTravel[i])
+        else:
+            mask = (travel >= iterationTravel[i]) & (travel < iterationTravel[i+1])
+        hist = np.append(hist, len(np.where(mask)[0])/n)
+    if (char == "Travel mm"):
+        iterationTravel = [x * maxTravel / 100 for x in iterationTravel]  # Pomnożenie elementów listy przez maxTravel/100
+    return hist, iterationTravel
 
 
-def travel_histogram_figure(data, maxTravel):
-    hist, bins = travel_histogram_data(data,maxTravel)
+def travel_histogram_figure(data, maxTravel, char: str):
+    hist, bins = travel_histogram_data(data, maxTravel, char)
     average = round(sum(data) / len(data), 2)
     max_data = round(max(data), 2)
 
     # Tworzenie źródła danych dla tekstu
     text_source = ColumnDataSource(data=dict(x=[max_data, average], y=[np.max(hist)/2, np.max(hist)/2], text=[f'Max: {max_data}', f'Avg: {average}']))
 
-    p = figure(
-        height=300,
-        min_border_left=70,
-        min_border_right=50,
-        x_range=(-0.025*maxTravel, 1.2 * np.max(maxTravel)),
-        sizing_mode="stretch_both",
-        x_axis_label="Travel (mm)",
-        y_axis_label='Time (%)',
-        toolbar_location='above',
-        tools='xpan,xwheel_zoom,reset, hover, save',
-        active_drag='xpan',
-        output_backend='webgl'
-    )
-    p.vbar(x=bins,top = hist, bottom = 0, width=maxTravel / (len(bins) - 1), line_width=2, fill_alpha=0.4)
+    if (char == "Travel mm"):
+        p = figure(
+            height=300,
+            min_border_left=70,
+            min_border_right=50,
+            x_range=(-0.05*max(data), 1.05 * np.max(data)),
+            sizing_mode="stretch_both",
+            x_axis_label="Travel (mm)",
+            y_axis_label='Time (%)',
+            toolbar_location='above',
+            tools='xpan,xwheel_zoom,reset, hover, save',
+            active_drag='xpan',
+            output_backend='webgl'
+        )
+    else:
+        p = figure(
+            height=300,
+            min_border_left=70,
+            min_border_right=50,
+            x_range=(-0.05*max(data), 1.05 * np.max(data)),
+            sizing_mode="stretch_both",
+            x_axis_label="Travel (%)",
+            y_axis_label='Time (%)',
+            toolbar_location='above',
+            tools='xpan,xwheel_zoom,reset, hover, save',
+            active_drag='xpan',
+            output_backend='webgl'
+        )
+
+    p.vbar(x=bins,top = hist, bottom = 0, width=max(data) / (len(bins) - 1), line_width=2, fill_alpha=0.4)
 
     # Zaznaczanie wartości maksymalnej i średniej wartości
     p.segment(x0=[max_data, average], y0=[0,0], x1=[max_data, average], y1=[np.max(hist), np.max(hist)], line_width=2, line_dash="dashed", line_color=["red", "green"])

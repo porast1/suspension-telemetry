@@ -5,9 +5,9 @@ tablica = []
 wartość = 0
 
 # Dodawanie wartości do tablicy
-for i in range(1000):
+for i in range(2000):
     tablica.append(wartość)
-    if i % 100 == 99 and wartość < 170:
+    if i % 100 == 99 and wartość < 250:
         wartość += 10
 
 # Wyświetlenie tablicy
