@@ -11,16 +11,16 @@ for iteracja in range(2):
     amplitudy = np.zeros(liczba_probek)
     for i in range(liczba_probek):
         if i % 300 == 0:  # Co 300 próbek zmieniamy amplitudę
-            nowa_amplituda = np.random.uniform(0, 400)
+            nowa_amplituda = np.random.uniform(0, 170)
             amplitudy[i] = min(nowa_amplituda, 170)  # Ograniczenie do maksymalnej wartości 170
         else:
             amplitudy[i] = amplitudy[i - 1]
 
     # Zakres częstotliwości
-    czestotliwosci = np.random.uniform(30, 100, liczba_probek)
+    czestotliwosci = np.random.uniform(1, 5, liczba_probek)
 
     # Generowanie sygnału o zmiennej amplitudzie i częstotliwości
-    sygnal = amplitudy * np.sin(2 * np.pi * czestotliwosci * czas) + amplitudy -50
+    sygnal = amplitudy * np.sin(2 * np.pi * czestotliwosci * czas) + amplitudy
 
     # Zapisanie danych do pliku tekstowego
     nazwa_pliku = f"dane_sinusoidy_{iteracja + 1}.txt"

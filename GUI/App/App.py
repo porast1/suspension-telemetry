@@ -148,10 +148,10 @@ if selected == "Charts & Statistics" and st.session_state.suspensionDataUploaded
     st.header('Damping')
     st.write('This section describes the suspension speed distribution over time. The percentages in which a given speed occurred in the travel are marked in colors on the sub-bars. The graphs should look somewhat similar for the front and rear suspension, and most importantly, resemble the Gaussian normal distribution curve marked with a red dashed line.')
     st.subheader('Front')
-    frontVelocityFigure = vel.velocity_histogram_figure(FrontTravel,frontVelocity,stepDamping)
+    frontVelocityFigure = vel.velocity_histogram_figure(FrontTravelPercent,frontVelocity,stepDamping)
     st.bokeh_chart(frontVelocityFigure, use_container_width=True)
     st.subheader('Rear')
-    rearVelocityFigure = vel.velocity_histogram_figure(RearTravel,rearVelocity,stepDamping)
+    rearVelocityFigure = vel.velocity_histogram_figure(RearTravelPercent,rearVelocity,stepDamping)
     st.bokeh_chart(rearVelocityFigure, use_container_width=True)
 
     st.header("Balance")

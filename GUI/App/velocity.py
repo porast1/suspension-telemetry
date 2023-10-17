@@ -20,7 +20,7 @@ def _normal_distribution_data(velocity: list[float],
 #Travel ony convert in %
 def velocity_histogram_figure(travel, velocity, step):
     n = len(travel)
-    iterationTravel = range(0,100,10)
+    iterationTravel = range(0,110,10)
     travel_dict = {key: 0 for key in iterationTravel}
     iterationVelocity = range(-20*step,20*step,step)
     travel = np.array(travel)
@@ -28,7 +28,7 @@ def velocity_histogram_figure(travel, velocity, step):
 
 
     for i in range(len(iterationTravel)):
-        if iterationTravel[i] >= 90:
+        if iterationTravel[i] >= 100:
             mask = (travel >= iterationTravel[i])
             travel_dict[iterationTravel[i]] = np.where(mask)[0]
         else:
