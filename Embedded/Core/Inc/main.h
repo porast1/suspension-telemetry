@@ -67,6 +67,8 @@ void Error_Handler(void);
 #define LD2_GPIO_Port GPIOA
 #define ESP8266_CH_PD_Pin GPIO_PIN_0
 #define ESP8266_CH_PD_GPIO_Port GPIOB
+#define SD_detection_Pin GPIO_PIN_8
+#define SD_detection_GPIO_Port GPIOA
 #define TMS_Pin GPIO_PIN_13
 #define TMS_GPIO_Port GPIOA
 #define TCK_Pin GPIO_PIN_14

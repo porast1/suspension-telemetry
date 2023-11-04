@@ -8,6 +8,7 @@
 #include "File_Handling_RTOS.h"
 #include "stm32f4xx_hal.h"
 #include "ff.h"
+#include "travelSensor.h"
 
 #define UART_NO_ACTIVE
 
@@ -30,26 +31,20 @@ FATFS *pfs;
 DWORD fre_clust;
 uint32_t total, free_space;
 
-void setPath(char *dir, char *frontSensor, char *rearSensor,
-		char *frontPressureSensor, char *rearPressureSensor, uint8_t path)
+void setPath(char *dir, char* sensorData,  uint8_t path)
 {
 	sprintf(dir, "Data%d", path);
-	sprintf(frontSensor, "Data%d/FRONT%d.txt", path, path);
-	sprintf(rearSensor, "Data%d/Rear%d.txt", path, path);
-	sprintf(frontPressureSensor, "Data%d/F_PSI%d.txt", path, path);
-	sprintf(rearPressureSensor, "Data%d/R_PSI%d.txt", path, path);
+	sprintf(sensorData, "Data%d/Data%d.txt", path, path);
+
 }
-void createNewFile(char *dir, char *frontSensor, char *rearSensor,
-		char *frontPressureSensor, char *rearPressureSensor, uint8_t *pathPtr)
+void createNewFile(char *dir, char* sensorData,  uint8_t *pathPtr)
 {
 	uint8_t path = *pathPtr;
 	Mount_SD("/");
 	Format_SD(path);
 	Create_Dir(dir);
-	Create_File(frontSensor);
-	Create_File(rearSensor);
-	Create_File(frontPressureSensor);
-	Create_File(rearPressureSensor);
+	Create_File(sensorData);
+
 	Unmount_SD("/");
 	(*pathPtr)++;
 }
@@ -569,4 +564,26 @@ void Check_SD_Space(void)
 	vPortFree(buf);
 #endif
 }
+void sendDataSD(char *file, volatile float *sensor)
+{
+	char *buffer = pvPortMalloc((7*TRAVEL_SENSOR_BUFFER_SIZE/2) * sizeof(char));
+	if (NULL != buffer){
+		memset(buffer, 0, (7*TRAVEL_SENSOR_BUFFER_SIZE/2));
+		for (int i = 0; i < (TRAVEL_SENSOR_BUFFER_SIZE) / 2; i++)
+		{
+			sprintf(buffer + strlen(buffer), "%.2f;","%.2f;","%.2f;","%.2f\n",
+					sensor[i + FRONT_TRAVEL_BUFFER_POSITION],
+					sensor[i + REAR_TRAVEL_BUFFER_POSITION],
+					sensor[i + FRONT_PRESSURE_BUFFER_POSITION],
+					sensor[i + REAR_PRESSURE_BUFFER_POSITION] );
+		}
+		Mount_SD("/");
+		Update_File(file, buffer);
+		Unmount_SD("/");
+		vPortFree(buffer);
+	}
+	else{
+		puts("Wrong alocation pressureTravel Buffer SD Card");
+	}
 
+}

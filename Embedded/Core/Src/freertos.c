@@ -30,18 +30,17 @@
 #include "stdint.h"
 #include "dma.h"
 #include "tim.h"
-#include "spi.h"
 #include "gpio.h"
 #include "fatfs.h"
 #include "i2c.h"
 
 #include "travelSensor.h"
-#include "fatfs_sd.h"
 #include "File_Handling_RTOS.h"
 #include "button.h"
 #include "menu.h"
 #include "liquidcrystal_i2c.h"
 #include "ADXL345.h"
+#include "lcdMenu.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -78,9 +77,6 @@ osStaticThreadDef_t SdCardControlBlock;
 osThreadId menuProcessDataHandle;
 uint32_t menuProcessDataBuffer[ 2048 ];
 osStaticThreadDef_t menuProcessDataControlBlock;
-osThreadId lcdTaskHandle;
-uint32_t lcdTaskBuffer[ 128 ];
-osStaticThreadDef_t lcdTaskControlBlock;
 osThreadId adxlTaskHandle;
 uint32_t adxlTaskBuffer[ 256 ];
 osStaticThreadDef_t adxlTaskControlBlock;
@@ -97,10 +93,9 @@ osStaticSemaphoreDef_t buttonSemControlBlock;
 /* USER CODE END FunctionPrototypes */
 
 void buttonTaskInit(void const * argument);
-void initSensorRead(void const * argument);
+void sensorReadInit(void const * argument);
 void SdCardInit(void const * argument);
 void menuProcessDataInit(void const * argument);
-void lcdTaskInit(void const * argument);
 void adxlTaskInit(void const * argument);
 
 extern void MX_USB_DEVICE_Init(void);
@@ -168,7 +163,7 @@ void MX_FREERTOS_Init(void) {
   buttonTaskHandle = osThreadCreate(osThread(buttonTask), NULL);
 
   /* definition and creation of sensorRead */
-  osThreadStaticDef(sensorRead, initSensorRead, osPriorityNormal, 0, 2048, sensorReadBuffer, &sensorReadControlBlock);
+  osThreadStaticDef(sensorRead, sensorReadInit, osPriorityNormal, 0, 2048, sensorReadBuffer, &sensorReadControlBlock);
   sensorReadHandle = osThreadCreate(osThread(sensorRead), NULL);
 
   /* definition and creation of SdCard */
@@ -178,10 +173,6 @@ void MX_FREERTOS_Init(void) {
   /* definition and creation of menuProcessData */
   osThreadStaticDef(menuProcessData, menuProcessDataInit, osPriorityNormal, 0, 2048, menuProcessDataBuffer, &menuProcessDataControlBlock);
   menuProcessDataHandle = osThreadCreate(osThread(menuProcessData), NULL);
-
-  /* definition and creation of lcdTask */
-  osThreadStaticDef(lcdTask, lcdTaskInit, osPriorityNormal, 0, 128, lcdTaskBuffer, &lcdTaskControlBlock);
-  lcdTaskHandle = osThreadCreate(osThread(lcdTask), NULL);
 
   /* definition and creation of adxlTask */
   osThreadStaticDef(adxlTask, adxlTaskInit, osPriorityNormal, 0, 256, adxlTaskBuffer, &adxlTaskControlBlock);
@@ -218,24 +209,37 @@ void buttonTaskInit(void const * argument)
   /* USER CODE END buttonTaskInit */
 }
 
-/* USER CODE BEGIN Header_initSensorRead */
+/* USER CODE BEGIN Header_sensorReadInit */
 /**
- * @brief Function implementing the sensorRead thread.
- * @param argument: Not used
- * @retval None
- */
-/* USER CODE END Header_initSensorRead */
-void initSensorRead(void const * argument)
+* @brief Function implementing the sensorRead thread.
+* @param argument: Not used
+* @retval None
+*/
+/* USER CODE END Header_sensorReadInit */
+void sensorReadInit(void const * argument)
 {
-  /* USER CODE BEGIN initSensorRead */
+  /* USER CODE BEGIN sensorReadInit */
+	int32_t result[2] ={ 0 };
+	int32_t resultPressure[2] ={ 0 };
+  /* Infinite loop */
+  for(;;)
+  {
+	  if (osOK == osSemaphoreWait(travelSensorSemHandle, osWaitForever)){
+		if (MENU_MEASURMENT_START == getMenuSelector()){
+			char *sensorDataPtr = getSensorDataFileName();
+			processData(sensorDataPtr);
+		}
+		else if(MENU_SAG_START == getMenuSelector()){
+			processDataSag(result, resultPressure);
+			lcdMenuSagStart(result, resultPressure);
+		}
+	  }
+	else{
 
-	/* Infinite loop */
-	for (;;)
-	{
-
-		osDelay(30);
 	}
-  /* USER CODE END initSensorRead */
+    osDelay(1);
+  }
+  /* USER CODE END sensorReadInit */
 }
 
 /* USER CODE BEGIN Header_SdCardInit */
@@ -249,19 +253,10 @@ void SdCardInit(void const * argument)
 {
   /* USER CODE BEGIN SdCardInit */
 	 HD44780_Init(2);
-	 HD44780_Clear();
-	 HD44780_SetCursor(0,0);
-	 HD44780_PrintStr("SAG");
-	 HD44780_SetCursor(0,1);
-	 HD44780_PrintStr("LEFT");
-	 HD44780_SetCursor(9,0);
-	 HD44780_PrintStr("MESSURE");
-	 HD44780_SetCursor(11,1);
-	 HD44780_PrintStr("RIGHT");
+	 lcdMenuStart();
 	/* Infinite loop */
 	for (;;)
 	{
-
 		if (MAX_ACTIVE_BUTTON >= buttonMenu)
 		{
 			menuSelector(buttonMenu);
@@ -286,30 +281,9 @@ void menuProcessDataInit(void const * argument)
 	/* Infinite loop */
 	for (;;)
 	{
-		menuCalculateBlock();
 		osDelay(10);
 	}
   /* USER CODE END menuProcessDataInit */
-}
-
-/* USER CODE BEGIN Header_lcdTaskInit */
-/**
-* @brief Function implementing the lcdTask thread.
-* @param argument: Not used
-* @retval None
-*/
-/* USER CODE END Header_lcdTaskInit */
-void lcdTaskInit(void const * argument)
-{
-  /* USER CODE BEGIN lcdTaskInit */
-  /* Infinite loop */
-
-  for(;;)
-  {
-
-    osDelay(1);
-  }
-  /* USER CODE END lcdTaskInit */
 }
 
 /* USER CODE BEGIN Header_adxlTaskInit */

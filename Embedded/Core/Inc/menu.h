@@ -30,6 +30,16 @@
 /******************************************************************************
  * Configuration Constants
  *******************************************************************************/
+typedef enum menu
+{
+	MENU_START = 0U,
+	MENU_SAG,
+	MENU_CALIBRATION,
+	MENU_SAG_START,
+	MENU_MEASURMENT,
+	MENU_MEASURMENT_START
+
+} menu_t;
 
 /******************************************************************************
  * Macros
@@ -46,6 +56,8 @@
 /******************************************************************************
  * Function Prototypes
  *******************************************************************************/
+menu_t getMenuSelector(void);
+char * getSensorDataFileName(void);
 void menuSelector(button_t button);
 void menuCalculateBlock(void);
 #endif /* INC_MENU_H_ */

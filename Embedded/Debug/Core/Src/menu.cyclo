@@ -1,2 +1,3 @@
-../Core/Src/menu.c:70:6:menuSelector	17
-../Core/Src/menu.c:259:6:menuCalculateBlock	3
+../Core/Src/menu.c:58:8:getMenuSelector	1
+../Core/Src/menu.c:62:8:getSensorDataFileName	1
+../Core/Src/menu.c:68:6:menuSelector	18

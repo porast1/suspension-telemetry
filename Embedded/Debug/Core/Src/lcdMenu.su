@@ -1,0 +1,7 @@
+../Core/Src/lcdMenu.c:48:6:lcdMenuSagStart	48	static
+../Core/Src/lcdMenu.c:74:6:lcdMenuFinishedNotification	16	static
+../Core/Src/lcdMenu.c:82:6:lcdMenuStart	8	static
+../Core/Src/lcdMenu.c:95:6:lcdMenuSag	8	static
+../Core/Src/lcdMenu.c:108:6:lcdStartMeasurement	8	static
+../Core/Src/lcdMenu.c:117:6:lcdCalibration	8	static
+../Core/Src/lcdMenu.c:128:6:lcdMeasurementStart	8	static

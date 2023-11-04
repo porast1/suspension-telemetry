@@ -30,9 +30,9 @@
 #define SD_INIT_TIME 10
 
 #define ADC_RESOLUTION 4096U
-#define BUFFER_SIZE 512U
+
 #define NUMBER_OF_SENSORS 4U
-#define HALF_CONV_BUFF_SIZE 8U
+#define HALF_BUFF_SINGLE_SENSOR (2 * NUMBER_OF_SENSORS)
 
 #define CONVERT_TO_PERCENT  100U
 #define CONVERT_MPa_to_PSI  145U
@@ -49,12 +49,6 @@
 #define TRAVEL_SENSOR_ADC_CHANNEL &hadc2
 #define TRAVEL_SENSOR_ADC_TRIGER_TIMER &htim2
 #define TRAVEL_SENSOR_TIMER_SAMPLE_CHECK &htim6
-/**
- * @brief System definition
- * @note if no system change to NO_FREE_RTOS
- *
- */
-#define FREE_RTOS
 
 /**
  * Debug define
@@ -85,20 +79,13 @@ typedef struct calibration
 
 static calibration_t calibrationValues =
 { 0 };
-int16_t adcDataWrite[BUFFER_SIZE];
-int16_t adcRearDataRead[BUFFER_SIZE / NUMBER_OF_SENSORS];
-int16_t adcFrontDataRead[BUFFER_SIZE / NUMBER_OF_SENSORS];
-int16_t adcRearPressureDataRead[BUFFER_SIZE / NUMBER_OF_SENSORS];
-int16_t adcFrontPressureDataRead[BUFFER_SIZE / NUMBER_OF_SENSORS];
+volatile int16_t adcDataWrite[TRAVEL_SENSOR_BUFFER_SIZE];
+volatile float adcDataRead[TRAVEL_SENSOR_BUFFER_SIZE];
 
 static volatile int16_t *inBufPtr;
-static volatile int16_t *outRearBufPtr = &adcRearDataRead[0];
-static volatile int16_t *outFrontBufPtr = &adcFrontDataRead[0];
-static volatile int16_t *outRearPressureBufPtr = &adcRearPressureDataRead[0];
-static volatile int16_t *outFrontPressureBufPtr = &adcFrontPressureDataRead[0];
-#ifdef FREE_RTOS
+static volatile float *outBufPtr;
+
 extern osSemaphoreId travelSensorSemHandle;
-#endif
 
 #ifdef CHECK_SAMPLE_TIME
 volatile int time_start;
@@ -122,6 +109,7 @@ static int16_t convertAdcToTravel(volatile int16_t *adcDataWrite,
 
 static int16_t convertAdcToPressure(volatile int16_t *adcDataWrite,
 		int16_t sensorMaxPressure);
+static void normalizeTravelData(volatile int16_t *inBufPtr);
 
 /**
  * @brief sendDataSD - sending half ADC buffer to SD Card
@@ -129,7 +117,6 @@ static int16_t convertAdcToPressure(volatile int16_t *adcDataWrite,
  * @param file - choose file where to store
  * @param sensor - choose sensor
  */
-static void sendDataSD(char *file, volatile int16_t *sensor);
 /******************************************************************************
  * Function Definitions
  *******************************************************************************/
@@ -137,7 +124,7 @@ void startAdcDma(void)
 {
 	osDelayUntil((uint32_t*) osKernelSysTick(), SD_INIT_TIME);
 	HAL_ADC_Start_DMA(TRAVEL_SENSOR_ADC_CHANNEL, (uint32_t*) adcDataWrite,
-	BUFFER_SIZE);
+	TRAVEL_SENSOR_BUFFER_SIZE);
 	HAL_TIM_Base_Start(TRAVEL_SENSOR_TIMER_SAMPLE_CHECK);
 	HAL_TIM_Base_Start(TRAVEL_SENSOR_ADC_TRIGER_TIMER);
 }
@@ -147,98 +134,87 @@ void stopAdcDma(void)
 	HAL_TIM_Base_Stop(TRAVEL_SENSOR_TIMER_SAMPLE_CHECK);
 	HAL_TIM_Base_Stop(TRAVEL_SENSOR_ADC_TRIGER_TIMER);
 }
-void travelPressureSensorCalibration(void)
+int travelPressureSensorCalibration(void)
 {
-#ifdef FREE_RTOS
-	osSemaphoreWait(travelSensorSemHandle, osWaitForever);
-#endif
-
-	for (int i = 0; i < BUFFER_SIZE / HALF_CONV_BUFF_SIZE; i++)
+	int status;
+	if (osOK == osSemaphoreWait(travelSensorSemHandle, osWaitForever))
 	{
-		calibrationValues.rearTravelSensor += outRearBufPtr[i];
-		calibrationValues.frontTravelSensor += outFrontBufPtr[i];
-		calibrationValues.rearPressureSensor += outRearPressureBufPtr[i];
-		calibrationValues.frontPressureSensor += outFrontPressureBufPtr[i];
+		calibrationValues.rearTravelSensor = 0;
+		calibrationValues.frontTravelSensor = 0;
+		calibrationValues.rearPressureSensor = 0;
+		calibrationValues.frontPressureSensor = 0;
+		for (int i = 0; i <= TRAVEL_SENSOR_BUFFER_SIZE / 2 - NUMBER_OF_SENSORS;
+				i += NUMBER_OF_SENSORS)
+		{
+			calibrationValues.rearTravelSensor += outBufPtr[i
+					+ REAR_TRAVEL_BUFFER_POSITION];
+			calibrationValues.frontTravelSensor += outBufPtr[i
+					+ FRONT_TRAVEL_BUFFER_POSITION];
+			calibrationValues.rearPressureSensor += outBufPtr[i
+					+ REAR_PRESSURE_BUFFER_POSITION];
+			calibrationValues.frontPressureSensor += outBufPtr[i
+					+ FRONT_PRESSURE_BUFFER_POSITION];
 
+		}
+		calibrationValues.rearTravelSensor = calibrationValues.rearTravelSensor
+				/ (TRAVEL_SENSOR_BUFFER_SIZE / HALF_BUFF_SINGLE_SENSOR);
+		calibrationValues.frontTravelSensor =
+				calibrationValues.frontTravelSensor
+						/ (TRAVEL_SENSOR_BUFFER_SIZE / HALF_BUFF_SINGLE_SENSOR);
+		calibrationValues.rearPressureSensor =
+				calibrationValues.rearPressureSensor
+						/ (TRAVEL_SENSOR_BUFFER_SIZE / HALF_BUFF_SINGLE_SENSOR);
+		calibrationValues.frontPressureSensor =
+				calibrationValues.frontPressureSensor
+						/ (TRAVEL_SENSOR_BUFFER_SIZE / HALF_BUFF_SINGLE_SENSOR);
+		status = 1;
 	}
-	calibrationValues.rearTravelSensor = calibrationValues.rearTravelSensor
-			/ (BUFFER_SIZE / HALF_CONV_BUFF_SIZE);
-	calibrationValues.frontTravelSensor = calibrationValues.frontTravelSensor
-			/ (BUFFER_SIZE / HALF_CONV_BUFF_SIZE);
-	calibrationValues.rearPressureSensor = calibrationValues.rearPressureSensor
-			/ (BUFFER_SIZE / HALF_CONV_BUFF_SIZE);
-	calibrationValues.frontPressureSensor =
-			calibrationValues.frontPressureSensor
-					/ (BUFFER_SIZE / HALF_CONV_BUFF_SIZE);
+	else
+	{
+		status = 0;
+	}
+
+	return (status);
 }
 
-void processData(char *sensorFront, char *sensorRear, char *sensorPressureFront,
-		char *sensorPressureRear)
+void processData(char *sensorsData)
 {
-#ifdef FREE_RTOS
-	osSemaphoreWait(travelSensorSemHandle, osWaitForever);
-#endif
-	sendDataSD(sensorRear, outRearBufPtr);
-	sendDataSD(sensorFront, outFrontBufPtr);
-	sendDataSD(sensorPressureRear, outRearPressureBufPtr);
-	sendDataSD(sensorPressureFront, outFrontPressureBufPtr);
+	normalizeTravelData(inBufPtr);
+	sendDataSD(sensorsData, outBufPtr);
 }
 
-void processDataSag(int16_t *sagRearFront, int16_t *pressureRearFront)
+void processDataSag(int32_t *sagFrontRear, int32_t *pressureFrontRear)
 {
-#ifdef FREE_RTOS
-	osSemaphoreWait(travelSensorSemHandle, osWaitForever);
-#endif
-	(uint32_t*) sagRearFront;
-	for (int i = 0; i < BUFFER_SIZE / HALF_CONV_BUFF_SIZE; i++)
+	int numberOfElements = (TRAVEL_SENSOR_BUFFER_SIZE / HALF_BUFF_SINGLE_SENSOR);
+	for (int i = 0; i <= TRAVEL_SENSOR_BUFFER_SIZE / 2 - NUMBER_OF_SENSORS; i +=
+			NUMBER_OF_SENSORS)
 	{
-		sagRearFront[0] += outRearBufPtr[i];
-		sagRearFront[1] += outFrontBufPtr[i];
-		pressureRearFront[0] += outRearPressureBufPtr[i];
-		pressureRearFront[1] += outFrontPressureBufPtr[i];
+		sagFrontRear[0] += outBufPtr[i + FRONT_TRAVEL_BUFFER_POSITION];
+		sagFrontRear[1] += outBufPtr[i + REAR_TRAVEL_BUFFER_POSITION];
+		pressureFrontRear[0] += outBufPtr[i + FRONT_PRESSURE_BUFFER_POSITION];
+		pressureFrontRear[1] += outBufPtr[i + REAR_PRESSURE_BUFFER_POSITION];
 
 	}
-	sagRearFront[0] = sagRearFront[0] / (BUFFER_SIZE / HALF_CONV_BUFF_SIZE);
-	sagRearFront[1] = sagRearFront[1] / (BUFFER_SIZE / HALF_CONV_BUFF_SIZE);
-	pressureRearFront[0] = pressureRearFront[0]
-			/ (BUFFER_SIZE / HALF_CONV_BUFF_SIZE);
-	pressureRearFront[1] = pressureRearFront[1]
-			/ (BUFFER_SIZE / HALF_CONV_BUFF_SIZE);
+	sagFrontRear[0] = sagFrontRear[0] / numberOfElements;
+	sagFrontRear[1] = sagFrontRear[1] / numberOfElements;
+	pressureFrontRear[0] = pressureFrontRear[0] / numberOfElements;
+	pressureFrontRear[1] = pressureFrontRear[1] / numberOfElements;
 
-	sagRearFront[0] = CONVERT_TO_PERCENT
-			* (sagRearFront[0] / ((float) (REAR_SUSPENSION_TRAVEL - calibrationValues.rearTravelSensor)));
-	sagRearFront[1] = CONVERT_TO_PERCENT
-			* (sagRearFront[1] / ((float) (FRONT_SUSPENSION_TRAVEL - calibrationValues.frontTravelSensor)));
+	sagFrontRear[0] = CONVERT_TO_PERCENT
+			* (sagFrontRear[0]
+					/ ((float) (FRONT_SUSPENSION_TRAVEL
+							- calibrationValues.frontTravelSensor)));
+	sagFrontRear[1] = CONVERT_TO_PERCENT
+			* (sagFrontRear[1]
+					/ ((float) (REAR_SUSPENSION_TRAVEL
+							- calibrationValues.rearTravelSensor)));
 }
 
 void HAL_ADC_ConvHalfCpltCallback(ADC_HandleTypeDef *hadc)
 {
 	inBufPtr = &adcDataWrite[0];
-	outRearPressureBufPtr = &adcRearPressureDataRead[0];
-	outFrontPressureBufPtr = &adcFrontPressureDataRead[0];
-	outRearBufPtr = &adcRearDataRead[0];
-	outFrontBufPtr = &adcFrontDataRead[0];
-
-	for (int n = 0; n < (BUFFER_SIZE / 2) - 1; n += NUMBER_OF_SENSORS)
-	{
-		outRearPressureBufPtr[n / NUMBER_OF_SENSORS] = convertAdcToPressure(
-				&inBufPtr[n],
-				PRESSURE_SENSOR_MAX_VALUE)
-				- calibrationValues.rearPressureSensor;
-		outFrontPressureBufPtr[n / NUMBER_OF_SENSORS] = convertAdcToPressure(
-				&inBufPtr[n + 1],
-				PRESSURE_SENSOR_MAX_VALUE)
-				- calibrationValues.frontPressureSensor;
-		outRearBufPtr[n / NUMBER_OF_SENSORS] = convertAdcToTravel(
-				&inBufPtr[n + 2],
-				REAR_SENSOR_TRAVEL) - calibrationValues.rearTravelSensor;
-		outFrontBufPtr[n / NUMBER_OF_SENSORS] = convertAdcToTravel(
-				&inBufPtr[n + 3],
-				FRONT_SENSOR_TRAVEL) - calibrationValues.frontTravelSensor;
-	}
-#ifdef FREE_RTOS
+	outBufPtr = &adcDataRead[0];
 	osSemaphoreRelease(travelSensorSemHandle);
-#endif
 }
 
 void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef *hadc)
@@ -246,45 +222,22 @@ void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef *hadc)
 #ifdef CHECK_SAMPLE_TIME
 	previousTime = time_end;
 	time_end = __HAL_TIM_GET_COUNTER(&htim6);
-	sample_time = ((time_end - previousTime)/NUMBER_OF_SENSORS)/(float)(BUFFER_SIZE/NUMBER_OF_SENSORS);
+	sample_time = NUMBER_OF_SENSORS
+			* ((time_end - previousTime) / (float) (TRAVEL_SENSOR_BUFFER_SIZE));
 	printf("semFullTime: %f\n", sample_time);
 #endif
 
-	inBufPtr = &adcDataWrite[BUFFER_SIZE / 2];
-	outRearPressureBufPtr = &adcRearPressureDataRead[BUFFER_SIZE
-			/ HALF_CONV_BUFF_SIZE];
-	outFrontPressureBufPtr = &adcFrontPressureDataRead[BUFFER_SIZE
-			/ HALF_CONV_BUFF_SIZE];
-	outRearBufPtr = &adcRearDataRead[BUFFER_SIZE / HALF_CONV_BUFF_SIZE];
-	outFrontBufPtr = &adcFrontDataRead[BUFFER_SIZE / HALF_CONV_BUFF_SIZE];
-
-	for (int n = 0; n < (BUFFER_SIZE / 2) - 1; n += NUMBER_OF_SENSORS)
-	{
-		outRearPressureBufPtr[n / NUMBER_OF_SENSORS] = convertAdcToPressure(
-				&inBufPtr[n],
-				PRESSURE_SENSOR_MAX_VALUE)
-				- calibrationValues.rearPressureSensor;
-		outFrontPressureBufPtr[n / NUMBER_OF_SENSORS] = convertAdcToPressure(
-				&inBufPtr[n + 1],
-				PRESSURE_SENSOR_MAX_VALUE)
-				- calibrationValues.frontPressureSensor;
-		outRearBufPtr[n / NUMBER_OF_SENSORS] = convertAdcToTravel(
-				&inBufPtr[n + 2],
-				REAR_SENSOR_TRAVEL) - calibrationValues.rearTravelSensor;
-		outFrontBufPtr[n / NUMBER_OF_SENSORS] = convertAdcToTravel(
-				&inBufPtr[n + 3],
-				FRONT_SENSOR_TRAVEL) - calibrationValues.frontTravelSensor;
-	}
-#ifdef FREE_RTOS
+	inBufPtr = &adcDataWrite[TRAVEL_SENSOR_BUFFER_SIZE / 2];
+	outBufPtr = &adcDataRead[TRAVEL_SENSOR_BUFFER_SIZE / 2];
 	osSemaphoreRelease(travelSensorSemHandle);
-#endif
+
 }
 
 static int16_t convertAdcToTravel(volatile int16_t *adcDataWrite,
 		int16_t sensorTravel)
 {
 
-	return (*adcDataWrite * sensorTravel / ADC_RESOLUTION);
+	return (*adcDataWrite * sensorTravel / (float) ADC_RESOLUTION);
 }
 
 static int16_t convertAdcToPressure(volatile int16_t *adcDataWrite,
@@ -295,23 +248,26 @@ static int16_t convertAdcToPressure(volatile int16_t *adcDataWrite,
 			* (*adcDataWrite * sensorMaxPressure / ((float) ADC_RESOLUTION)));
 }
 
-static void sendDataSD(char *file, volatile int16_t *sensor)
+static void normalizeTravelData(volatile int16_t *inBufPtr)
 {
-	char buffer[BUFFER_SIZE + 1];
-	memset(buffer, 0, BUFFER_SIZE + 1);
-	int i;
-	for (i = 0; i < (BUFFER_SIZE) / HALF_CONV_BUFF_SIZE; i++)
+	for (int n = 0; n <= (TRAVEL_SENSOR_BUFFER_SIZE / 2) - NUMBER_OF_SENSORS;
+			n += NUMBER_OF_SENSORS)
 	{
-		sprintf(buffer + strlen(buffer), "%d ", sensor[i]);
+		outBufPtr[n + REAR_PRESSURE_BUFFER_POSITION] = convertAdcToPressure(
+				&inBufPtr[n + REAR_PRESSURE_BUFFER_POSITION],
+				PRESSURE_SENSOR_MAX_VALUE)
+				- calibrationValues.rearPressureSensor;
+		outBufPtr[n + FRONT_PRESSURE_BUFFER_POSITION] = convertAdcToPressure(
+				&inBufPtr[n + FRONT_PRESSURE_BUFFER_POSITION],
+				PRESSURE_SENSOR_MAX_VALUE)
+				- calibrationValues.frontPressureSensor;
+		outBufPtr[n + REAR_TRAVEL_BUFFER_POSITION] = convertAdcToTravel(
+				&inBufPtr[n + REAR_TRAVEL_BUFFER_POSITION], REAR_SENSOR_TRAVEL)
+				- calibrationValues.rearTravelSensor;
+		outBufPtr[n + FRONT_TRAVEL_BUFFER_POSITION] = convertAdcToTravel(
+				&inBufPtr[n + FRONT_TRAVEL_BUFFER_POSITION],
+				FRONT_SENSOR_TRAVEL) - calibrationValues.frontTravelSensor;
 	}
-	size_t size = strlen(buffer) + 1;
-	char newBuff[size];
-	memset(newBuff, 0, size);
-	strncpy(newBuff, buffer, sizeof(newBuff));
-	newBuff[size] = '\0';
-	Mount_SD("/");
-	Update_File(file, newBuff);
-	Unmount_SD("/");
 }
 
 /*************** END OF FUNCTIONS ***************************************************************************/

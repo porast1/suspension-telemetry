@@ -26,7 +26,11 @@
 /**
  * This constant is
  */
-
+#define TRAVEL_SENSOR_BUFFER_SIZE 512U
+#define FRONT_TRAVEL_BUFFER_POSITION 3U
+#define REAR_TRAVEL_BUFFER_POSITION 2U
+#define FRONT_PRESSURE_BUFFER_POSITION 1U
+#define REAR_PRESSURE_BUFFER_POSITION 0
 /******************************************************************************
  * Configuration Constants
  *******************************************************************************/
@@ -58,11 +62,10 @@ void stopAdcDma(void);
  * @param sensorFront - file for front sensor
  * @param sensorRear - file for front sensor
  */
-void processData(char *sensorFront, char *sensorRear, char *sensorPressureFront,
-		char *sensorPressureRear);
+void processData(char *sensorsData);
 
-void processDataSag(int16_t *sagRearFront, int16_t *pressureRearFront);
-void travelPressureSensorCalibration(void);
+void processDataSag(int32_t *sagFrontRear, int32_t *pressureFrontRear);
+int travelPressureSensorCalibration(void);
 /**
  * @brief Half buffer data ready interrupt
  *
