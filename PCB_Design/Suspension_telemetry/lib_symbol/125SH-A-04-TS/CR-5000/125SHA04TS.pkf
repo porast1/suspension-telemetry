@@ -1,0 +1,10 @@
+(unit MM)
+
+(package "125SHA04TS"
+    (type UNDEF)
+    (uver 2)
+    (mountForm default
+        (footprintRef "125SHA04TS")
+        (spec "default")
+    )
+)

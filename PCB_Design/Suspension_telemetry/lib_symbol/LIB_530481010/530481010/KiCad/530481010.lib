@@ -1,0 +1,31 @@
+EESchema-LIBRARY Version 2.3
+#encoding utf-8
+#SamacSys ECAD Model 530481010
+#/13858099/1231078/2.50/10/2/Connector
+DEF 530481010 J 0 30 Y Y 1 F N
+F0 "J" 650 300 50 H V L CNN
+F1 "530481010" 650 200 50 H V L CNN
+F2 "530481010" 650 100 50 H I L CNN
+F3 "https://www.molex.com/pdm_docs/sd/530480210_sd.pdf" 650 0 50 H I L CNN
+F4 "1.25mm Pitch, PicoBlade PCB Header, Single Row, Right-Angle, Through Hole, Tin (Sn) Plating, Friction Lock, 10 Circuits, Tray, 2.30mm PC Tail Length" 650 -100 50 H I L CNN "Description"
+F5 "3.5" 650 -200 50 H I L CNN "Height"
+F6 "" 650 -300 50 H I L CNN "TME Electronic Components Part Number"
+F7 "" 650 -400 50 H I L CNN "TME Electronic Components Price/Stock"
+F8 "Molex" 650 -500 50 H I L CNN "Manufacturer_Name"
+F9 "530481010" 650 -600 50 H I L CNN "Manufacturer_Part_Number"
+DRAW
+X 1 1 0 -900 200 R 50 50 0 0 P
+X 2 2 0 -800 200 R 50 50 0 0 P
+X 3 3 0 -700 200 R 50 50 0 0 P
+X 4 4 0 -600 200 R 50 50 0 0 P
+X 5 5 0 -500 200 R 50 50 0 0 P
+X 6 6 0 -400 200 R 50 50 0 0 P
+X 7 7 0 -300 200 R 50 50 0 0 P
+X 8 8 0 -200 200 R 50 50 0 0 P
+X 9 9 0 -100 200 R 50 50 0 0 P
+X 10 10 0 0 200 R 50 50 0 0 P
+P 5 0 1 6 200 100 600 100 600 -1000 200 -1000 200 100 N
+ENDDRAW
+ENDDEF
+#
+#End Library

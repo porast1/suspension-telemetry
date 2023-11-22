@@ -1,0 +1,16 @@
+.TLV61046ADBVR :1 ;Switching Voltage Regulators 28-V Output Voltage Boost Converter with Power Diode and Isolation Switch 6-SOT-23 -40 to 125
+SOT95P280X145-6N
+*STM PS
+*NGS
+*PLB 1="SW" 2="GND" 3="FB" 4="EN" 5="VOUT" 6="VIN"
+*MXP 6
+*DFN TLV61046ADBVR
+~!TME Electronic Components Part Number (-)
+~!TME Electronic Components Price/Stock (-)
+~!Manufacturer_Name (Texas Instruments)
+~!Manufacturer_Part_Number (TLV61046ADBVR)
+~!Link Datasheet (http://www.ti.com/lit/ds/symlink/tlv61046a.pdf)
+~!Height (1.45mm)
+~!3D_Model (TLV61046ADBVR)
+TLV61046ADBVR
+1.1!P 2.1!P 3.1!I 6.1!I 5.1!P 4.1!I 

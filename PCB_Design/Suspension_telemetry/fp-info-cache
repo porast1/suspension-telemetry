@@ -1,4 +1,4 @@
-22388974804782070
+22416165157835985
 18259651-switch
 18259651
 1825965-1-2
@@ -34,6 +34,13 @@ BAT_BK-18650-PC2
 0
 2
 2
+BUTTON_CONN
+2803841
+280384-1-1
+Connector
+0
+8
+8
 Battery
 BatteryClip_Keystone_54_D16-19mm
 Battery clip for batteries with a diameter between 16-19 mm: https://www.keyelco.com/product.cfm/product_id/826
@@ -55887,6 +55894,13 @@ Fuse Fuseholder TR5 Littelfuse/Wickmann No. 460 No560
 0
 2
 2
+GCT_USB3505-30-A_REVA4
+GCT_USB3505-30-A_REVA4
+
+
+0
+9
+9
 HBHRB210VGSMT
 HBHRB210VGSMT
 HBHR-B2-10-VG-SMT-3
@@ -62383,6 +62397,48 @@ Yellow 5381 Series LED
 0
 2
 2
+LQH3NPN100MJRL
+LQH3NPN100MJRL
+1212 (3030) T=1.1±0.1mm
+Inductor
+0
+2
+2
+MCP73114
+SON50P300X300X100-11N-D
+(MF)10-Lead(DFN)
+Integrated Circuit
+0
+11
+11
+MOLEX_2P_2.54
+22057025
+22057025
+Connector
+0
+2
+2
+MOLEX_10_PIN
+530481010
+530481010
+Connector
+0
+10
+10
+MUSBRM1C130
+MUSBRM1C130
+MUSBRM1C130-3
+Connector
+0
+32
+32
+MikroP_90
+OS102011MA1QN1
+OS102011MA1QN1
+Switch
+0
+5
+5
 Module
 A20_OLINUXINO_LIME2
 A20 Olinuxino LIME2, 1.2GHz, 512-1024MB RAM, Micro-SD, NAND or eMMC, 1000Mbit Ethernet
@@ -65043,6 +65099,13 @@ net tie
 0
 4
 4
+OS102011MS2QN1C
+OS102011MS2QN1C
+OS102011MS2QN1C-1
+Switch
+0
+5
+5
 OptoDevice
 ADNS-9800
 Laser Gaming Sensor ADNS-9800
@@ -86680,6 +86743,13 @@ Logo WEEE
 0
 0
 0
+TLV61046ADBVR
+SOT95P280X145-6N
+SOT-23 (6)
+Power Supply
+0
+6
+6
 TerminalBlock
 TerminalBlock_Altech_AK300-2_P5.00mm
 Altech AK300 terminal block, pitch 5.0mm, 45 degree angled, see http://www.mouser.com/ds/2/16/PCBMETRC-24178.pdf
@@ -92344,6 +92414,13 @@ BAT_BK-18650-PC2
 2
 2
 footprint
+GCT_USB3505-30-A_REVA4
+
+
+0
+9
+9
+footprint
 HBHRB210VGSMT
 HBHR-B2-10-VG-SMT-3
 Connector
@@ -92357,6 +92434,13 @@ Inductor
 0
 2
 2
+footprint
+MUSBRM1C130
+MUSBRM1C130-3
+Connector
+0
+32
+32
 footprint
 SOIC127P600X175-8N
 SOIC8
@@ -92378,6 +92462,34 @@ Connector
 0
 16
 16
+footprints
+SO8SOP-8L_AOS
+
+AOSP32368 
+0
+8
+8
+footprints
+SO8SOP-8L_AOS-L
+
+AOSP32368 
+0
+8
+8
+footprints
+SO8SOP-8L_AOS-M
+
+AOSP32368 
+0
+8
+8
+molex_conn
+125SHA04TS
+125SH-A-04-TS-2
+Connector
+0
+4
+4
 molex_conn
 530480310
 530480310

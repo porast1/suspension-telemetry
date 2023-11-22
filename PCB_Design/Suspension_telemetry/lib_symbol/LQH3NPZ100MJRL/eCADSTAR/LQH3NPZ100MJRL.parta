@@ -1,0 +1,66 @@
+(Japanese_coding: sjis)
+(function "ECS_951234"
+    (uver 1)
+    (cuser "SamacSys")
+    (uuser "SamacSys")
+    (ctime 2019-10-01-12:21:36)
+    (utime 2023-03-07-16:10:32)
+    (interface
+        (port "1" (symbPinId 1) (portType INOUT))
+        (port "2" (symbPinId 2) (portType INOUT))
+    )
+    (property "symbolName" "LQH3NPZ100MJRL")
+)
+
+
+(pinAssign "ECS_951234"
+    (uver 1)
+    (cuser "SamacSys")
+    (uuser "SamacSys")
+    (ctime 2019-10-01-12:21:36)
+    (utime 2023-03-07-16:10:32)
+    (interface
+        (port "1" (symbPinId 1) (portName "1") (portType INOUT))
+        (port "2" (symbPinId 2) (portName "2") (portType INOUT))
+    )
+    (internal
+        (funcInst (functionRef "ECS_951234")
+                (port "1" (match "1"))
+                (port "2" (match "2"))
+        )
+    )
+    (property "usePowerBox" "No")
+    (property "symbolName" "LQH3NPZ100MJRL")
+)
+
+
+(part "LQH3NPZ100MJRL"
+    (uver 1)
+    (cuser "SamacSys")
+    (uuser "SamacSys")
+    (ctime 2019-10-01-12:21:36)
+    (utime 2023-03-07-16:10:32)
+    (packageRef "LQH3NPZ100MJRL")
+    (pinAssignRef "ECS_951234")
+    (interface
+        (port "1" (symbPinId 1) (portName "1") (portType INOUT))
+        (port "2" (symbPinId 2) (portName "2") (portType INOUT))
+    )
+    (partClass UNDEF)
+    (useInSchema Y)
+    (useInLayout Y)
+    (inPartsList Y)
+    (partType NORMAL)
+    (placeRestriction FREE)
+    (property "enetNonSeries" "NO")
+    (property "refDesPrefix" "L")
+    (property "description" "LQH3NPZ_JR Series Inductor 10uH +/-20% 1212 (3030)")
+    (property "TME_Electronic_Components_Part_Number" "")
+    (property "TME_Electronic_Components_Price/Stock" "")
+    (property "Manufacturer_Name" "Murata Electronics")
+    (property "Manufacturer_Part_Number" "LQH3NPZ100MJRL")
+    (property "Datasheet_Link" "https://psearch.en.murata.com/inductor/product/LQH3NPZ100MJR%23.html")
+    (property "compAreaTopHeight" 1.2)
+)
+
+

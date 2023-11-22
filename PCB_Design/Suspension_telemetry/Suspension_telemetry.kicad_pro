@@ -34,9 +34,9 @@
         "other_text_thickness": 0.15,
         "other_text_upright": false,
         "pads": {
-          "drill": 3.2,
-          "height": 3.2,
-          "width": 3.2
+          "drill": 0.0,
+          "height": 1.6,
+          "width": 0.7
         },
         "silk_line_width": 0.15,
         "silk_text_italic": false,
@@ -60,10 +60,7 @@
           "width": 0.25
         }
       ],
-      "drc_exclusions": [
-        "starved_thermal|127762000|97255500|a73a6195-7d8b-4416-8b7d-f4abb3092119|bd9fdeed-c627-4276-bf9f-b038904d21ca|F.Cu",
-        "starved_thermal|135866500|101854000|a73a6195-7d8b-4416-8b7d-f4abb3092119|57f765c5-8262-4370-9b12-ef8d9b403c01|F.Cu"
-      ],
+      "drc_exclusions": [],
       "meta": {
         "version": 2
       },
@@ -193,6 +190,14 @@
         {
           "diameter": 0.0,
           "drill": 0.0
+        },
+        {
+          "diameter": 0.5,
+          "drill": 0.3
+        },
+        {
+          "diameter": 0.8,
+          "drill": 0.5
         }
       ],
       "zones_allow_external_fillets": false
@@ -458,7 +463,7 @@
       "idf": "",
       "netlist": "",
       "specctra_dsn": "FREEROUTIN_DSN/Suspension_telemetry.dsn",
-      "step": "",
+      "step": "Suspension_telemetry.step",
       "vrml": ""
     },
     "page_layout_descr_file": ""

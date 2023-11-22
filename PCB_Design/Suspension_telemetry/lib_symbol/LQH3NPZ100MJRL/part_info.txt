@@ -1,0 +1,9 @@
+Manufacturer=Murata Electronics
+PartNumber=LQH3NPZ100MJRL
+PartCategory=Inductor
+PackageCategory=Other
+PinCount=2
+Version=1.2
+Released=2019-10-01 12:21:36
+Downloaded=2023-11-04 18:37:38
+3D=Y

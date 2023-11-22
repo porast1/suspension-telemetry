@@ -1,0 +1,10 @@
+(unit MM)
+
+(package "SON50P300X300X100-11N-D"
+    (type UNDEF)
+    (uver 2)
+    (mountForm default
+        (footprintRef "SON50P300X300X100-11N-D")
+        (spec "default")
+    )
+)

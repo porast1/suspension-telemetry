@@ -1,0 +1,13 @@
+(unit MM)
+
+(package "MCP73114-0NSI_MF"
+    (type UNDEF)
+    (uver 2)
+    (cuser "SamacSys")
+    (uuser "SamacSys")
+    (utime 2018-06-06-11:10:45)
+    (mountForm default
+        (footprintRef "SON50P300X300X100-11N-D")
+        (spec "System")
+    )
+)

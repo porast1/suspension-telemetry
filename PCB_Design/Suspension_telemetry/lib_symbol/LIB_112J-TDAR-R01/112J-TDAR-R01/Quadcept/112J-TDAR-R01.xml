@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--/12773305/1231078/2.50/13/4/Connector/-->
+<quadcept_library>
+  <setting unit="mil" />
+  <textstyle name="Default" height="47.244094488189" strokewidth="7.8740157480315" charwidth="47.244094488189" />
+  <textstyle name="Dimension" height="19.6850393700787" strokewidth="0" charwidth="19.6850393700787" />
+  <textstyle name="H127W0635TH00762" height="50" strokewidth="3" charwidth="25" />
+  <textstyle name="H15W15TH02" height="59.0551181102362" strokewidth="7.8740157480315" charwidth="59.0551181102362" />
+  <padstyle name="r160_70" surface="True" plated="False" isvia="False" nopaste="False" nomask="True" complex="False" holesize="0">
+    <padshape layer="TOP" shape="rectangle" width="27.55905511811" height="62.992125984251" />
+    <padshape layer="TOP_SOLDER_MASK" shape="rectangle" width="35.433070866141" height="70.866141732283" />
+    <padshape layer="TOP_SOLDER_PASTE" shape="rectangle" width="27.55905511811" height="62.992125984251" />
+  </padstyle>
+  <padstyle name="r140_120" surface="True" plated="False" isvia="False" nopaste="False" nomask="True" complex="False" holesize="0">
+    <padshape layer="TOP" shape="rectangle" width="47.244094488188" height="55.11811023622" />
+    <padshape layer="TOP_SOLDER_MASK" shape="rectangle" width="55.11811023622" height="62.992125984251" />
+    <padshape layer="TOP_SOLDER_PASTE" shape="rectangle" width="47.244094488188" height="55.11811023622" />
+  </padstyle>
+  <padstyle name="c50_h100" surface="False" plated="True" isvia="False" nopaste="True" nomask="True" complex="False" holesize="39.370078740157">
+    <padshape layer="TOP" shape="round" width="19.685039370078" height="19.685039370078" />
+    <padshape layer="TOP_SOLDER_MASK" shape="round" width="27.55905511811" height="27.55905511811" />
+    <padshape layer="INNER" shape="round" width="19.685039370078" height="19.685039370078" />
+    <padshape layer="BOTTOM" shape="round" width="19.685039370078" height="19.685039370078" />
+    <padshape layer="BOTTOM_SOLDER_MASK" shape="round" width="27.55905511811" height="27.55905511811" />
+  </padstyle>
+  <padstyle name="r160_140" surface="True" plated="False" isvia="False" nopaste="False" nomask="True" complex="False" holesize="0">
+    <padshape layer="TOP" shape="rectangle" width="55.11811023622" height="62.992125984251" />
+    <padshape layer="TOP_SOLDER_MASK" shape="rectangle" width="62.992125984251" height="70.866141732283" />
+    <padshape layer="TOP_SOLDER_PASTE" shape="rectangle" width="55.11811023622" height="62.992125984251" />
+  </padstyle>
+  <padstyle name="r220_120" surface="True" plated="False" isvia="False" nopaste="False" nomask="True" complex="False" holesize="0">
+    <padshape layer="TOP" shape="rectangle" width="47.244094488188" height="86.614173228345" />
+    <padshape layer="TOP_SOLDER_MASK" shape="rectangle" width="55.11811023622" height="94.488188976377" />
+    <padshape layer="TOP_SOLDER_PASTE" shape="rectangle" width="47.244094488188" height="86.614173228345" />
+  </padstyle>
+  <footprint name="112JTDARR01" originx="0" originy="0" pickpointx="0" pickpointy="0">
+    <pcbpin number="1" name="1" style="r160_70" originx="88.582677165353" originy="285.43307086614" rotation="0" />
+    <pcbpin number="2" name="2" style="r160_70" originx="45.275590551181" originy="285.43307086614" rotation="0" />
+    <pcbpin number="3" name="3" style="r160_70" originx="1.9685039370079" originy="285.43307086614" rotation="0" />
+    <pcbpin number="4" name="4" style="r160_70" originx="-41.338582677165" originy="285.43307086614" rotation="0" />
+    <pcbpin number="5" name="5" style="r160_70" originx="-84.645669291338" originy="285.43307086614" rotation="0" />
+    <pcbpin number="6" name="6" style="r160_70" originx="-127.95275590551" originy="285.43307086614" rotation="0" />
+    <pcbpin number="7" name="7" style="r160_70" originx="-171.25984251968" originy="285.43307086614" rotation="0" />
+    <pcbpin number="8" name="8" style="r160_70" originx="-214.56692913386" originy="285.43307086614" rotation="0" />
+    <pcbpin number="9" name="G1" style="r140_120" originx="-305.11811023622" originy="265.74803149606" rotation="0" />
+    <pcbpin number="10" name="CD1" style="r160_70" originx="-257.87401574803" originy="285.43307086614" rotation="0" />
+    <pcbpin number="11" name="MH1" style="c50_h100" originx="120.07874015748" originy="-127.95275590551" rotation="90" />
+    <pcbpin number="12" name="MH2" style="c50_h100" originx="-194.88188976378" originy="-127.95275590551" rotation="90" />
+    <pcbpin number="13" name="MP1" style="r160_140" originx="269.68503937008" originy="265.74803149606" rotation="90" />
+    <pcbpin number="14" name="MP2" style="r220_120" originx="305.11811023622" originy="-112.20472440945" rotation="0" />
+    <pcbpin number="15" name="MP3" style="r220_120" originx="-305.11811023622" originy="-112.20472440945" rotation="0" />
+    <line layer="TOP_ASSEMBLY" originx="-289.37007874015" originy="-285.43307086614" endx="289.37007874015" endy="-285.43307086614" width="7.8740157480314" />
+    <line layer="TOP_ASSEMBLY" originx="289.37007874015" originy="-285.43307086614" endx="289.37007874015" endy="285.43307086614" width="7.8740157480314" />
+    <line layer="TOP_ASSEMBLY" originx="289.37007874015" originy="285.43307086614" endx="-289.37007874015" endy="285.43307086614" width="7.8740157480314" />
+    <line layer="TOP_ASSEMBLY" originx="-289.37007874015" originy="285.43307086614" endx="-289.37007874015" endy="-285.43307086614" width="7.8740157480314" />
+    <line layer="TOP_SILKSCREEN" originx="127.95275590551" originy="285.43307086614" endx="216.53543307086" endy="285.43307086614" width="3.9370078740157" />
+    <line layer="TOP_SILKSCREEN" originx="216.53543307086" originy="285.43307086614" endx="216.53543307086" endy="285.43307086614" width="3.9370078740157" />
+    <line layer="TOP_SILKSCREEN" originx="216.53543307086" originy="285.43307086614" endx="127.95275590551" endy="285.43307086614" width="3.9370078740157" />
+    <line layer="TOP_SILKSCREEN" originx="127.95275590551" originy="285.43307086614" endx="127.95275590551" endy="285.43307086614" width="3.9370078740157" />
+    <line layer="TOP_SILKSCREEN" originx="289.37007874015" originy="216.53543307086" endx="289.37007874015" endy="216.53543307086" width="3.9370078740157" />
+    <line layer="TOP_SILKSCREEN" originx="289.37007874015" originy="216.53543307086" endx="289.37007874015" endy="-49.212598425196" width="3.9370078740157" />
+    <line layer="TOP_SILKSCREEN" originx="289.37007874015" originy="-49.212598425196" endx="289.37007874015" endy="-49.212598425196" width="3.9370078740157" />
+    <line layer="TOP_SILKSCREEN" originx="289.37007874015" originy="-49.212598425196" endx="289.37007874015" endy="216.53543307086" width="3.9370078740157" />
+    <line layer="TOP_SILKSCREEN" originx="289.37007874015" originy="-177.16535433071" endx="289.37007874015" endy="-177.16535433071" width="3.9370078740157" />
+    <line layer="TOP_SILKSCREEN" originx="289.37007874015" originy="-177.16535433071" endx="289.37007874015" endy="-285.43307086614" width="3.9370078740157" />
+    <line layer="TOP_SILKSCREEN" originx="289.37007874015" originy="-285.43307086614" endx="289.37007874015" endy="-285.43307086614" width="3.9370078740157" />
+    <line layer="TOP_SILKSCREEN" originx="289.37007874015" originy="-285.43307086614" endx="289.37007874015" endy="-177.16535433071" width="3.9370078740157" />
+    <line layer="TOP_SILKSCREEN" originx="289.37007874015" originy="-285.43307086614" endx="-289.37007874015" endy="-285.43307086614" width="3.9370078740157" />
+    <line layer="TOP_SILKSCREEN" originx="-289.37007874015" originy="-285.43307086614" endx="-289.37007874015" endy="-285.43307086614" width="3.9370078740157" />
+    <line layer="TOP_SILKSCREEN" originx="-289.37007874015" originy="-285.43307086614" endx="289.37007874015" endy="-285.43307086614" width="3.9370078740157" />
+    <line layer="TOP_SILKSCREEN" originx="289.37007874015" originy="-285.43307086614" endx="289.37007874015" endy="-285.43307086614" width="3.9370078740157" />
+    <line layer="TOP_SILKSCREEN" originx="-289.37007874015" originy="-285.43307086614" endx="-289.37007874015" endy="-285.43307086614" width="3.9370078740157" />
+    <line layer="TOP_SILKSCREEN" originx="-289.37007874015" originy="-285.43307086614" endx="-289.37007874015" endy="-177.16535433071" width="3.9370078740157" />
+    <line layer="TOP_SILKSCREEN" originx="-289.37007874015" originy="-177.16535433071" endx="-289.37007874015" endy="-177.16535433071" width="3.9370078740157" />
+    <line layer="TOP_SILKSCREEN" originx="-289.37007874015" originy="-177.16535433071" endx="-289.37007874015" endy="-285.43307086614" width="3.9370078740157" />
+    <line layer="TOP_SILKSCREEN" originx="-289.37007874015" originy="-49.212598425196" endx="-289.37007874015" endy="-49.212598425196" width="3.9370078740157" />
+    <line layer="TOP_SILKSCREEN" originx="-289.37007874015" originy="-49.212598425196" endx="-289.37007874015" endy="216.53543307086" width="3.9370078740157" />
+    <line layer="TOP_SILKSCREEN" originx="-289.37007874015" originy="216.53543307086" endx="-289.37007874015" endy="216.53543307086" width="3.9370078740157" />
+    <line layer="TOP_SILKSCREEN" originx="-289.37007874015" originy="216.53543307086" endx="-289.37007874015" endy="-49.212598425196" width="3.9370078740157" />
+    <line layer="TOP_PLACE_BOUND" originx="-368.11023622047" originy="397.63779527559" endx="368.11023622047" endy="397.63779527559" width="3.9370078740157" />
+    <line layer="TOP_PLACE_BOUND" originx="368.11023622047" originy="397.63779527559" endx="368.11023622047" endy="-324.8031496063" width="3.9370078740157" />
+    <line layer="TOP_PLACE_BOUND" originx="368.11023622047" originy="-324.8031496063" endx="-368.11023622047" endy="-324.8031496063" width="3.9370078740157" />
+    <line layer="TOP_PLACE_BOUND" originx="-368.11023622047" originy="-324.8031496063" endx="-368.11023622047" endy="397.63779527559" width="3.9370078740157" />
+    <line layer="TOP_SILKSCREEN" originx="88.582677165353" originy="358.26771653543" endx="88.582677165353" endy="358.26771653543" width="7.8740157480314" />
+    <arc layer="TOP_SILKSCREEN" originx="88.582677165353" originy="356.29921259842" startangle="90.0" sweepangle="180.0" radius="1.9685039370078" width="7.8740157480314" />
+    <line layer="TOP_SILKSCREEN" originx="88.582677165353" originy="354.33070866141" endx="88.582677165353" endy="354.33070866141" width="7.8740157480314" />
+    <arc layer="TOP_SILKSCREEN" originx="88.582677165353" originy="356.29921259842" startangle="-90.0" sweepangle="180.0" radius="1.9685039370078" width="7.8740157480314" />
+    <line layer="TOP_SILKSCREEN" originx="88.582677165353" originy="358.26771653543" endx="88.582677165353" endy="358.26771653543" width="7.8740157480314" />
+    <arc layer="TOP_SILKSCREEN" originx="88.582677165353" originy="356.29921259842" startangle="90.0" sweepangle="180.0" radius="1.9685039370078" width="7.8740157480314" />
+  </footprint>
+  <symbol name="112J-TDAR-R01" originx="0" originy="0">
+    <line originx="200" originy="100" endx="1600" endy="100" width="0" />
+    <line originx="1600" originy="-700" endx="1600" endy="100" width="0" />
+    <line originx="1600" originy="-700" endx="200" endy="-700" width="0" />
+    <line originx="200" originy="100" endx="200" endy="-700" width="0" />
+    <sympin number="1" originx="200" originy="0" rotation="180" length="100" width="7.8740157480315" flipped="False">
+      <text name="pinname" originx="230" originy="0" style="Default" rotation="0" justify="left" flipped="False" hidden="False" data="DAT2" />
+      <text name="pindes" originx="140" originy="20" style="Default" rotation="0" justify="lowerright" flipped="False" hidden="False" data="1" />
+    </sympin>
+    <sympin number="2" originx="200" originy="-100" rotation="180" length="100" width="7.8740157480315" flipped="False">
+      <text name="pinname" originx="230" originy="-100" style="Default" rotation="0" justify="left" flipped="False" hidden="False" data="CD/DAT3" />
+      <text name="pindes" originx="140" originy="-80" style="Default" rotation="0" justify="lowerright" flipped="False" hidden="False" data="2" />
+    </sympin>
+    <sympin number="3" originx="200" originy="-200" rotation="180" length="100" width="7.8740157480315" flipped="False">
+      <text name="pinname" originx="230" originy="-200" style="Default" rotation="0" justify="left" flipped="False" hidden="False" data="CMD" />
+      <text name="pindes" originx="140" originy="-180" style="Default" rotation="0" justify="lowerright" flipped="False" hidden="False" data="3" />
+    </sympin>
+    <sympin number="4" originx="200" originy="-300" rotation="180" length="100" width="7.8740157480315" flipped="False">
+      <text name="pinname" originx="230" originy="-300" style="Default" rotation="0" justify="left" flipped="False" hidden="False" data="VDD" />
+      <text name="pindes" originx="140" originy="-280" style="Default" rotation="0" justify="lowerright" flipped="False" hidden="False" data="4" />
+    </sympin>
+    <sympin number="5" originx="200" originy="-400" rotation="180" length="100" width="7.8740157480315" flipped="False">
+      <text name="pinname" originx="230" originy="-400" style="Default" rotation="0" justify="left" flipped="False" hidden="False" data="CLK" />
+      <text name="pindes" originx="140" originy="-380" style="Default" rotation="0" justify="lowerright" flipped="False" hidden="False" data="5" />
+    </sympin>
+    <sympin number="6" originx="200" originy="-500" rotation="180" length="100" width="7.8740157480315" flipped="False">
+      <text name="pinname" originx="230" originy="-500" style="Default" rotation="0" justify="left" flipped="False" hidden="False" data="VSS" />
+      <text name="pindes" originx="140" originy="-480" style="Default" rotation="0" justify="lowerright" flipped="False" hidden="False" data="6" />
+    </sympin>
+    <sympin number="7" originx="200" originy="-600" rotation="180" length="100" width="7.8740157480315" flipped="False">
+      <text name="pinname" originx="230" originy="-600" style="Default" rotation="0" justify="left" flipped="False" hidden="False" data="DAT0" />
+      <text name="pindes" originx="140" originy="-580" style="Default" rotation="0" justify="lowerright" flipped="False" hidden="False" data="7" />
+    </sympin>
+    <sympin number="8" originx="1600" originy="0" rotation="0" length="100" width="7.8740157480315" flipped="False">
+      <text name="pinname" originx="1570" originy="0" style="Default" rotation="0" justify="right" flipped="False" hidden="False" data="DAT1" />
+      <text name="pindes" originx="1660" originy="20" style="Default" rotation="0" justify="lowerleft" flipped="False" hidden="False" data="8" />
+    </sympin>
+    <sympin number="9" originx="1600" originy="-100" rotation="0" length="100" width="7.8740157480315" flipped="False">
+      <text name="pinname" originx="1570" originy="-100" style="Default" rotation="0" justify="right" flipped="False" hidden="False" data="GROUND" />
+      <text name="pindes" originx="1660" originy="-80" style="Default" rotation="0" justify="lowerleft" flipped="False" hidden="False" data="G1" />
+    </sympin>
+    <sympin number="10" originx="1600" originy="-200" rotation="0" length="100" width="7.8740157480315" flipped="False">
+      <text name="pinname" originx="1570" originy="-200" style="Default" rotation="0" justify="right" flipped="False" hidden="False" data="CARD_DETECTION" />
+      <text name="pindes" originx="1660" originy="-180" style="Default" rotation="0" justify="lowerleft" flipped="False" hidden="False" data="CD1" />
+    </sympin>
+    <sympin number="11" originx="1600" originy="-300" rotation="0" length="100" width="7.8740157480315" flipped="False">
+      <text name="pinname" originx="1570" originy="-300" style="Default" rotation="0" justify="right" flipped="False" hidden="False" data="MP1" />
+      <text name="pindes" originx="1660" originy="-280" style="Default" rotation="0" justify="lowerleft" flipped="False" hidden="False" data="MP1" />
+    </sympin>
+    <sympin number="12" originx="1600" originy="-400" rotation="0" length="100" width="7.8740157480315" flipped="False">
+      <text name="pinname" originx="1570" originy="-400" style="Default" rotation="0" justify="right" flipped="False" hidden="False" data="MP2" />
+      <text name="pindes" originx="1660" originy="-380" style="Default" rotation="0" justify="lowerleft" flipped="False" hidden="False" data="MP2" />
+    </sympin>
+    <sympin number="13" originx="1600" originy="-500" rotation="0" length="100" width="7.8740157480315" flipped="False">
+      <text name="pinname" originx="1570" originy="-500" style="Default" rotation="0" justify="right" flipped="False" hidden="False" data="MP3" />
+      <text name="pindes" originx="1660" originy="-480" style="Default" rotation="0" justify="lowerleft" flipped="False" hidden="False" data="MP3" />
+    </sympin>
+  </symbol>
+  <component name="112J-TDAR-R01" designatorprefix="J" height="78.740157480314" footprint="112JTDARR01">
+    <comppin designator="1" sympin="1" pinswap="0" gateswap="0" gate="1" group="1" side="" type="Any" name="DAT2" />
+    <comppin designator="2" sympin="2" pinswap="0" gateswap="0" gate="1" group="1" side="" type="Any" name="CD/DAT3" />
+    <comppin designator="3" sympin="3" pinswap="0" gateswap="0" gate="1" group="1" side="" type="Any" name="CMD" />
+    <comppin designator="4" sympin="4" pinswap="0" gateswap="0" gate="1" group="1" side="" type="Any" name="VDD" />
+    <comppin designator="5" sympin="5" pinswap="0" gateswap="0" gate="1" group="1" side="" type="Any" name="CLK" />
+    <comppin designator="6" sympin="6" pinswap="0" gateswap="0" gate="1" group="1" side="" type="Any" name="VSS" />
+    <comppin designator="7" sympin="7" pinswap="0" gateswap="0" gate="1" group="1" side="" type="Any" name="DAT0" />
+    <comppin designator="8" sympin="8" pinswap="0" gateswap="0" gate="1" group="1" side="" type="Any" name="DAT1" />
+    <comppin designator="G1" sympin="9" pinswap="0" gateswap="0" gate="1" group="1" side="" type="Any" name="GROUND" />
+    <comppin designator="CD1" sympin="10" pinswap="0" gateswap="0" gate="1" group="1" side="" type="Any" name="CARD_DETECTION" />
+    <comppin designator="MP1" sympin="11" pinswap="0" gateswap="0" gate="1" group="1" side="" type="Any" name="MP1" />
+    <comppin designator="MP2" sympin="12" pinswap="0" gateswap="0" gate="1" group="1" side="" type="Any" name="MP2" />
+    <comppin designator="MP3" sympin="13" pinswap="0" gateswap="0" gate="1" group="1" side="" type="Any" name="MP3" />
+    <attached_symbol gate="1" name="112J-TDAR-R01" />
+    <pinmap designator="1" footprintpin="1" />
+    <pinmap designator="2" footprintpin="2" />
+    <pinmap designator="3" footprintpin="3" />
+    <pinmap designator="4" footprintpin="4" />
+    <pinmap designator="5" footprintpin="5" />
+    <pinmap designator="6" footprintpin="6" />
+    <pinmap designator="7" footprintpin="7" />
+    <pinmap designator="8" footprintpin="8" />
+    <pinmap designator="G1" footprintpin="9" />
+    <pinmap designator="CD1" footprintpin="10" />
+    <pinmap designator="MP1" footprintpin="11" />
+    <pinmap designator="MP2" footprintpin="12" />
+    <pinmap designator="MP3" footprintpin="13" />
+    <text name="Datasheet" originx="0" originy="0" style="Default" rotation="0" justify="" flipped="False" hidden="True" data="https://cdn.sos.sk/productdata/2c/8b/de324bd3/112j-tdar-r01.pdf" />
+    <text name="Description" originx="0" originy="0" style="Default" rotation="0" justify="" flipped="False" hidden="True" data="Connector: for cards; SD Micro; push-push; SMT; gold-plated" />
+    <text name="TME Electronic Components Part Number" originx="0" originy="0" style="Default" rotation="0" justify="" flipped="False" hidden="True" data="" />
+    <text name="TME Electronic Components Price/Stock" originx="0" originy="0" style="Default" rotation="0" justify="" flipped="False" hidden="True" data="" />
+    <text name="Manufacturer_Name" originx="0" originy="0" style="Default" rotation="0" justify="" flipped="False" hidden="True" data="ATTEND" />
+    <text name="Manufacturer_Part_Number" originx="1650" originy="200" style="Default" rotation="0" justify="left" flipped="False" hidden="False" data="112J-TDAR-R01" />
+  </component>
+</quadcept_library>

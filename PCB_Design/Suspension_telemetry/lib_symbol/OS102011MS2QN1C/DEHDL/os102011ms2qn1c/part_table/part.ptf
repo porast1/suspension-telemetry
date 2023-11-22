@@ -1,0 +1,11 @@
+FILE_TYPE = MULTI_PHYS_TABLE;
+
+PART 'OS102011MS2QN1C'
+CLASS = DISCRETE
+{========================================================================================}
+:"MANUFACTURER_NAME", "MANUFACTURER_PART_NUMBER"= "PART_NUMBER", "JEDEC_TYPE", "PACK_TYPE", "TME_ELECTRONIC_COMPONENTS_PART_NUMBER", "TME_ELECTRONIC_COMPONENTS_PRICE/STOCK", "DESCRIPTION", "DATASHEET", "HEIGHT";
+{========================================================================================}
+ "C & K COMPONENTS", "OS102011MS2QN1C" (!) = "", "OS102011MS2QN1C", "Other", "", "", "Through Hole Slide Switch Single Pole Double Throw (SPDT) Latching 100 mA Slide", "https://www.ckswitches.com/media/1428/os.pdf", "8.7 mm"
+END_PART
+
+END.

@@ -1,0 +1,9 @@
+Manufacturer=C & K COMPONENTS
+PartNumber=OS102011MA1QN1
+PartCategory=Switch
+PackageCategory=Other
+PinCount=3
+Version=3.1
+Released=2017-01-16 14:34:42
+Downloaded=2023-11-08 10:29:57
+3D=Y

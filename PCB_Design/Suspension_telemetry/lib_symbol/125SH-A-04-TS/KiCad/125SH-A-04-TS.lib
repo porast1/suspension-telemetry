@@ -1,0 +1,25 @@
+EESchema-LIBRARY Version 2.3
+#encoding utf-8
+#SamacSys ECAD Model 125SH-A-04-TS
+#/14887397/1231078/2.50/4/3/Connector
+DEF 125SH-A-04-TS J 0 30 Y Y 1 F N
+F0 "J" 650 300 50 H V L CNN
+F1 "125SH-A-04-TS" 650 200 50 H V L CNN
+F2 "125SHA04TS" 650 100 50 H I L CNN
+F3 "https://app.adam-tech.com/products/download/data_sheet/196951/125sh-a-xx-ts-data-sheet.pdf" 650 0 50 H I L CNN
+F4 "Crimp, Wire to Board, Secure Lock Header 4P 1.25mm Pitch" 650 -100 50 H I L CNN "Description"
+F5 "5.08" 650 -200 50 H I L CNN "Height"
+F6 "" 650 -300 50 H I L CNN "TME Electronic Components Part Number"
+F7 "" 650 -400 50 H I L CNN "TME Electronic Components Price/Stock"
+F8 "Adam Tech" 650 -500 50 H I L CNN "Manufacturer_Name"
+F9 "125SH-A-04-TS" 650 -600 50 H I L CNN "Manufacturer_Part_Number"
+DRAW
+X 1 1 0 0 200 R 50 50 0 0 P
+X 2 2 0 -100 200 R 50 50 0 0 P
+X 3 3 0 -200 200 R 50 50 0 0 P
+X 4 4 0 -300 200 R 50 50 0 0 P
+P 5 0 1 6 200 100 600 100 600 -400 200 -400 200 100 N
+ENDDRAW
+ENDDEF
+#
+#End Library

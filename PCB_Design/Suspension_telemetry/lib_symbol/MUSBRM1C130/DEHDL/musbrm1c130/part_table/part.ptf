@@ -1,0 +1,11 @@
+FILE_TYPE = MULTI_PHYS_TABLE;
+
+PART 'MUSBRM1C130'
+CLASS = IO
+{========================================================================================}
+:"MANUFACTURER_NAME", "MANUFACTURER_PART_NUMBER"= "PART_NUMBER", "JEDEC_TYPE", "PACK_TYPE", "MOUSER_PART_NUMBER", "MOUSER_PRICE/STOCK", "DESCRIPTION", "DATASHEET", "HEIGHT";
+{========================================================================================}
+ "Amphenol Communications Solutions", "MUSBRM1C130" (!) = "", "MUSBRM1C130", "Other", "523-MUSBRM1C130", "https://www.mouser.co.uk/ProductDetail/Amphenol-Commercial-Products/MUSBRM1C130?qs=r%2FmwOkjQ8uu%252BqSoLlGgWuA%3D%3D", "Rugged USB Type C, Input Output Connector, IP67, Right Angle, Unified Thread, no dust cover", "https://cdn.amphenol-cs.com/media/wysiwyg/files/documentation/datasheet/inputoutput/io_harsh_musb-type-c.pdf", "6.15 mm"
+END_PART
+
+END.

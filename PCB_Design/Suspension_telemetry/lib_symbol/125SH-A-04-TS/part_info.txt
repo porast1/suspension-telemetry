@@ -1,0 +1,9 @@
+Manufacturer=Adam Tech
+PartNumber=125SH-A-04-TS
+PartCategory=Connector
+PackageCategory=Other
+PinCount=4
+Version=1.2
+Released=2021-07-25 04:04:33
+Downloaded=2023-11-06 18:44:09
+3D=Y

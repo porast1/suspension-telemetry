@@ -1,0 +1,11 @@
+FILE_TYPE = MULTI_PHYS_TABLE;
+
+PART 'MCP73114_0NSI_MF'
+CLASS = IC
+{========================================================================================}
+:"MANUFACTURER_NAME", "MANUFACTURER_PART_NUMBER"= "PART_NUMBER", "JEDEC_TYPE", "PACK_TYPE", "TME_ELECTRONIC_COMPONENTS_PART_NUMBER", "TME_ELECTRONIC_COMPONENTS_PRICE/STOCK", "DESCRIPTION", "DATASHEET", "HEIGHT";
+{========================================================================================}
+ "Microchip", "MCP73114-0NSI/MF" (!) = "", "SON50P300X300X100-11N-D", "Small Outline No-lead", "", "", "Single cell, 5.8V OVP battery Charger", "http://ww1.microchip.com/downloads/en/DeviceDoc/20002183E.pdf", "1 mm"
+END_PART
+
+END.

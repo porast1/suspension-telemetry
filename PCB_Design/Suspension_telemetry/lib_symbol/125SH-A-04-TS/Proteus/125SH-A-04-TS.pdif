@@ -1,0 +1,119 @@
+;Proteus Design Interchange Format
+(PDIF
+ (vendor "SamacSys Limited")
+ (version 1 0)
+ (library
+  (part "125SH-A-04-TS"
+   (description "Crimp, Wire to Board, Secure Lock Header 4P 1.25mm Pitch")
+   (family "CON")
+   (package "125SHA04TS")
+   (attribute "Datasheet Link" "https://app.adam-tech.com/products/download/data_sheet/196951/125sh-a-xx-ts-data-sheet.pdf")
+   (attribute "Geometry.Height" "5.08mm")
+   (attribute "TME Electronic Components Part Number" "")
+   (attribute "TME Electronic Components Price/Stock" "")
+   (attribute "Manufacturer_Name" "Adam Tech")
+   (attribute "Manufacturer_Part_Number" "125SH-A-04-TS")
+   (gate
+    (symbol "125SH-A-04-TS")
+    (pin "1" 1 PS)
+    (pin "2" 2 PS)
+    (pin "3" 3 PS)
+    (pin "4" 4 PS)
+   )
+  )
+  (symbol "125SH-A-04-TS"
+   (units THOU)
+   (origin (pt 0 0))
+   (graphic
+    (stroke 10)
+    (path (pt 200 100) (pt 600 100) (pt 600 -400) (pt 200 -400) (pt 200 100) (closed))
+   )
+   (terminal
+    (body (symbol "PIN") (pt 0 0) (rot 0) (mir 0) (visible true))
+    (name (pt 230 0) (rot 0) (just MIDDLE LEFT) (visible true))
+    (number (pt 140 20) (rot 0) (just BOTTOM RIGHT) (visible true)))
+   (terminal
+    (body (symbol "PIN") (pt 0 -100) (rot 0) (mir 0) (visible true))
+    (name (pt 230 0) (rot 0) (just MIDDLE LEFT) (visible true))
+    (number (pt 140 20) (rot 0) (just BOTTOM RIGHT) (visible true)))
+   (terminal
+    (body (symbol "PIN") (pt 0 -200) (rot 0) (mir 0) (visible true))
+    (name (pt 230 0) (rot 0) (just MIDDLE LEFT) (visible true))
+    (number (pt 140 20) (rot 0) (just BOTTOM RIGHT) (visible true)))
+   (terminal
+    (body (symbol "PIN") (pt 0 -300) (rot 0) (mir 0) (visible true))
+    (name (pt 230 0) (rot 0) (just MIDDLE LEFT) (visible true))
+    (number (pt 140 20) (rot 0) (just BOTTOM RIGHT) (visible true)))
+  )
+  (symbol "PIN"
+   (units THOU)
+   (origin (pt 0 0))
+   (graphic
+    (stroke 10)
+    (path (pt 0 0) (pt 200 0))))
+  (symbol "PINSHORT"
+   (units THOU)
+   (origin (pt 0 0))
+   (graphic
+    (stroke 10)
+    (path (pt 0 0) (pt 100 0))))
+  (package "125SHA04TS"
+   (units MM)
+   (layer TASM
+    (graphic
+     (stroke 0.1)
+     (path
+      (closed true)
+      (pt -1.525 1.15)
+      (pt 5.275 1.15)
+      (pt 5.275 -2.05)
+      (pt -1.525 -2.05)
+      (pt -1.525 1.15))))
+   (layer TSLK
+    (graphic
+     (stroke 0.2)
+     (path
+      (closed true)
+      (pt -1.525 1.15)
+      (pt 5.275 1.15)
+      (pt 5.275 -2.05)
+      (pt -1.525 -2.05)
+      (pt -1.525 1.15))))
+   (layer OCCA
+    (graphic
+     (stroke 0.1)
+     (path
+      (closed true)
+      (pt -2.525 2.15)
+      (pt 6.275 2.15)
+      (pt 6.275 -3.05)
+      (pt -2.525 -3.05)
+      (pt -2.525 2.15))))
+   (layer TSLK
+    (graphic
+     (stroke 0.1)
+     (path
+      (closed true)
+      (pt 0 1.8)
+      (arc (pt 0.000 1.800) (pt -0.050 1.700) (pt 0.050 1.800) (start 180.0) (sweep 90.0))
+      (pt 0 1.7)
+      (arc (pt 0.000 1.700) (pt -0.050 1.700) (pt 0.050 1.800) (start 180.0) (sweep -90.0))
+      (pt 0 1.8))))
+   (leg 1 (pt 0.000 0.000) (padstack 0))
+   (leg 2 (pt 1.250 0.000) (padstack 0))
+   (leg 3 (pt 2.500 0.000) (padstack 0))
+   (leg 4 (pt 3.750 0.000) (padstack 0))
+   (padstack 0
+    (hole 0.5)
+    (plated true)
+    (pad (layer TCOP) (round 1.000))
+    (pad (layer INNER) (round 1.000))
+    (pad (layer BCOP) (round 1.000))
+   )
+   (model "125SH-A-04-TS.stp"
+    (euler 0 0 0)
+    (offset 0 0 0)
+   )
+  )
+ )
+)

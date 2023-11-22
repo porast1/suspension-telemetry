@@ -1,0 +1,13 @@
+(unit MM)
+
+(package "125SH-A-04-TS"
+    (type UNDEF)
+    (uver 2)
+    (cuser "SamacSys")
+    (uuser "SamacSys")
+    (utime 2021-07-25-04:04:33)
+    (mountForm default
+        (footprintRef "125SHA04TS")
+        (spec "System")
+    )
+)

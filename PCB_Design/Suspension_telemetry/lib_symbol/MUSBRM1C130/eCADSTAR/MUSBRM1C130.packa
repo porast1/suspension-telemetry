@@ -1,0 +1,13 @@
+(unit MM)
+
+(package "MUSBRM1C130"
+    (type UNDEF)
+    (uver 2)
+    (cuser "SamacSys")
+    (uuser "SamacSys")
+    (utime 2019-11-08-10:40:20)
+    (mountForm default
+        (footprintRef "MUSBRM1C130")
+        (spec "System")
+    )
+)

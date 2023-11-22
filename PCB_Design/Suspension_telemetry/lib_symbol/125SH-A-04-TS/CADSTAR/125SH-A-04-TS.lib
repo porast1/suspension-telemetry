@@ -1,0 +1,16 @@
+.125SH-A-04-TS :1 ;Crimp, Wire to Board, Secure Lock Header 4P 1.25mm Pitch
+"125SHA04TS"
+*STM J
+*NGS
+*PLB 1="1" 2="2" 3="3" 4="4"
+*MXP 4
+*DFN 125SH-A-04-TS
+~!TME Electronic Components Part Number (-)
+~!TME Electronic Components Price/Stock (-)
+~!Manufacturer_Name (Adam Tech)
+~!Manufacturer_Part_Number (125SH-A-04-TS)
+~!Link Datasheet (https://app.adam-tech.com/products/download/data_sheet/196951/125sh-a-xx-ts-data-sheet.pdf)
+~!Height (5.08mm)
+~!3D_Model (125SH-A-04-TS)
+"125SH-A-04-TS"
+1.1!U 2.1!U 3.1!U 4.1!U 

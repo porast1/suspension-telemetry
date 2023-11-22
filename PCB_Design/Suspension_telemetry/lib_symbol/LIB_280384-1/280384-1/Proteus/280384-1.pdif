@@ -1,0 +1,150 @@
+;Proteus Design Interchange Format
+(PDIF
+ (vendor "SamacSys Limited")
+ (version 1 0)
+ (library
+  (part "280384-1"
+   (description "2X4P AMPMODU II SHRD HDR, ST, TIN")
+   (family "CON")
+   (package "2803841")
+   (attribute "Datasheet Link" "https://www.te.com/commerce/DocumentDelivery/DDEController?Action=showdoc&DocId=Customer+Drawing%7F280384%7FU%7Fpdf%7FEnglish%7FENG_CD_280384_U.pdf%7F280384-1")
+   (attribute "Geometry.Height" "12.8mm")
+   (attribute "TME Electronic Components Part Number" "")
+   (attribute "TME Electronic Components Price/Stock" "")
+   (attribute "Manufacturer_Name" "TE Connectivity")
+   (attribute "Manufacturer_Part_Number" "280384-1")
+   (gate
+    (symbol "280384-1")
+    (pin "1" 1 PS)
+    (pin "2" 2 PS)
+    (pin "3" 3 PS)
+    (pin "4" 4 PS)
+    (pin "5" 5 PS)
+    (pin "6" 6 PS)
+    (pin "7" 7 PS)
+    (pin "8" 8 PS)
+   )
+  )
+  (symbol "280384-1"
+   (units THOU)
+   (origin (pt 0 0))
+   (graphic
+    (stroke 10)
+    (path (pt 200 100) (pt 600 100) (pt 600 -400) (pt 200 -400) (pt 200 100) (closed))
+   )
+   (terminal
+    (body (symbol "PIN") (pt 0 0) (rot 0) (mir 0) (visible true))
+    (name (pt 230 0) (rot 0) (just MIDDLE LEFT) (visible true))
+    (number (pt 140 20) (rot 0) (just BOTTOM RIGHT) (visible true)))
+   (terminal
+    (body (symbol "PIN") (pt 800 0) (rot 0) (mir X) (visible true))
+    (name (pt 230 0) (rot 0) (just MIDDLE LEFT) (visible true))
+    (number (pt 140 20) (rot 0) (just BOTTOM RIGHT) (visible true)))
+   (terminal
+    (body (symbol "PIN") (pt 0 -100) (rot 0) (mir 0) (visible true))
+    (name (pt 230 0) (rot 0) (just MIDDLE LEFT) (visible true))
+    (number (pt 140 20) (rot 0) (just BOTTOM RIGHT) (visible true)))
+   (terminal
+    (body (symbol "PIN") (pt 800 -100) (rot 0) (mir X) (visible true))
+    (name (pt 230 0) (rot 0) (just MIDDLE LEFT) (visible true))
+    (number (pt 140 20) (rot 0) (just BOTTOM RIGHT) (visible true)))
+   (terminal
+    (body (symbol "PIN") (pt 0 -200) (rot 0) (mir 0) (visible true))
+    (name (pt 230 0) (rot 0) (just MIDDLE LEFT) (visible true))
+    (number (pt 140 20) (rot 0) (just BOTTOM RIGHT) (visible true)))
+   (terminal
+    (body (symbol "PIN") (pt 800 -200) (rot 0) (mir X) (visible true))
+    (name (pt 230 0) (rot 0) (just MIDDLE LEFT) (visible true))
+    (number (pt 140 20) (rot 0) (just BOTTOM RIGHT) (visible true)))
+   (terminal
+    (body (symbol "PIN") (pt 0 -300) (rot 0) (mir 0) (visible true))
+    (name (pt 230 0) (rot 0) (just MIDDLE LEFT) (visible true))
+    (number (pt 140 20) (rot 0) (just BOTTOM RIGHT) (visible true)))
+   (terminal
+    (body (symbol "PIN") (pt 800 -300) (rot 0) (mir X) (visible true))
+    (name (pt 230 0) (rot 0) (just MIDDLE LEFT) (visible true))
+    (number (pt 140 20) (rot 0) (just BOTTOM RIGHT) (visible true)))
+  )
+  (symbol "PIN"
+   (units THOU)
+   (origin (pt 0 0))
+   (graphic
+    (stroke 10)
+    (path (pt 0 0) (pt 200 0))))
+  (symbol "PINSHORT"
+   (units THOU)
+   (origin (pt 0 0))
+   (graphic
+    (stroke 10)
+    (path (pt 0 0) (pt 100 0))))
+  (package "2803841"
+   (units MM)
+   (layer TASM
+    (graphic
+     (stroke 0.1)
+     (path
+      (closed true)
+      (pt -2.54 4.77)
+      (pt 10.16 4.77)
+      (pt 10.16 -2.23)
+      (pt -2.54 -2.23)
+      (pt -2.54 4.77))))
+   (layer TSLK
+    (graphic
+     (stroke 0.2)
+     (path
+      (closed true)
+      (pt -2.54 4.77)
+      (pt 10.16 4.77)
+      (pt 10.16 -2.23)
+      (pt -2.54 -2.23)
+      (pt -2.54 4.77))))
+   (layer OCCA
+    (graphic
+     (stroke 0.1)
+     (path
+      (closed true)
+      (pt -3.54 5.77)
+      (pt 11.16 5.77)
+      (pt 11.16 -3.23)
+      (pt -3.54 -3.23)
+      (pt -3.54 5.77))))
+   (layer TSLK
+    (graphic
+     (stroke 0.1)
+     (path
+      (closed true)
+      (pt 0 -2.8)
+      (arc (pt 0.000 -2.800) (pt -0.050 -2.800) (pt 0.050 -2.700) (start 180.0) (sweep -90.0))
+      (pt 0 -2.7)
+      (arc (pt 0.000 -2.700) (pt -0.050 -2.800) (pt 0.050 -2.700) (start 180.0) (sweep 90.0))
+      (pt 0 -2.8))))
+   (leg 1 (pt 0.000 0.000) (padstack 1))
+   (leg 2 (pt 0.000 2.540) (padstack 0))
+   (leg 3 (pt 2.540 0.000) (padstack 0))
+   (leg 4 (pt 2.540 2.540) (padstack 0))
+   (leg 5 (pt 5.080 0.000) (padstack 0))
+   (leg 6 (pt 5.080 2.540) (padstack 0))
+   (leg 7 (pt 7.620 0.000) (padstack 0))
+   (leg 8 (pt 7.620 2.540) (padstack 0))
+   (padstack 0
+    (hole 1.09)
+    (plated true)
+    (pad (layer TCOP) (round 1.635))
+    (pad (layer INNER) (round 1.635))
+    (pad (layer BCOP) (round 1.635))
+   )
+   (padstack 1
+    (hole 1.09)
+    (plated true)
+    (pad (layer TCOP) (square 1.635))
+    (pad (layer INNER) (round 1.635))
+    (pad (layer BCOP) (square 1.635))
+   )
+   (model "280384-1.stp"
+    (euler 0 0 0)
+    (offset 3.809999942779541 1.2699999809265137 12.529999732971191)
+   )
+  )
+ )
+)

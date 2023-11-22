@@ -1,0 +1,5 @@
+(sym_lib_table
+  (version 7)
+  (lib (name "SENSOR_TRAVEL")(type "KiCad")(uri "${KIPRJMOD}/lib/LIB_M8S-04PFFP-SF8001/M8S-04PFFP-SF8001/KiCad/M8S-04PFFP-SF8001.kicad_sym")(options "")(descr ""))
+  (lib (name "MOLEX_10_90")(type "KiCad")(uri "C:/Users/patry/Desktop/Suspension_telemetry/data_acquisition_module/PCB_Design/Suspension_telemetry/lib_symbol/LIB_530481010/530481010/KiCad/530481010.kicad_sym")(options "")(descr ""))
+)

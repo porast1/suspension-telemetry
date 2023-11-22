@@ -1,0 +1,11 @@
+FILE_TYPE = MULTI_PHYS_TABLE;
+
+PART '125SH_A_04_TS'
+CLASS = IO
+{========================================================================================}
+:"MANUFACTURER_NAME", "MANUFACTURER_PART_NUMBER"= "PART_NUMBER", "JEDEC_TYPE", "PACK_TYPE", "TME_ELECTRONIC_COMPONENTS_PART_NUMBER", "TME_ELECTRONIC_COMPONENTS_PRICE/STOCK", "DESCRIPTION", "DATASHEET", "HEIGHT";
+{========================================================================================}
+ "Adam Tech", "125SH-A-04-TS" (!) = "", "125SHA04TS", "Other", "", "", "Crimp, Wire to Board, Secure Lock Header 4P 1.25mm Pitch", "https://app.adam-tech.com/products/download/data_sheet/196951/125sh-a-xx-ts-data-sheet.pdf", "5.08 mm"
+END_PART
+
+END.

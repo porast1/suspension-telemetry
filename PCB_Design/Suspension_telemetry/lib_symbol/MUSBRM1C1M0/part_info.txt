@@ -1,0 +1,9 @@
+Manufacturer=Amphenol
+PartNumber=MUSBRM1C1M0
+PartCategory=Connector
+PackageCategory=Other
+PinCount=32
+Version=2.5
+Released=2023-02-06 05:38:48
+Downloaded=2023-11-04 13:23:45
+3D=Y

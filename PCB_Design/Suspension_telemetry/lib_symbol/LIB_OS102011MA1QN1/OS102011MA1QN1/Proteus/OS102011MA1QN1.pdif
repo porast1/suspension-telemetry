@@ -1,0 +1,120 @@
+;Proteus Design Interchange Format
+(PDIF
+ (vendor "SamacSys Limited")
+ (version 1 0)
+ (library
+  (part "OS102011MA1QN1"
+   (description "Switch Slide Right Angle SPDT 0.1A 12VDC Through Hole Slide Switch SPDT On-On 0.1 A@ 12 V dc Slide")
+   (family "SWI")
+   (package "OS102011MA1QN1")
+   (attribute "Datasheet Link" "https://www.ckswitches.com/media/1428/os.pdf")
+   (attribute "TME Electronic Components Part Number" "")
+   (attribute "TME Electronic Components Price/Stock" "")
+   (attribute "Manufacturer_Name" "C & K COMPONENTS")
+   (attribute "Manufacturer_Part_Number" "OS102011MA1QN1")
+   (gate
+    (symbol "OS102011MA1QN1")
+    (pin "1" 1 PS)
+    (pin "2" 2 PS)
+    (pin "3" 3 PS)
+   )
+  )
+  (symbol "OS102011MA1QN1"
+   (units THOU)
+   (origin (pt 0 0))
+   (graphic
+    (stroke 10)
+    (path (pt -100 600) (pt 300 600) (pt 300 200) (pt -100 200) (pt -100 600) (closed))
+   )
+   (terminal
+    (body (symbol "PIN") (pt 0 0) (rot 90) (mir 0) (visible true))
+    (name (pt 230 0) (rot 0) (just MIDDLE LEFT) (visible true))
+    (number (pt 140 20) (rot 0) (just BOTTOM RIGHT) (visible true)))
+   (terminal
+    (body (symbol "PIN") (pt 100 0) (rot 90) (mir 0) (visible true))
+    (name (pt 230 0) (rot 0) (just MIDDLE LEFT) (visible true))
+    (number (pt 140 20) (rot 0) (just BOTTOM RIGHT) (visible true)))
+   (terminal
+    (body (symbol "PIN") (pt 200 0) (rot 90) (mir 0) (visible true))
+    (name (pt 230 0) (rot 0) (just MIDDLE LEFT) (visible true))
+    (number (pt 140 20) (rot 0) (just BOTTOM RIGHT) (visible true)))
+  )
+  (symbol "PIN"
+   (units THOU)
+   (origin (pt 0 0))
+   (graphic
+    (stroke 10)
+    (path (pt 0 0) (pt 200 0))))
+  (symbol "PINSHORT"
+   (units THOU)
+   (origin (pt 0 0))
+   (graphic
+    (stroke 10)
+    (path (pt 0 0) (pt 100 0))))
+  (package "OS102011MA1QN1"
+   (units MM)
+   (layer TASM
+    (graphic
+     (stroke 0.2)
+     (path
+      (closed true)
+      (pt -4.3 2.2)
+      (pt 4.3 2.2)
+      (pt 4.3 -2.2)
+      (pt -4.3 -2.2)
+      (pt -4.3 2.2))))
+   (layer TSLK
+    (graphic
+     (stroke 0.2)
+     (path
+      (closed false)
+      (pt -4.3 2.2)
+      (pt 4.3 2.2))))
+   (layer TSLK
+    (graphic
+     (stroke 0.2)
+     (path
+      (closed false)
+      (pt -4.3 -2.2)
+      (pt 4.3 -2.2))))
+   (layer TSLK
+    (graphic
+     (stroke 0.2)
+     (circle
+      (pt -2.68228 2.781) (pt -2.48372 2.781)
+     )
+    )
+   )
+   (leg 1 (pt -2 0) (padstack 0))
+   (leg 2 (pt 0 0) (padstack 0))
+   (leg 3 (pt 2 0) (padstack 0))
+   (leg 4 (pt -4.1 0) (padstack 4))
+   (leg 5 (pt 4.1 0) (padstack 5))
+   (padstack 0
+    (hole 0.8)
+    (plated true)
+    (pad (layer TCOP) (round 1.3))
+    (pad (layer INNER) (round 1.3))
+    (pad (layer BCOP) (round 1.3))
+   )
+   (padstack 4
+    (hole 1.5)
+    (plated true)
+    (pad (layer TCOP) (round 2.25))
+    (pad (layer INNER) (round 2.25))
+    (pad (layer BCOP) (round 2.25))
+   )
+   (padstack 5
+    (hole 1.5)
+    (plated true)
+    (pad (layer TCOP) (round 2.25))
+    (pad (layer INNER) (round 2.25))
+    (pad (layer BCOP) (round 2.25))
+   )
+   (model "OS102011MA1QN1.stp"
+    (euler 90 0 0)
+    (offset 19.520000457763672 -9.729999542236328 -20.309999465942383)
+   )
+  )
+ )
+)

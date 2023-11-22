@@ -1,0 +1,9 @@
+EESchema-DOCLIB  Version 2.0
+#
+$CMP TLV61046ADBVR
+D Switching Voltage Regulators 28-V Output Voltage Boost Converter with Power Diode and Isolation Switch 6-SOT-23 -40 to 125
+K
+F http://www.ti.com/lit/ds/symlink/tlv61046a.pdf
+$ENDCMP
+#
+#End Doc Library

@@ -1,0 +1,16 @@
+.MCP73114-0NSI_MF :1 ;Single cell, 5.8V OVP battery Charger
+SON50P300X300X100-11N-D
+*STM IC
+*NGS
+*PLB 1="VDD_1" 2="VDD_2" 3="VBAT_1" 4="VBAT_2" 5="NC_1" 6="NC_2" 7="STAT" 8="VSS_1" 9="VSS_2" 10="PROG" 11="EP"
+*MXP 11
+*DFN MCP73114-0NSI_MF
+~!TME Electronic Components Part Number (-)
+~!TME Electronic Components Price/Stock (-)
+~!Manufacturer_Name (Microchip)
+~!Manufacturer_Part_Number (MCP73114-0NSI/MF)
+~!Link Datasheet (http://ww1.microchip.com/downloads/en/DeviceDoc/20002183E.pdf)
+~!Height (1mm)
+~!3D_Model (MCP73114-0NSI_MF)
+MCP73114-0NSI_MF
+1.1!U 2.1!U 3.1!U 4.1!U 5.1!U 11.1!U 10.1!U 9.1!U 8.1!U 7.1!U 6.1!U 

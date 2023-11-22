@@ -1,0 +1,17 @@
+.OS102011MS2QN1C :1 ;Through Hole Slide Switch Single Pole Double Throw (SPDT) Latching 100 mA Slide
+OS102011MS2QN1C
+*STM S
+*NGS
+*PNM 1=1 2=2 3=3 4=MH1 5=MH2
+*PLB 1="NO" 2="COM" 3="NC" 4="MH1" 5="MH2"
+*MXP 5
+*DFN OS102011MS2QN1C
+~!TME Electronic Components Part Number (-)
+~!TME Electronic Components Price/Stock (-)
+~!Manufacturer_Name (C & K COMPONENTS)
+~!Manufacturer_Part_Number (OS102011MS2QN1C)
+~!Link Datasheet (https://www.ckswitches.com/media/1428/os.pdf)
+~!Height (8.7mm)
+~!3D_Model (OS102011MS2QN1C)
+OS102011MS2QN1C
+1.1!U 2.1!U 3.1!U 4.1!U 5.1!U 

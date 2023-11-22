@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--/159518/1231078/2.50/11/3/Integrated Circuit/-->
+<quadcept_library>
+  <setting unit="mil" />
+  <textstyle name="Default" height="47.244094488189" strokewidth="7.8740157480315" charwidth="47.244094488189" />
+  <textstyle name="Dimension" height="19.6850393700787" strokewidth="0" charwidth="19.6850393700787" />
+  <textstyle name="H127W0635TH00762" height="50" strokewidth="3" charwidth="25" />
+  <textstyle name="H15W15TH02" height="59.0551181102362" strokewidth="7.8740157480315" charwidth="59.0551181102362" />
+  <padstyle name="r80_30" surface="True" plated="False" isvia="False" nopaste="False" nomask="True" complex="False" holesize="0">
+    <padshape layer="TOP" shape="rectangle" width="11.811023622047" height="31.496062992126" />
+    <padshape layer="TOP_SOLDER_PASTE" shape="rectangle" width="11.811023622047" height="31.496062992126" />
+    <padshape layer="TOP_SOLDER_MASK" shape="rectangle" width="19.685039370078" height="39.370078740157" />
+  </padstyle>
+  <padstyle name="r245_175" surface="True" plated="False" isvia="False" nopaste="False" nomask="True" complex="False" holesize="0">
+    <padshape layer="TOP" shape="rectangle" width="68.897637795275" height="96.456692913385" />
+    <padshape layer="TOP_SOLDER_MASK" shape="rectangle" width="76.771653543306" height="104.33070866142" />
+    <padshape layer="TOP_SOLDER_PASTE" shape="rectangle" width="68.897637795275" height="96.456692913385" />
+  </padstyle>
+  <footprint name="SON50P300X300X100-11N" originx="0" originy="0" pickpointx="0" pickpointy="0">
+    <pcbpin number="1" name="1" style="r80_30" originx="-59.055118110235" originy="39.370078740157" rotation="90" />
+    <pcbpin number="2" name="2" style="r80_30" originx="-59.055118110235" originy="19.685039370078" rotation="90" />
+    <pcbpin number="3" name="3" style="r80_30" originx="-59.055118110235" originy="0" rotation="90" />
+    <pcbpin number="4" name="4" style="r80_30" originx="-59.055118110235" originy="-19.685039370078" rotation="90" />
+    <pcbpin number="5" name="5" style="r80_30" originx="-59.055118110235" originy="-39.370078740157" rotation="90" />
+    <pcbpin number="6" name="6" style="r80_30" originx="59.055118110235" originy="-39.370078740157" rotation="90" />
+    <pcbpin number="7" name="7" style="r80_30" originx="59.055118110235" originy="-19.685039370078" rotation="90" />
+    <pcbpin number="8" name="8" style="r80_30" originx="59.055118110235" originy="0" rotation="90" />
+    <pcbpin number="9" name="9" style="r80_30" originx="59.055118110235" originy="19.685039370078" rotation="90" />
+    <pcbpin number="10" name="10" style="r80_30" originx="59.055118110235" originy="39.370078740157" rotation="90" />
+    <pcbpin number="11" name="11" style="r245_175" originx="0" originy="0" rotation="0" />
+    <line layer="TOP_PLACE_BOUND" originx="-83.661417322834" originy="68.897637795275" endx="83.661417322834" endy="68.897637795275" width="1.9685039370079" />
+    <line layer="TOP_PLACE_BOUND" originx="83.661417322834" originy="68.897637795275" endx="83.661417322834" endy="-68.897637795275" width="1.9685039370079" />
+    <line layer="TOP_PLACE_BOUND" originx="83.661417322834" originy="-68.897637795275" endx="-83.661417322834" endy="-68.897637795275" width="1.9685039370079" />
+    <line layer="TOP_PLACE_BOUND" originx="-83.661417322834" originy="-68.897637795275" endx="-83.661417322834" endy="68.897637795275" width="1.9685039370079" />
+    <line layer="TOP_ASSEMBLY" originx="-59.055118110235" originy="59.055118110235" endx="59.055118110235" endy="59.055118110235" width="3.9370078740157" />
+    <line layer="TOP_ASSEMBLY" originx="59.055118110235" originy="59.055118110235" endx="59.055118110235" endy="-59.055118110235" width="3.9370078740157" />
+    <line layer="TOP_ASSEMBLY" originx="59.055118110235" originy="-59.055118110235" endx="-59.055118110235" endy="-59.055118110235" width="3.9370078740157" />
+    <line layer="TOP_ASSEMBLY" originx="-59.055118110235" originy="-59.055118110235" endx="-59.055118110235" endy="59.055118110235" width="3.9370078740157" />
+    <line layer="TOP_ASSEMBLY" originx="-59.055118110235" originy="29.527559055118" endx="-29.527559055118" endy="59.055118110235" width="3.9370078740157" />
+    <arc layer="TOP_SILKSCREEN" originx="-74.803149606298" originy="64.960629921259" startangle="180" sweepangle="180" radius="4.9212598425196" width="9.8425196850392" />
+    <arc layer="TOP_SILKSCREEN" originx="-74.803149606298" originy="64.960629921259" startangle="180" sweepangle="-180" radius="4.9212598425196" width="9.8425196850392" />
+  </footprint>
+  <symbol name="MCP73114-0NSI_MF" originx="0" originy="0">
+    <line originx="200" originy="100" endx="1200" endy="100" width="0" />
+    <line originx="1200" originy="-700" endx="1200" endy="100" width="0" />
+    <line originx="1200" originy="-700" endx="200" endy="-700" width="0" />
+    <line originx="200" originy="100" endx="200" endy="-700" width="0" />
+    <sympin number="1" originx="200" originy="0" rotation="180" length="100" width="7.8740157480315" flipped="False">
+      <text name="pinname" originx="230" originy="0" style="Default" rotation="0" justify="left" flipped="False" hidden="False" data="VDD_1" />
+      <text name="pindes" originx="140" originy="20" style="Default" rotation="0" justify="lowerright" flipped="False" hidden="False" data="1" />
+    </sympin>
+    <sympin number="2" originx="200" originy="-100" rotation="180" length="100" width="7.8740157480315" flipped="False">
+      <text name="pinname" originx="230" originy="-100" style="Default" rotation="0" justify="left" flipped="False" hidden="False" data="VDD_2" />
+      <text name="pindes" originx="140" originy="-80" style="Default" rotation="0" justify="lowerright" flipped="False" hidden="False" data="2" />
+    </sympin>
+    <sympin number="3" originx="200" originy="-200" rotation="180" length="100" width="7.8740157480315" flipped="False">
+      <text name="pinname" originx="230" originy="-200" style="Default" rotation="0" justify="left" flipped="False" hidden="False" data="VBAT_1" />
+      <text name="pindes" originx="140" originy="-180" style="Default" rotation="0" justify="lowerright" flipped="False" hidden="False" data="3" />
+    </sympin>
+    <sympin number="4" originx="200" originy="-300" rotation="180" length="100" width="7.8740157480315" flipped="False">
+      <text name="pinname" originx="230" originy="-300" style="Default" rotation="0" justify="left" flipped="False" hidden="False" data="VBAT_2" />
+      <text name="pindes" originx="140" originy="-280" style="Default" rotation="0" justify="lowerright" flipped="False" hidden="False" data="4" />
+    </sympin>
+    <sympin number="5" originx="200" originy="-400" rotation="180" length="100" width="7.8740157480315" flipped="False">
+      <text name="pinname" originx="230" originy="-400" style="Default" rotation="0" justify="left" flipped="False" hidden="False" data="NC_1" />
+      <text name="pindes" originx="140" originy="-380" style="Default" rotation="0" justify="lowerright" flipped="False" hidden="False" data="5" />
+    </sympin>
+    <sympin number="11" originx="700" originy="-700" rotation="270" length="100" width="7.8740157480315" flipped="False">
+      <text name="pinname" originx="700" originy="-670" style="Default" rotation="0" justify="left" flipped="False" hidden="False" data="EP" />
+      <text name="pindes" originx="680" originy="-760" style="Default" rotation="0" justify="lowerright" flipped="False" hidden="False" data="11" />
+    </sympin>
+    <sympin number="10" originx="1200" originy="0" rotation="0" length="100" width="7.8740157480315" flipped="False">
+      <text name="pinname" originx="1170" originy="0" style="Default" rotation="0" justify="right" flipped="False" hidden="False" data="PROG" />
+      <text name="pindes" originx="1260" originy="20" style="Default" rotation="0" justify="lowerleft" flipped="False" hidden="False" data="10" />
+    </sympin>
+    <sympin number="9" originx="1200" originy="-100" rotation="0" length="100" width="7.8740157480315" flipped="False">
+      <text name="pinname" originx="1170" originy="-100" style="Default" rotation="0" justify="right" flipped="False" hidden="False" data="VSS_2" />
+      <text name="pindes" originx="1260" originy="-80" style="Default" rotation="0" justify="lowerleft" flipped="False" hidden="False" data="9" />
+    </sympin>
+    <sympin number="8" originx="1200" originy="-200" rotation="0" length="100" width="7.8740157480315" flipped="False">
+      <text name="pinname" originx="1170" originy="-200" style="Default" rotation="0" justify="right" flipped="False" hidden="False" data="VSS_1" />
+      <text name="pindes" originx="1260" originy="-180" style="Default" rotation="0" justify="lowerleft" flipped="False" hidden="False" data="8" />
+    </sympin>
+    <sympin number="7" originx="1200" originy="-300" rotation="0" length="100" width="7.8740157480315" flipped="False">
+      <text name="pinname" originx="1170" originy="-300" style="Default" rotation="0" justify="right" flipped="False" hidden="False" data="STAT" />
+      <text name="pindes" originx="1260" originy="-280" style="Default" rotation="0" justify="lowerleft" flipped="False" hidden="False" data="7" />
+    </sympin>
+    <sympin number="6" originx="1200" originy="-400" rotation="0" length="100" width="7.8740157480315" flipped="False">
+      <text name="pinname" originx="1170" originy="-400" style="Default" rotation="0" justify="right" flipped="False" hidden="False" data="NC_2" />
+      <text name="pindes" originx="1260" originy="-380" style="Default" rotation="0" justify="lowerleft" flipped="False" hidden="False" data="6" />
+    </sympin>
+  </symbol>
+  <component name="MCP73114-0NSI_MF" designatorprefix="IC" height="39.370078740157" footprint="SON50P300X300X100-11N">
+    <comppin designator="1" sympin="1" pinswap="0" gateswap="0" gate="1" group="1" side="" type="Any" name="VDD_1" />
+    <comppin designator="2" sympin="2" pinswap="0" gateswap="0" gate="1" group="1" side="" type="Any" name="VDD_2" />
+    <comppin designator="3" sympin="3" pinswap="0" gateswap="0" gate="1" group="1" side="" type="Any" name="VBAT_1" />
+    <comppin designator="4" sympin="4" pinswap="0" gateswap="0" gate="1" group="1" side="" type="Any" name="VBAT_2" />
+    <comppin designator="5" sympin="5" pinswap="0" gateswap="0" gate="1" group="1" side="" type="Any" name="NC_1" />
+    <comppin designator="6" sympin="6" pinswap="0" gateswap="0" gate="1" group="1" side="" type="Any" name="NC_2" />
+    <comppin designator="7" sympin="7" pinswap="0" gateswap="0" gate="1" group="1" side="" type="Any" name="STAT" />
+    <comppin designator="8" sympin="8" pinswap="0" gateswap="0" gate="1" group="1" side="" type="Any" name="VSS_1" />
+    <comppin designator="9" sympin="9" pinswap="0" gateswap="0" gate="1" group="1" side="" type="Any" name="VSS_2" />
+    <comppin designator="10" sympin="10" pinswap="0" gateswap="0" gate="1" group="1" side="" type="Any" name="PROG" />
+    <comppin designator="11" sympin="11" pinswap="0" gateswap="0" gate="1" group="1" side="" type="Any" name="EP" />
+    <attached_symbol gate="1" name="MCP73114-0NSI_MF" />
+    <pinmap designator="1" footprintpin="1" />
+    <pinmap designator="2" footprintpin="2" />
+    <pinmap designator="3" footprintpin="3" />
+    <pinmap designator="4" footprintpin="4" />
+    <pinmap designator="5" footprintpin="5" />
+    <pinmap designator="6" footprintpin="6" />
+    <pinmap designator="7" footprintpin="7" />
+    <pinmap designator="8" footprintpin="8" />
+    <pinmap designator="9" footprintpin="9" />
+    <pinmap designator="10" footprintpin="10" />
+    <pinmap designator="11" footprintpin="11" />
+    <text name="Datasheet" originx="0" originy="0" style="Default" rotation="0" justify="" flipped="False" hidden="True" data="http://ww1.microchip.com/downloads/en/DeviceDoc/20002183E.pdf" />
+    <text name="Description" originx="0" originy="0" style="Default" rotation="0" justify="" flipped="False" hidden="True" data="Single cell, 5.8V OVP battery Charger" />
+    <text name="TME Electronic Components Part Number" originx="0" originy="0" style="Default" rotation="0" justify="" flipped="False" hidden="True" data="" />
+    <text name="TME Electronic Components Price/Stock" originx="0" originy="0" style="Default" rotation="0" justify="" flipped="False" hidden="True" data="" />
+    <text name="Manufacturer_Name" originx="0" originy="0" style="Default" rotation="0" justify="" flipped="False" hidden="True" data="Microchip" />
+    <text name="Manufacturer_Part_Number" originx="1250" originy="200" style="Default" rotation="0" justify="left" flipped="False" hidden="False" data="MCP73114-0NSI/MF" />
+  </component>
+</quadcept_library>

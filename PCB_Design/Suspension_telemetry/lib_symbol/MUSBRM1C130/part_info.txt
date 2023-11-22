@@ -1,0 +1,9 @@
+Manufacturer=Amphenol Communications Solutions
+PartNumber=MUSBRM1C130
+PartCategory=Connector
+PackageCategory=Other
+PinCount=32
+Version=11.2
+Released=2019-05-15 15:29:39
+Downloaded=2023-11-04 13:22:43
+3D=Y

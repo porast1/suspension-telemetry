@@ -1,0 +1,11 @@
+FILE_TYPE = MULTI_PHYS_TABLE;
+
+PART 'LQH3NPZ100MJRL'
+CLASS = DISCRETE
+{========================================================================================}
+:"MANUFACTURER_NAME", "MANUFACTURER_PART_NUMBER"= "PART_NUMBER", "JEDEC_TYPE", "PACK_TYPE", "TME_ELECTRONIC_COMPONENTS_PART_NUMBER", "TME_ELECTRONIC_COMPONENTS_PRICE/STOCK", "DESCRIPTION", "DATASHEET", "HEIGHT";
+{========================================================================================}
+ "Murata Electronics", "LQH3NPZ100MJRL" (!) = "", "LQH3NPN100MJRL", "Other", "", "", "LQH3NPZ_JR Series Inductor 10uH +/-20% 1212 (3030)", "https://psearch.en.murata.com/inductor/product/LQH3NPZ100MJR%23.html", "1.2 mm"
+END_PART
+
+END.

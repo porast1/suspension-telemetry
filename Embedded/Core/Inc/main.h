@@ -57,24 +57,36 @@ void Error_Handler(void);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
-#define BLUE_BUTTON_Pin GPIO_PIN_13
-#define BLUE_BUTTON_GPIO_Port GPIOC
-#define USART_TX_Pin GPIO_PIN_2
-#define USART_TX_GPIO_Port GPIOA
-#define USART_RX_Pin GPIO_PIN_3
-#define USART_RX_GPIO_Port GPIOA
-#define LD2_Pin GPIO_PIN_5
-#define LD2_GPIO_Port GPIOA
-#define ESP8266_CH_PD_Pin GPIO_PIN_0
-#define ESP8266_CH_PD_GPIO_Port GPIOB
+#define BRAKE_SENSOR_RIGHT_Pin GPIO_PIN_0
+#define BRAKE_SENSOR_RIGHT_GPIO_Port GPIOC
+#define BRAKE_SENSOR_LEFT_Pin GPIO_PIN_1
+#define BRAKE_SENSOR_LEFT_GPIO_Port GPIOC
+#define TRAVEL_SENSOR_FRONT_Pin GPIO_PIN_2
+#define TRAVEL_SENSOR_FRONT_GPIO_Port GPIOC
+#define TRAVEL_SENSOR_REAR_Pin GPIO_PIN_3
+#define TRAVEL_SENSOR_REAR_GPIO_Port GPIOC
+#define PRESSURE_SENSOR_FRONT_Pin GPIO_PIN_1
+#define PRESSURE_SENSOR_FRONT_GPIO_Port GPIOA
+#define PRESSURE_SENSOR_REAR_Pin GPIO_PIN_2
+#define PRESSURE_SENSOR_REAR_GPIO_Port GPIOA
+#define BATTERY_LEVEL_Pin GPIO_PIN_4
+#define BATTERY_LEVEL_GPIO_Port GPIOA
+#define ACCELEROMETER_INT0_Pin GPIO_PIN_7
+#define ACCELEROMETER_INT0_GPIO_Port GPIOC
 #define SD_detection_Pin GPIO_PIN_8
 #define SD_detection_GPIO_Port GPIOA
 #define TMS_Pin GPIO_PIN_13
 #define TMS_GPIO_Port GPIOA
 #define TCK_Pin GPIO_PIN_14
 #define TCK_GPIO_Port GPIOA
+#define CHARGE_DETECTION_Pin GPIO_PIN_15
+#define CHARGE_DETECTION_GPIO_Port GPIOA
 #define SWO_Pin GPIO_PIN_3
 #define SWO_GPIO_Port GPIOB
+#define RIGHT_BUTTON_Pin GPIO_PIN_6
+#define RIGHT_BUTTON_GPIO_Port GPIOB
+#define LEFT_BUTTON_Pin GPIO_PIN_7
+#define LEFT_BUTTON_GPIO_Port GPIOB
 
 /* USER CODE BEGIN Private defines */
 
