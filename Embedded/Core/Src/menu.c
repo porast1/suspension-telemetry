@@ -42,9 +42,11 @@
 /******************************************************************************
  * Module Variable Definitions
  *******************************************************************************/
+extern osSemaphoreId travelSensorSemHandle;
+
 static menu_t selector = MENU_START;
 static uint8_t path = 0;
-
+extern calibration_t calibrationValues;
 char dir[FILE_NAME_SIZE];
 char sensorData[FILE_NAME_SIZE];
 
@@ -59,26 +61,30 @@ menu_t getMenuSelector(void)
 {
 	return (selector);
 }
-char * getSensorDataFileName(void){
+void setMenuSelector(menu_t selectorState)
+{
+	selector = selectorState;
+}
+char* getSensorDataFileName(void)
+{
 	return (sensorData);
 }
 
-
-
-void menuSelector(button_t button)
+void menuSelector(button_t buttonLeft, button_t buttonRight)
 {
 
 	switch (selector)
 	{
 
 	case (MENU_START):
-		if (BUTTON_LEFT == button)
+
+		if (BUTTON_LEFT == buttonLeft)
 		{
 			lcdMenuSag();
 			selector = MENU_SAG;
 
 		}
-		else if (BUTTON_RIGHT == button)
+		else if (BUTTON_RIGHT == buttonRight)
 		{
 			lcdStartMeasurement();
 			selector = MENU_MEASURMENT;
@@ -88,94 +94,96 @@ void menuSelector(button_t button)
 		{
 			lcdMenuStart();
 		}
-		stopAdcDma();
+
 		break;
 
 	case (MENU_SAG):
-		if (BUTTON_SELECT == button)
+		if (BUTTON_LEFT_PRESSED == buttonLeft)
 		{
+			if(0 == readCalibrationData(&calibrationValues)){
 			startAdcDma();
-			HD44780_Clear();
-			puts("pomiar rozpoczety, kliknij select aby zakonczyc\n");
+			puts("pomiar rozpoczety, Przytrzymaj LEFT aby zakonczyc\n");
 			selector = MENU_SAG_START;
+			}
 		}
-		else if (BUTTON_LEFT == button)
+		else if (BUTTON_LEFT == buttonLeft)
 		{
 			lcdCalibration();
 			selector = MENU_CALIBRATION;
 		}
-		else if (BUTTON_RIGHT == button)
+		else if (BUTTON_RIGHT == buttonRight)
 		{
+			lcdMenuStart();
 			selector = MENU_START;
 		}
 		else
 		{
-			puts("nacisnij select aby rozpoczac pomiar\n");
+			puts("PRZYTRZYMAJ LEFT aby rozpoczac pomiar\n");
 		}
 		break;
 	case (MENU_CALIBRATION):
-		if (BUTTON_SELECT == button)
+		if (BUTTON_LEFT_PRESSED == buttonLeft)
 		{
 			startAdcDma();
-			while (travelPressureSensorCalibration() != 1)
-			{
-				osDelay(40);
-			}
-			lcdMenuFinishedNotification("Cal Finished");
-			lcdMenuStart();
-			selector = MENU_START;
 
 		}
-		else if (BUTTON_RIGHT == button)
+		else if (BUTTON_RIGHT == buttonRight)
 		{
 			selector = MENU_START;
 			lcdMenuStart();
 		}
 		else
 		{
-			puts("nacisnij select aby rozpoczac pomiar\n");
+			puts("PRZYTRZYMAJ LEFT aby rozpoczac pomiar\n");
 		}
 		break;
 	case (MENU_SAG_START):
-		if (BUTTON_SELECT == button)
+		if (BUTTON_LEFT_PRESSED == buttonLeft)
 		{
-
+			stopAdcDma();
 			selector = MENU_START;
 			lcdMenuStart();
 		}
 		else
 		{
-			puts("nacisnij select aby wrocic do menu start");
+			puts("PRZYTRZYMAJ LEFT aby wrocic do menu start");
 		}
 		break;
 
 	case (MENU_MEASURMENT):
-		if (BUTTON_SELECT == button)
+		if (BUTTON_RIGHT_PRESSED == buttonRight)
 		{
 			lcdMeasurementStart();
 			setPath(dir, sensorData, path);
 			createNewFile(dir, sensorData, &path);
+			if(0 == readCalibrationData(&calibrationValues)){
 			startAdcDma();
 			selector = MENU_MEASURMENT_START;
-			puts("pomiar ciagly rozpoczety, kliknij select aby zakonczyc\n");
+			puts("pomiar ciagly rozpoczety, PRZYTRZYMAJ RIGHT aby zakonczyc\n");
+			}
+		}
+		else if (BUTTON_LEFT == buttonLeft)
+		{
+			lcdMenuStart();
+			selector = MENU_START;
 		}
 		else
 		{
-			puts("nacisnij select aby rozpoczac pomiar\n");
+			puts("PRZYTRZYMAJ RIGHT aby rozpoczac pomiar\n");
 		}
 		break;
 
 	case (MENU_MEASURMENT_START):
-		if (BUTTON_SELECT == button)
+		if (BUTTON_RIGHT_PRESSED == buttonRight)
 		{
-
+			stopAdcDma();
 			lcdMenuFinishedNotification("Mes Finished");
 			lcdMenuStart();
 			selector = MENU_START;
 		}
 		else
 		{
-			puts("nacisnij select aby wrocic do menu start");
+			puts("PRZYTRZYMAJ RIGHT aby zakończyć pomiar\n");
 		}
 		break;
 

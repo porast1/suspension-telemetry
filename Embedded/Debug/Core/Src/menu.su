@@ -1,3 +1,4 @@
-../Core/Src/menu.c:58:8:getMenuSelector	4	static
-../Core/Src/menu.c:62:8:getSensorDataFileName	4	static
-../Core/Src/menu.c:68:6:menuSelector	16	static
+../Core/Src/menu.c:60:8:getMenuSelector	4	static
+../Core/Src/menu.c:64:6:setMenuSelector	16	static
+../Core/Src/menu.c:68:7:getSensorDataFileName	4	static
+../Core/Src/menu.c:73:6:menuSelector	16	static

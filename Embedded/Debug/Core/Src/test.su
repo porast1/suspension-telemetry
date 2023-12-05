@@ -1,0 +1,6 @@
+../Core/Src/test.c:13:6:TestLines	40	static
+../Core/Src/test.c:99:6:TestRectangles	40	static
+../Core/Src/test.c:117:6:TestFilledRectangles	40	static
+../Core/Src/test.c:133:6:TestFilledCircles	24	static
+../Core/Src/test.c:150:6:TestCircles	24	static
+../Core/Src/test.c:168:6:TestTriangles	56	static

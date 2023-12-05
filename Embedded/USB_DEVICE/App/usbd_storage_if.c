@@ -1,21 +1,21 @@
 /* USER CODE BEGIN Header */
 /**
-  ******************************************************************************
-  * @file           : usbd_storage_if.c
-  * @version        : v1.0_Cube
-  * @brief          : Memory management layer.
-  ******************************************************************************
-  * @attention
-  *
-  * Copyright (c) 2023 STMicroelectronics.
-  * All rights reserved.
-  *
-  * This software is licensed under terms that can be found in the LICENSE file
-  * in the root directory of this software component.
-  * If no LICENSE file comes with this software, it is provided AS-IS.
-  *
-  ******************************************************************************
-  */
+ ******************************************************************************
+ * @file           : usbd_storage_if.c
+ * @version        : v1.0_Cube
+ * @brief          : Memory management layer.
+ ******************************************************************************
+ * @attention
+ *
+ * Copyright (c) 2023 STMicroelectronics.
+ * All rights reserved.
+ *
+ * This software is licensed under terms that can be found in the LICENSE file
+ * in the root directory of this software component.
+ * If no LICENSE file comes with this software, it is provided AS-IS.
+ *
+ ******************************************************************************
+ */
 /* USER CODE END Header */
 
 /* Includes ------------------------------------------------------------------*/
@@ -31,7 +31,7 @@
 
 /* USER CODE BEGIN PV */
 /* Private variables ---------------------------------------------------------*/
-
+extern SD_HandleTypeDef hsd;
 /* USER CODE END PV */
 
 /** @addtogroup STM32_USB_OTG_DEVICE_LIBRARY
@@ -94,26 +94,19 @@
 
 /* USER CODE BEGIN INQUIRY_DATA_FS */
 /** USB Mass storage Standard Inquiry Data. */
-const int8_t STORAGE_Inquirydata_FS[] = {/* 36 */
+const int8_t STORAGE_Inquirydata_FS[] =
+{/* 36 */
 
-  /* LUN 0 */
-  0x00,
-  0x80,
-  0x02,
-  0x02,
-  (STANDARD_INQUIRY_DATA_LEN - 5),
-  0x00,
-  0x00,
-  0x00,
-  'S', 'T', 'M', ' ', ' ', ' ', ' ', ' ', /* Manufacturer : 8 bytes */
-  'P', 'r', 'o', 'd', 'u', 'c', 't', ' ', /* Product      : 16 Bytes */
-  ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',
-  '0', '.', '0' ,'1'                      /* Version      : 4 Bytes */
+/* LUN 0 */
+0x00, 0x80, 0x02, 0x02, (STANDARD_INQUIRY_DATA_LEN - 5), 0x00, 0x00, 0x00, 'S',
+		'T', 'M', ' ', ' ', ' ', ' ', ' ', /* Manufacturer : 8 bytes */
+		'P', 'r', 'o', 'd', 'u', 'c', 't', ' ', /* Product      : 16 Bytes */
+		' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '0', '.', '0', '1' /* Version      : 4 Bytes */
 };
 /* USER CODE END INQUIRY_DATA_FS */
 
 /* USER CODE BEGIN PRIVATE_VARIABLES */
-extern SD_HandleTypeDef hsd;
+
 /* USER CODE END PRIVATE_VARIABLES */
 
 /**
@@ -177,9 +170,9 @@ USBD_StorageTypeDef USBD_Storage_Interface_fops_FS =
 int8_t STORAGE_Init_FS(uint8_t lun)
 {
   /* USER CODE BEGIN 2 */
- UNUSED(lun);
+	UNUSED(lun);
 
-  return (USBD_OK);
+	return (USBD_OK);
   /* USER CODE END 2 */
 }
 
@@ -193,16 +186,15 @@ int8_t STORAGE_Init_FS(uint8_t lun)
 int8_t STORAGE_GetCapacity_FS(uint8_t lun, uint32_t *block_num, uint16_t *block_size)
 {
   /* USER CODE BEGIN 3 */
-		HAL_SD_CardInfoTypeDef info;
+	HAL_SD_CardInfoTypeDef info;
+	int8_t ret = -1;
 
-	  int8_t ret = -1;
+	HAL_SD_GetCardInfo(&hsd, &info);
 
-	  HAL_SD_GetCardInfo(&hsd, &info);
-
-	  *block_num =  info.LogBlockNbr  - 1;
-	  *block_size = info.LogBlockSize;
-	  ret = 0;
-	  return ret;
+	*block_num = info.LogBlockNbr - 1;
+	*block_size = info.LogBlockSize;
+	ret = 0;
+	return ret;
   /* USER CODE END 3 */
 }
 
@@ -214,9 +206,9 @@ int8_t STORAGE_GetCapacity_FS(uint8_t lun, uint32_t *block_num, uint16_t *block_
 int8_t STORAGE_IsReady_FS(uint8_t lun)
 {
   /* USER CODE BEGIN 4 */
-  UNUSED(lun);
+	UNUSED(lun);
 
-  return (USBD_OK);
+	return (USBD_OK);
   /* USER CODE END 4 */
 }
 
@@ -228,9 +220,9 @@ int8_t STORAGE_IsReady_FS(uint8_t lun)
 int8_t STORAGE_IsWriteProtected_FS(uint8_t lun)
 {
   /* USER CODE BEGIN 5 */
-  UNUSED(lun);
+	UNUSED(lun);
 
-  return (USBD_OK);
+	return (USBD_OK);
   /* USER CODE END 5 */
 }
 
@@ -245,14 +237,16 @@ int8_t STORAGE_IsWriteProtected_FS(uint8_t lun)
 int8_t STORAGE_Read_FS(uint8_t lun, uint8_t *buf, uint32_t blk_addr, uint16_t blk_len)
 {
   /* USER CODE BEGIN 6 */
-	 int8_t ret = -1;
+	int8_t ret = -1;
 
-	  HAL_SD_ReadBlocks(&hsd, buf, blk_addr, blk_len, HAL_MAX_DELAY);
+	HAL_SD_ReadBlocks(&hsd, buf, blk_addr, blk_len, HAL_MAX_DELAY);
 
-	  /* Wait until SD card is ready to use for new operation */
-	  while (HAL_SD_GetCardState(&hsd) != HAL_SD_CARD_TRANSFER){}
-	  ret = 0;
-	  return ret;
+	/* Wait until SD card is ready to use for new operation */
+	while (HAL_SD_GetCardState(&hsd) != HAL_SD_CARD_TRANSFER)
+	{
+	}
+	ret = 0;
+	return ret;
   /* USER CODE END 6 */
 }
 
@@ -269,13 +263,14 @@ int8_t STORAGE_Write_FS(uint8_t lun, uint8_t *buf, uint32_t blk_addr, uint16_t b
   /* USER CODE BEGIN 7 */
 	int8_t ret = -1;
 
-	   HAL_SD_WriteBlocks(&hsd, buf, blk_addr, blk_len, HAL_MAX_DELAY);
+	HAL_SD_WriteBlocks(&hsd, buf, blk_addr, blk_len, HAL_MAX_DELAY);
 
-
-	  /* Wait until SD card is ready to use for new operation */
-	  while (HAL_SD_GetCardState(&hsd) != HAL_SD_CARD_TRANSFER){}
-	  ret = 0;
-	  return ret;
+	/* Wait until SD card is ready to use for new operation */
+	while (HAL_SD_GetCardState(&hsd) != HAL_SD_CARD_TRANSFER)
+	{
+	}
+	ret = 0;
+	return ret;
   /* USER CODE END 7 */
 }
 
@@ -287,7 +282,7 @@ int8_t STORAGE_Write_FS(uint8_t lun, uint8_t *buf, uint32_t blk_addr, uint16_t b
 int8_t STORAGE_GetMaxLun_FS(void)
 {
   /* USER CODE BEGIN 8 */
-  return (STORAGE_LUN_NBR - 1);
+	return (STORAGE_LUN_NBR - 1);
   /* USER CODE END 8 */
 }
 

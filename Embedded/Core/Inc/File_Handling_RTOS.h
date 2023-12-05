@@ -11,7 +11,7 @@
 #include "fatfs.h"
 #include "string.h"
 #include "stdio.h"
-
+#include "travelSensor.h"
 
 void setPath(char *dir, char *sensorData, uint8_t path);
 void createNewFile(char *dir, char *sensorData, uint8_t *pathPtr);
@@ -57,5 +57,9 @@ void Check_SD_Space(void);
  */
 FRESULT Update_File(char *name, char *data);
 
-void sendDataSD(char *file, volatile float *sensor);
+void sendDataSD(char *file, volatile int16_t *sensor);
+
+int readCalibrationData(calibration_t *calibration);
+int writeCalibrationData(const calibration_t *calibration);
+
 #endif /* FILE_HANDLING_RTOS_H_ */

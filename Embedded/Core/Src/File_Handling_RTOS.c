@@ -9,6 +9,9 @@
 #include "stm32f4xx_hal.h"
 #include "ff.h"
 #include "travelSensor.h"
+#include "sdio.h"
+#include "fatfs.h"
+#include "stdlib.h"
 
 #define UART_NO_ACTIVE
 
@@ -17,11 +20,14 @@ extern UART_HandleTypeDef huart2;
 #define UART &huart2
 #endif
 
+#define CONFIG_FILE_NAME "config.txt"
 
 /* =============================>>>>>>>> NO CHANGES AFTER THIS LINE =====================================>>>>>>> */
 
-FATFS fs;  // file system
+FATFS SDFatFs;  // file system
 FIL fil; // File
+FIL fileCalibration;
+FRESULT resultCalibration;
 FILINFO fno;
 FRESULT fresult;  // result
 UINT br, bw;  // File read/write count
@@ -31,13 +37,13 @@ FATFS *pfs;
 DWORD fre_clust;
 uint32_t total, free_space;
 
-void setPath(char *dir, char* sensorData,  uint8_t path)
+void setPath(char *dir, char *sensorData, uint8_t path)
 {
 	sprintf(dir, "Data%d", path);
 	sprintf(sensorData, "Data%d/Data%d.txt", path, path);
 
 }
-void createNewFile(char *dir, char* sensorData,  uint8_t *pathPtr)
+void createNewFile(char *dir, char *sensorData, uint8_t *pathPtr)
 {
 	uint8_t path = *pathPtr;
 	Mount_SD("/");
@@ -58,7 +64,7 @@ void Send_Uart(char *string)
 
 void Mount_SD(const TCHAR *path)
 {
-	fresult = f_mount(&fs, path, 1);
+	fresult = f_mount(&SDFatFs, path, 1);
 #ifdef UART_ACTIVE
 	if (fresult != FR_OK)
 		Send_Uart("ERROR!!! in mounting SD CARD...\n\n");
@@ -564,26 +570,106 @@ void Check_SD_Space(void)
 	vPortFree(buf);
 #endif
 }
-void sendDataSD(char *file, volatile float *sensor)
+void sendDataSD(char *file, volatile int16_t *sensor)
 {
-	char *buffer = pvPortMalloc((7*TRAVEL_SENSOR_BUFFER_SIZE/2) * sizeof(char));
-	if (NULL != buffer){
-		memset(buffer, 0, (7*TRAVEL_SENSOR_BUFFER_SIZE/2));
-		for (int i = 0; i < (TRAVEL_SENSOR_BUFFER_SIZE) / 2; i++)
+	char *buffer = pvPortMalloc(
+			(7 * TRAVEL_SENSOR_BUFFER_SIZE / 2) * sizeof(char));
+	if (NULL != buffer)
+	{
+		memset(buffer, 0, (7 * TRAVEL_SENSOR_BUFFER_SIZE / 2));
+		for (int i = 0; i < (TRAVEL_SENSOR_BUFFER_SIZE) / 2; i +=
+				NUMBER_OF_SENSORS)
 		{
-			sprintf(buffer + strlen(buffer), "%.2f;","%.2f;","%.2f;","%.2f\n",
+			sprintf(buffer + strlen(buffer), "%d;%d;%d;%d;%d;%d\n",
 					sensor[i + FRONT_TRAVEL_BUFFER_POSITION],
 					sensor[i + REAR_TRAVEL_BUFFER_POSITION],
 					sensor[i + FRONT_PRESSURE_BUFFER_POSITION],
-					sensor[i + REAR_PRESSURE_BUFFER_POSITION] );
+					sensor[i + REAR_PRESSURE_BUFFER_POSITION],
+					sensor[i + LEFT_BRAKE_POSITION],
+					sensor[i + RIGHT_BRAKE_POSITION]);
 		}
 		Mount_SD("/");
 		Update_File(file, buffer);
 		Unmount_SD("/");
 		vPortFree(buffer);
 	}
-	else{
+	else
+	{
 		puts("Wrong alocation pressureTravel Buffer SD Card");
 	}
 
+}
+
+int readCalibrationData(calibration_t *calibration)
+{
+
+
+	Mount_SD("/");
+	resultCalibration = f_open(&fileCalibration, CONFIG_FILE_NAME, FA_READ);
+	if (resultCalibration != FR_OK)
+	{
+		printf("Nie można otworzyć pliku do odczytu\n");
+		return -1;
+	}
+
+	char *buffer = (char*) calloc(160, sizeof(char));
+	if (buffer == NULL)
+	{
+		printf("Błąd alokacji pamięci dla bufora.\n");
+		return 1;
+	}
+
+	int frontTravelInt, rearTravelInt, frontPressureInt, rearPressureInt,
+			leftBrakeInt, rightBrakeInt;
+
+	char line[30];
+
+	while (f_gets(line, sizeof(line), &fileCalibration) != NULL)
+	{
+		strcat(buffer, line);
+	}
+	sscanf(buffer,
+			"Front travel sensor: %d\nRear travel sensor: %d\nFront pressure sensor: %d\nRear pressure sensor: %d\nLeft brake sensor: %d\nRight brake sensor: %d",
+			&frontTravelInt, &rearTravelInt, &frontPressureInt,
+			&rearPressureInt, &leftBrakeInt, &rightBrakeInt);
+	free(buffer);
+
+	f_close(&fileCalibration);
+
+	// Konwertuj i przypisz do struktury calibration
+	calibration->frontTravelSensor = frontTravelInt;
+	calibration->rearTravelSensor = rearTravelInt;
+	calibration->frontPressureSensor = frontPressureInt;
+	calibration->rearPressureSensor = rearPressureInt;
+	calibration->leftBrakeSensor = leftBrakeInt;
+	calibration->rightBrakeSensor = rightBrakeInt;
+	Unmount_SD("/");
+
+	return 0;
+}
+
+int writeCalibrationData(const calibration_t *calibration)
+{
+
+	Mount_SD("/");
+	resultCalibration = f_open(&fileCalibration, CONFIG_FILE_NAME, FA_WRITE | FA_CREATE_ALWAYS);
+	if (resultCalibration != FR_OK)
+	{
+		printf("Nie można otworzyć pliku do zapisu\n");
+		return -1;
+	}
+
+	f_printf(&fileCalibration,
+			"Front travel sensor: %d\nRear travel sensor: %d\nFront pressure sensor: %d\nRear pressure sensor: %d\nLeft brake sensor: %d\nRight brake sensor: %d\n",
+			(int16_t) calibration->frontTravelSensor,
+			(int16_t) calibration->rearTravelSensor,
+			(int16_t) calibration->frontPressureSensor,
+			(int16_t) calibration->rearPressureSensor,
+			(int16_t) calibration->leftBrakeSensor,
+			(int16_t) calibration->rightBrakeSensor);
+
+	f_close(&fileCalibration);
+	Unmount_SD("/");
+
+	return 0;
 }

@@ -57,8 +57,9 @@ typedef enum menu
  * Function Prototypes
  *******************************************************************************/
 menu_t getMenuSelector(void);
-char * getSensorDataFileName(void);
-void menuSelector(button_t button);
+void setMenuSelector(menu_t selectorState);
+char* getSensorDataFileName(void);
+void menuSelector(button_t buttonLeft, button_t buttonRight);
 void menuCalculateBlock(void);
 #endif /* INC_MENU_H_ */
 

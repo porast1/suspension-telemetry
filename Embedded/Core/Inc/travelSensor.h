@@ -26,11 +26,15 @@
 /**
  * This constant is
  */
-#define TRAVEL_SENSOR_BUFFER_SIZE 512U
-#define FRONT_TRAVEL_BUFFER_POSITION 3U
-#define REAR_TRAVEL_BUFFER_POSITION 2U
-#define FRONT_PRESSURE_BUFFER_POSITION 1U
-#define REAR_PRESSURE_BUFFER_POSITION 0
+#define NUMBER_OF_SENSORS 					6U
+#define TRAVEL_SENSOR_BUFFER_SIZE 			(NUMBER_OF_SENSORS)*(32U)
+
+#define FRONT_TRAVEL_BUFFER_POSITION 		0U
+#define REAR_TRAVEL_BUFFER_POSITION 		1U
+#define FRONT_PRESSURE_BUFFER_POSITION 		2U
+#define REAR_PRESSURE_BUFFER_POSITION 		3U
+#define LEFT_BRAKE_POSITION					4U
+#define RIGHT_BRAKE_POSITION				5U
 /******************************************************************************
  * Configuration Constants
  *******************************************************************************/
@@ -42,7 +46,15 @@
 /******************************************************************************
  * Typedefs
  *******************************************************************************/
-
+typedef struct calibration
+{
+	int16_t frontTravelSensor;
+	int16_t rearTravelSensor;
+	int16_t frontPressureSensor;
+	int16_t rearPressureSensor;
+	int16_t leftBrakeSensor;
+	int16_t rightBrakeSensor;
+} calibration_t;
 /******************************************************************************
  * Variables
  *******************************************************************************/
@@ -64,7 +76,7 @@ void stopAdcDma(void);
  */
 void processData(char *sensorsData);
 
-void processDataSag(int32_t *sagFrontRear, int32_t *pressureFrontRear);
+void processDataSag(int16_t *sagFrontRear, int16_t *pressureFrontRear);
 int travelPressureSensorCalibration(void);
 /**
  * @brief Half buffer data ready interrupt

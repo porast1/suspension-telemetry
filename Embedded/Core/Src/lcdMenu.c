@@ -1,51 +1,52 @@
 /*******************************************************************************
-* Title                 :   Suspension Telemetry
-* Filename              :   lcdMenu.c
-* Author                :   patryk.grzywnowicz@gmail.com
-* Compiler              :   GCC
-* Target                :   data_acquisition_module
-*******************************************************************************/
+ * Title                 :   Suspension Telemetry
+ * Filename              :   lcdMenu.c
+ * Author                :   patryk.grzywnowicz@gmail.com
+ * Compiler              :   GCC
+ * Target                :   data_acquisition_module
+ *******************************************************************************/
 
 /** \file lcdMenu.c
  * \brief This module contains the ...
  */
- 
+
 /******************************************************************************
-* Includes
-*******************************************************************************/
+ * Includes
+ *******************************************************************************/
 #include "lcdMenu.h"
-#include "liquidcrystal_i2c.h"
 #include "stdio.h"
 #include "stdint.h"
 #include "cmsis_os.h"
+#include "fonts.h"
+#include "ssd1306.h"
 /******************************************************************************
-* Module Preprocessor Constants
-*******************************************************************************/
+ * Module Preprocessor Constants
+ *******************************************************************************/
 /**
  * Constants to ...
  */
 #define   CONSTANT					5
 
 /******************************************************************************
-* Module Preprocessor Macros
-*******************************************************************************/
+ * Module Preprocessor Macros
+ *******************************************************************************/
 
 /******************************************************************************
-* Module Typedefs
-*******************************************************************************/
+ * Module Typedefs
+ *******************************************************************************/
 
 /******************************************************************************
-* Module Variable Definitions
-*******************************************************************************/
+ * Module Variable Definitions
+ *******************************************************************************/
 
 /******************************************************************************
-* Function Prototypes
-*******************************************************************************/
+ * Function Prototypes
+ *******************************************************************************/
 
 /******************************************************************************
-* Function Definitions
-*******************************************************************************/
-void lcdMenuSagStart(int32_t * result, int32_t * resultPressure)
+ * Function Definitions
+ *******************************************************************************/
+void lcdMenuSagStart(int16_t *result, int16_t *resultPressure)
 {
 	char lcdFirstLineTravel[8] =
 	{ 0 };
@@ -55,85 +56,98 @@ void lcdMenuSagStart(int32_t * result, int32_t * resultPressure)
 	{ 0 };
 	char lcSecondLinePressure[8] =
 	{ 0 };
-	sprintf(lcdFirstLineTravel, "FT: %ld", result[0]);
-	sprintf(lcSecondLineTravel, "RT: %ld", result[1]);
-	sprintf(lcdFirstLinePressure, "FP: %ld", resultPressure[0]);
-	sprintf(lcSecondLinePressure, "RP: %ld", resultPressure[1]);
-	HD44780_NoBlink();
-	HD44780_Clear();
-	HD44780_SetCursor(0, 0);
-	HD44780_PrintStr(lcdFirstLineTravel);
-	HD44780_SetCursor(0, 1);
-	HD44780_PrintStr(lcSecondLineTravel);
-	HD44780_SetCursor(9, 0);
-	HD44780_PrintStr(lcdFirstLinePressure);
-	HD44780_SetCursor(9, 1);
-	HD44780_PrintStr(lcSecondLinePressure);
-	osDelay(1000);
+	sprintf(lcdFirstLineTravel, "FT: %d", result[0]);
+	sprintf(lcSecondLineTravel, "RT: %d", result[1]);
+	sprintf(lcdFirstLinePressure, "FP: %d", resultPressure[0]);
+	sprintf(lcSecondLinePressure, "RP: %d", resultPressure[1]);
+	SSD1306_Clear();
+	SSD1306_GotoXY(10, 10);
+	SSD1306_Puts(lcdFirstLineTravel, &Font_7x10, SSD1306_COLOR_WHITE);
+	SSD1306_GotoXY(10, 30);
+	SSD1306_Puts(lcSecondLineTravel, &Font_7x10, SSD1306_COLOR_WHITE);
+	SSD1306_GotoXY(78, 10);
+	SSD1306_Puts(lcdFirstLinePressure, &Font_7x10, SSD1306_COLOR_WHITE);
+	SSD1306_GotoXY(78, 30);
+	SSD1306_Puts(lcSecondLinePressure, &Font_7x10, SSD1306_COLOR_WHITE);
+	SSD1306_GotoXY(10, 50);
+	SSD1306_Puts("FINISH hold LEFT", &Font_7x10, SSD1306_COLOR_WHITE);
+	SSD1306_UpdateScreen();
 }
 void lcdMenuFinishedNotification(char *notification)
 {
-	HD44780_Clear();
-	HD44780_SetCursor(0, 0);
-	HD44780_PrintStr(notification);
+	SSD1306_Clear();
+	SSD1306_GotoXY(30, 30);
+	SSD1306_Puts(notification, &Font_7x10, SSD1306_COLOR_WHITE);
+	SSD1306_UpdateScreen();
 	osDelay(2000);
 }
 
 void lcdMenuStart()
 {
-	HD44780_Clear();
-	HD44780_SetCursor(0, 0);
-	HD44780_PrintStr("SAG");
-	HD44780_SetCursor(0, 1);
-	HD44780_PrintStr("LEFT");
-	HD44780_SetCursor(9, 0);
-	HD44780_PrintStr("MESSURE");
-	HD44780_SetCursor(11, 1);
-	HD44780_PrintStr("RIGHT");
+	SSD1306_Clear();
+	SSD1306_GotoXY(10, 10);
+	SSD1306_Puts("SAG", &Font_7x10, SSD1306_COLOR_WHITE);
+	SSD1306_GotoXY(10, 30);
+	SSD1306_Puts("LEFT", &Font_7x10, SSD1306_COLOR_WHITE);
+	SSD1306_GotoXY(68, 10);
+	SSD1306_Puts("MESSURE", &Font_7x10, SSD1306_COLOR_WHITE);
+	SSD1306_GotoXY(68, 30);
+	SSD1306_Puts("RIGHT", &Font_7x10, SSD1306_COLOR_WHITE);
+	SSD1306_UpdateScreen();
 }
 
 void lcdMenuSag()
 {
-	HD44780_Clear();
-	HD44780_SetCursor(0, 0);
-	HD44780_PrintStr("CALIB");
-	HD44780_SetCursor(0, 1);
-	HD44780_PrintStr("LEFT");
-	HD44780_SetCursor(10, 0);
-	HD44780_PrintStr("START");
-	HD44780_SetCursor(10, 1);
-	HD44780_PrintStr("SELECT");
+	SSD1306_Clear();
+	SSD1306_GotoXY(10, 10);
+	SSD1306_Puts("CALIB", &Font_7x10, SSD1306_COLOR_WHITE);
+	SSD1306_GotoXY(10, 30);
+	SSD1306_Puts("LEFT", &Font_7x10, SSD1306_COLOR_WHITE);
+	SSD1306_GotoXY(68, 10);
+	SSD1306_Puts("MENU", &Font_7x10, SSD1306_COLOR_WHITE);
+	SSD1306_GotoXY(68, 30);
+	SSD1306_Puts("RIGHT", &Font_7x10, SSD1306_COLOR_WHITE);
+	SSD1306_GotoXY(10, 50);
+	SSD1306_Puts("START hold LEFT", &Font_7x10, SSD1306_COLOR_WHITE);
+	SSD1306_UpdateScreen();
 }
 
 void lcdStartMeasurement()
 {
-	HD44780_Clear();
-	HD44780_SetCursor(0, 0);
-	HD44780_PrintStr("START MESSURE");
-	HD44780_SetCursor(0, 1);
-	HD44780_PrintStr("SELECT");
+	SSD1306_Clear();
+	SSD1306_GotoXY(10, 10);
+	SSD1306_Puts("MENU", &Font_7x10, SSD1306_COLOR_WHITE);
+	SSD1306_GotoXY(10, 30);
+	SSD1306_Puts("LEFT", &Font_7x10, SSD1306_COLOR_WHITE);
+	SSD1306_GotoXY(68, 10);
+	SSD1306_Puts("MESSURE", &Font_7x10, SSD1306_COLOR_WHITE);
+	SSD1306_GotoXY(10, 50);
+	SSD1306_Puts("START hold RIGHT", &Font_7x10, SSD1306_COLOR_WHITE);
+	SSD1306_UpdateScreen();
 }
 
 void lcdCalibration()
 {
-	HD44780_Clear();
-	HD44780_SetCursor(0, 0);
-	HD44780_PrintStr("CALIBRATION");
-	HD44780_SetCursor(0, 1);
-	HD44780_PrintStr("START");
-	HD44780_SetCursor(10, 1);
-	HD44780_PrintStr("SELECT");
+	SSD1306_Clear();
+	SSD1306_GotoXY(10, 10);
+	SSD1306_Puts("CALIB", &Font_7x10, SSD1306_COLOR_WHITE);
+	SSD1306_GotoXY(68, 10);
+	SSD1306_Puts("MENU", &Font_7x10, SSD1306_COLOR_WHITE);
+	SSD1306_GotoXY(68, 30);
+	SSD1306_Puts("RIGHT", &Font_7x10, SSD1306_COLOR_WHITE);
+	SSD1306_GotoXY(10, 50);
+	SSD1306_Puts("START hold LEFT", &Font_7x10, SSD1306_COLOR_WHITE);
+	SSD1306_UpdateScreen();
 }
 
 void lcdMeasurementStart()
 {
-	HD44780_Clear();
-	HD44780_SetCursor(0, 0);
-	HD44780_PrintStr("STARTING");
-	HD44780_SetCursor(0, 1);
-	HD44780_PrintStr("FINISH");
-	HD44780_SetCursor(10, 1);
-	HD44780_PrintStr("SELECT");
+	SSD1306_Clear();
+	SSD1306_GotoXY(30, 30);
+	SSD1306_Puts("STARTING", &Font_7x10, SSD1306_COLOR_WHITE);
+	SSD1306_GotoXY(10, 50);
+	SSD1306_Puts("FINISH hold RIGHT", &Font_7x10, SSD1306_COLOR_WHITE);
+	SSD1306_UpdateScreen();
 }
 
 /*************** END OF FUNCTIONS ***************************************************************************/

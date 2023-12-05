@@ -33,6 +33,7 @@
 #include "gpio.h"
 #include "fatfs.h"
 #include "i2c.h"
+#include "ff.h"
 
 #include "travelSensor.h"
 #include "File_Handling_RTOS.h"
@@ -41,6 +42,8 @@
 #include "liquidcrystal_i2c.h"
 #include "ADXL345.h"
 #include "lcdMenu.h"
+#include "usb_device.h"
+#include "ssd1306.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -62,20 +65,22 @@
 
 /* Private variables ---------------------------------------------------------*/
 /* USER CODE BEGIN Variables */
+ int16_t result[2] =
+	{ 0 };
+	 int16_t resultPressure[2] =
+	{ 0 };
 
 button_t buttonMenu = 5;
 /* USER CODE END Variables */
-osThreadId buttonTaskHandle;
-uint32_t buttonTaskBuffer[ 128 ];
-osStaticThreadDef_t buttonTaskControlBlock;
-osThreadId sensorReadHandle;
-uint32_t sensorReadBuffer[ 2048 ];
-osStaticThreadDef_t sensorReadControlBlock;
 osThreadId SdCardHandle;
-uint32_t SdCardBuffer[ 256 ];
+osThreadId sensorReadHandle;
+uint32_t sensorReadBuffer[ 1024 ];
+osStaticThreadDef_t sensorReadControlBlock;
+osThreadId ButtonTaskHandle;
+uint32_t SdCardBuffer[ 128 ];
 osStaticThreadDef_t SdCardControlBlock;
 osThreadId menuProcessDataHandle;
-uint32_t menuProcessDataBuffer[ 2048 ];
+uint32_t menuProcessDataBuffer[ 512 ];
 osStaticThreadDef_t menuProcessDataControlBlock;
 osThreadId adxlTaskHandle;
 uint32_t adxlTaskBuffer[ 256 ];
@@ -84,17 +89,17 @@ osSemaphoreId travelSensorSemHandle;
 osStaticSemaphoreDef_t travelSensorSemControlBlock;
 osSemaphoreId SendDataHandle;
 osStaticSemaphoreDef_t SendDataControlBlock;
-osSemaphoreId buttonSemHandle;
-osStaticSemaphoreDef_t buttonSemControlBlock;
+osSemaphoreId writeCalibrationSemHandle;
+osStaticSemaphoreDef_t writeCalibrationSemControlBlock;
 
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN FunctionPrototypes */
 
 /* USER CODE END FunctionPrototypes */
 
-void buttonTaskInit(void const * argument);
-void sensorReadInit(void const * argument);
 void SdCardInit(void const * argument);
+void sensorReadInit(void const * argument);
+void ButtonTaskInit(void const * argument);
 void menuProcessDataInit(void const * argument);
 void adxlTaskInit(void const * argument);
 
@@ -141,9 +146,9 @@ void MX_FREERTOS_Init(void) {
   osSemaphoreStaticDef(SendData, &SendDataControlBlock);
   SendDataHandle = osSemaphoreCreate(osSemaphore(SendData), 1);
 
-  /* definition and creation of buttonSem */
-  osSemaphoreStaticDef(buttonSem, &buttonSemControlBlock);
-  buttonSemHandle = osSemaphoreCreate(osSemaphore(buttonSem), 1);
+  /* definition and creation of writeCalibrationSem */
+  osSemaphoreStaticDef(writeCalibrationSem, &writeCalibrationSemControlBlock);
+  writeCalibrationSemHandle = osSemaphoreCreate(osSemaphore(writeCalibrationSem), 1);
 
   /* USER CODE BEGIN RTOS_SEMAPHORES */
 	/* add semaphores, ... */
@@ -158,20 +163,20 @@ void MX_FREERTOS_Init(void) {
   /* USER CODE END RTOS_QUEUES */
 
   /* Create the thread(s) */
-  /* definition and creation of buttonTask */
-  osThreadStaticDef(buttonTask, buttonTaskInit, osPriorityNormal, 0, 128, buttonTaskBuffer, &buttonTaskControlBlock);
-  buttonTaskHandle = osThreadCreate(osThread(buttonTask), NULL);
-
-  /* definition and creation of sensorRead */
-  osThreadStaticDef(sensorRead, sensorReadInit, osPriorityNormal, 0, 2048, sensorReadBuffer, &sensorReadControlBlock);
-  sensorReadHandle = osThreadCreate(osThread(sensorRead), NULL);
-
   /* definition and creation of SdCard */
-  osThreadStaticDef(SdCard, SdCardInit, osPriorityHigh, 0, 256, SdCardBuffer, &SdCardControlBlock);
+  osThreadDef(SdCard, SdCardInit, osPriorityNormal, 0, 1024);
   SdCardHandle = osThreadCreate(osThread(SdCard), NULL);
 
+  /* definition and creation of sensorRead */
+  osThreadStaticDef(sensorRead, sensorReadInit, osPriorityNormal, 0, 1024, sensorReadBuffer, &sensorReadControlBlock);
+  sensorReadHandle = osThreadCreate(osThread(sensorRead), NULL);
+
+  /* definition and creation of ButtonTask */
+  osThreadStaticDef(ButtonTask, ButtonTaskInit, osPriorityHigh, 0, 128, SdCardBuffer, &SdCardControlBlock);
+  ButtonTaskHandle = osThreadCreate(osThread(ButtonTask), NULL);
+
   /* definition and creation of menuProcessData */
-  osThreadStaticDef(menuProcessData, menuProcessDataInit, osPriorityNormal, 0, 2048, menuProcessDataBuffer, &menuProcessDataControlBlock);
+  osThreadStaticDef(menuProcessData, menuProcessDataInit, osPriorityNormal, 0, 512, menuProcessDataBuffer, &menuProcessDataControlBlock);
   menuProcessDataHandle = osThreadCreate(osThread(menuProcessData), NULL);
 
   /* definition and creation of adxlTask */
@@ -184,88 +189,92 @@ void MX_FREERTOS_Init(void) {
 
 }
 
-/* USER CODE BEGIN Header_buttonTaskInit */
-/**
- * @brief  Function implementing the buttonTask thread.
- * @param  argument: Not used
- * @retval None
- */
-/* USER CODE END Header_buttonTaskInit */
-void buttonTaskInit(void const * argument)
-{
-  /* init code for USB_DEVICE */
-  MX_USB_DEVICE_Init();
-  /* USER CODE BEGIN buttonTaskInit */
-	/* Infinite loop */
-	for (;;)
-	{
-		/*buttonMenu = readButton(); for live expression*/
-		if ( MAX_ACTIVE_BUTTON >= buttonMenu)
-		{
-			osSemaphoreRelease(buttonSemHandle);
-		}
-		osDelay(30);
-	}
-  /* USER CODE END buttonTaskInit */
-}
-
-/* USER CODE BEGIN Header_sensorReadInit */
-/**
-* @brief Function implementing the sensorRead thread.
-* @param argument: Not used
-* @retval None
-*/
-/* USER CODE END Header_sensorReadInit */
-void sensorReadInit(void const * argument)
-{
-  /* USER CODE BEGIN sensorReadInit */
-	int32_t result[2] ={ 0 };
-	int32_t resultPressure[2] ={ 0 };
-  /* Infinite loop */
-  for(;;)
-  {
-	  if (osOK == osSemaphoreWait(travelSensorSemHandle, osWaitForever)){
-		if (MENU_MEASURMENT_START == getMenuSelector()){
-			char *sensorDataPtr = getSensorDataFileName();
-			processData(sensorDataPtr);
-		}
-		else if(MENU_SAG_START == getMenuSelector()){
-			processDataSag(result, resultPressure);
-			lcdMenuSagStart(result, resultPressure);
-		}
-	  }
-	else{
-
-	}
-    osDelay(1);
-  }
-  /* USER CODE END sensorReadInit */
-}
-
 /* USER CODE BEGIN Header_SdCardInit */
 /**
- * @brief Function implementing the SdCard thread.
- * @param argument: Not used
+ * @brief  Function implementing the SdCard thread.
+ * @param  argument: Not used
  * @retval None
  */
 /* USER CODE END Header_SdCardInit */
 void SdCardInit(void const * argument)
 {
+  /* init code for USB_DEVICE */
+  MX_USB_DEVICE_Init();
   /* USER CODE BEGIN SdCardInit */
-	 HD44780_Init(2);
-	 lcdMenuStart();
+	Mount_SD("/");
+	Unmount_SD("/");
+
 	/* Infinite loop */
 	for (;;)
 	{
-		if (MAX_ACTIVE_BUTTON >= buttonMenu)
-		{
-			menuSelector(buttonMenu);
-			buttonMenu = BUTTON_SNA; /*for live expression*/
-		}
-		osSemaphoreWait(buttonSemHandle, osWaitForever);
-		osDelay(20);
+
+		osDelay(1000);
 	}
   /* USER CODE END SdCardInit */
+}
+
+/* USER CODE BEGIN Header_sensorReadInit */
+/**
+ * @brief Function implementing the sensorRead thread.
+ * @param argument: Not used
+ * @retval None
+ */
+/* USER CODE END Header_sensorReadInit */
+void sensorReadInit(void const * argument)
+{
+  /* USER CODE BEGIN sensorReadInit */
+
+	/* Infinite loop */
+	for (;;)
+	{
+		if (osOK == osSemaphoreWait(travelSensorSemHandle, osWaitForever))
+		{
+			if (MENU_MEASURMENT_START == getMenuSelector())
+			{
+				char *sensorDataPtr = getSensorDataFileName();
+				processData(sensorDataPtr);
+			}
+			else if (MENU_SAG_START == getMenuSelector())
+			{
+				processDataSag(result, resultPressure);
+				lcdMenuSagStart(result, resultPressure);
+			}
+			else if (MENU_CALIBRATION == getMenuSelector()){
+				stopAdcDma();
+				travelPressureSensorCalibration();
+				lcdMenuFinishedNotification("Cal Finished");
+				lcdMenuStart();
+				setMenuSelector(MENU_START);
+			}
+		}
+
+		else
+		{
+
+		}
+		osDelay(50);
+	}
+  /* USER CODE END sensorReadInit */
+}
+
+/* USER CODE BEGIN Header_ButtonTaskInit */
+/**
+ * @brief Function implementing the ButtonTask thread.
+ * @param argument: Not used
+ * @retval None
+ */
+/* USER CODE END Header_ButtonTaskInit */
+void ButtonTaskInit(void const * argument)
+{
+  /* USER CODE BEGIN ButtonTaskInit */
+
+	/* Infinite loop */
+	for (;;)
+	{
+
+		osDelay(100);
+	}
+  /* USER CODE END ButtonTaskInit */
 }
 
 /* USER CODE BEGIN Header_menuProcessDataInit */
@@ -278,9 +287,21 @@ void SdCardInit(void const * argument)
 void menuProcessDataInit(void const * argument)
 {
   /* USER CODE BEGIN menuProcessDataInit */
+	button_t buttonLeft;
+	button_t buttonRight;
+	HAL_I2C_Init(&hi2c1);
+	SSD1306_Init();
+	lcdMenuStart();
 	/* Infinite loop */
 	for (;;)
 	{
+		buttonLeft = readButton(LEFT_BUTTON_GPIO_Port, LEFT_BUTTON_Pin);
+		buttonRight = readButton(RIGHT_BUTTON_GPIO_Port, RIGHT_BUTTON_Pin);
+		if ((BUTTON_SNA != buttonLeft) || (BUTTON_SNA != buttonRight))
+		{
+			menuSelector(buttonLeft, buttonRight);
+		}
+
 		osDelay(10);
 	}
   /* USER CODE END menuProcessDataInit */
@@ -288,34 +309,34 @@ void menuProcessDataInit(void const * argument)
 
 /* USER CODE BEGIN Header_adxlTaskInit */
 /**
-* @brief Function implementing the adxlTask thread.
-* @param argument: Not used
-* @retval None
-*/
+ * @brief Function implementing the adxlTask thread.
+ * @param argument: Not used
+ * @retval None
+ */
 /* USER CODE END Header_adxlTaskInit */
 void adxlTaskInit(void const * argument)
 {
   /* USER CODE BEGIN adxlTaskInit */
-	int16_t x,y,z;
-	uint8_t data_rec[6];
-	float xg, yg, zg;
-	adxl_init();
+	/*int16_t x,y,z;
+	 uint8_t data_rec[6];
+	 float xg, yg, zg;
+	 adxl_init();*/
 
-  /* Infinite loop */
-  for(;;)
-  {
-	  adxl_read_values (0x32);
-	  HAL_I2C_Mem_Read (&hi2c1, adxl_address, 0x32, 1, (uint8_t *)data_rec, 6, 100);
-	  x = ((data_rec[1]<<8)|data_rec[0]);
-	  y = ((data_rec[3]<<8)|data_rec[2]);
-	  z = ((data_rec[5]<<8)|data_rec[4]);
+	/* Infinite loop */
+	for (;;)
+	{
+		/*adxl_read_values (0x32);
+		 HAL_I2C_Mem_Read (&hi2c1, adxl_address, 0x32, 1, (uint8_t *)data_rec, 6, 100);
+		 x = ((data_rec[1]<<8)|data_rec[0]);
+		 y = ((data_rec[3]<<8)|data_rec[2]);
+		 z = ((data_rec[5]<<8)|data_rec[4]);
 
-	  xg = x * 0.0078;
-	  yg = y * 0.0078;
-	  zg = z * 0.0078;
-	  printf("X: %f\nY: %f\nZ: %f\n", xg, yg, zg);
-    osDelay(10);
-  }
+		 xg = x * 0.0078;
+		 yg = y * 0.0078;
+		 zg = z * 0.0078;
+		 printf("X: %f\nY: %f\nZ: %f\n", xg, yg, zg);*/
+		osDelay(10);
+	}
   /* USER CODE END adxlTaskInit */
 }
 

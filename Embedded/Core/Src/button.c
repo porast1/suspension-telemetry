@@ -15,26 +15,20 @@
  *******************************************************************************/
 #include "button.h"
 #include "stdint.h"
-#include "adc.h"
+
+#include "cmsis_os.h"
 /******************************************************************************
  * Module Preprocessor Constants
  *******************************************************************************/
 /**
  * Constants to ...
  */
-#define   BUTTON_SELECT_ADC_VAL 2880U
-#define   BUTTON_LEFT_ADC_VAL   1930U
-#define   BUTTON_UP_ADC_VAL     550U
-#define   BUTTON_DOWN_ADC_VAL   1250U
-#define   BUTTON_RIGHT_ADC_VAL  0U
-#define   BUTTON_NO_BUTTON_ADC_VAL 3000U
-
-#define   BUTTON_ADC_CHANNEL    &hadc3
-
+#define BUTTON_DELAY				30U
+#define BUTTON_PRESSED_COUNT		20U
 /******************************************************************************
  * Module Preprocessor Macros
  *******************************************************************************/
-#define BUTTON_RANGE(X,RANGE)   (int16_t)((RANGE) - (50)) < (X) && (X) < ((RANGE) + (50))
+
 /******************************************************************************
  * Module Typedefs
  *******************************************************************************/
@@ -51,49 +45,30 @@
  * Function Definitions
  *******************************************************************************/
 
-button_t readButton(void)
+button_t readButton(GPIO_TypeDef *GPIOx, uint16_t GPIO_Pin)
 {
-	button_t button;
-	static uint8_t buttonLock;
-	uint16_t buttonAdcValue = BUTTON_NO_BUTTON_ADC_VAL;
-	HAL_ADC_Start(BUTTON_ADC_CHANNEL);
-	HAL_ADC_PollForConversion(BUTTON_ADC_CHANNEL, 10);
-	buttonAdcValue = HAL_ADC_GetValue(BUTTON_ADC_CHANNEL);
-	HAL_ADC_Stop(BUTTON_ADC_CHANNEL);
-	if (0 == buttonLock)
+	button_t button = BUTTON_SNA;
+	static uint8_t buttonPressedCounter = 0;
+	while (GPIO_PIN_RESET == HAL_GPIO_ReadPin(GPIOx, GPIO_Pin)
+			&& (BUTTON_PRESSED_COUNT >= buttonPressedCounter))
 	{
-		if (BUTTON_RANGE(buttonAdcValue, BUTTON_SELECT_ADC_VAL))
+		if ( BUTTON_PRESSED_COUNT > buttonPressedCounter)
 		{
-			button = BUTTON_SELECT;
-		}
-		else if (BUTTON_RANGE(buttonAdcValue, BUTTON_UP_ADC_VAL))
-		{
-			button = BUTTON_UP;
-		}
-		else if (BUTTON_RANGE(buttonAdcValue, BUTTON_DOWN_ADC_VAL))
-		{
-			button = BUTTON_DOWN;
-		}
-		else if (BUTTON_RANGE(buttonAdcValue, BUTTON_LEFT_ADC_VAL))
-		{
-			button = BUTTON_LEFT;
-		}
-		else if (BUTTON_RANGE(buttonAdcValue, BUTTON_RIGHT_ADC_VAL))
-		{
-			button = BUTTON_RIGHT;
+
+			++buttonPressedCounter;
+			button =
+					(LEFT_BUTTON_Pin == GPIO_Pin) ?
+							(BUTTON_LEFT) : (BUTTON_RIGHT);
 		}
 		else
 		{
-			button = BUTTON_SNA;
+			button =
+					(LEFT_BUTTON_Pin == GPIO_Pin) ?
+							(BUTTON_LEFT_PRESSED) : (BUTTON_RIGHT_PRESSED);
 		}
-		buttonLock = 1;
+		osDelay(BUTTON_DELAY);
 	}
-	else
-	{
-		button = BUTTON_SNA;
-	}
-	buttonLock = (buttonAdcValue < BUTTON_NO_BUTTON_ADC_VAL) ? (1) : (0);
-
+	buttonPressedCounter = 0;
 	return (button);
 }
 

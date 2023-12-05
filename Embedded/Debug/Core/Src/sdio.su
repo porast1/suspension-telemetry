@@ -1,3 +1,4 @@
-../Core/Src/sdio.c:31:6:MX_SDIO_SD_Init	4	static
-../Core/Src/sdio.c:54:6:HAL_SD_MspInit	144	static
-../Core/Src/sdio.c:119:6:HAL_SD_MspDeInit	16	static
+../Core/Src/sdio.c:33:6:MX_SDIO_SD_Init	4	static
+../Core/Src/sdio.c:56:6:HAL_SD_MspInit	144	static
+../Core/Src/sdio.c:162:6:HAL_SD_MspDeInit	16	static
+../Core/Src/sdio.c:198:6:MX_SDIO_SD_Init_4B	4	static

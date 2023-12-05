@@ -42,7 +42,6 @@ Core/Src/freertos.o: ../Core/Src/freertos.c \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_sdmmc.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h \
- ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pcd.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_usb.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pcd_ex.h \
@@ -63,9 +62,14 @@ Core/Src/freertos.o: ../Core/Src/freertos.c \
  ../Middlewares/Third_Party/FatFs/src/diskio.h \
  ../Middlewares/Third_Party/FatFs/src/ff.h ../FATFS/Target/sd_diskio.h \
  ../Core/Inc/i2c.h ../Core/Inc/travelSensor.h \
- ../Core/Inc/File_Handling_RTOS.h ../Core/Inc/button.h ../Core/Inc/menu.h \
+ ../Core/Inc/File_Handling_RTOS.h ../Core/Inc/travelSensor.h \
+ ../Core/Inc/button.h ../Core/Inc/gpio.h ../Core/Inc/menu.h \
  ../Core/Inc/button.h ../Core/Inc/liquidcrystal_i2c.h \
- ../Core/Inc/ADXL345.h ../Core/Inc/lcdMenu.h
+ ../Core/Inc/ADXL345.h ../Core/Inc/lcdMenu.h \
+ ../USB_DEVICE/App/usb_device.h \
+ ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_def.h \
+ ../USB_DEVICE/Target/usbd_conf.h ../Core/Inc/ssd1306.h \
+ ../Core/Inc/fonts.h
 ../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h:
 ../Core/Inc/FreeRTOSConfig.h:
 ../Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h:
@@ -110,7 +114,6 @@ Core/Src/freertos.o: ../Core/Src/freertos.c \
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_sdmmc.h:
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h:
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h:
-../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h:
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pcd.h:
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_usb.h:
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pcd_ex.h:
@@ -140,9 +143,16 @@ Core/Src/freertos.o: ../Core/Src/freertos.c \
 ../Core/Inc/i2c.h:
 ../Core/Inc/travelSensor.h:
 ../Core/Inc/File_Handling_RTOS.h:
+../Core/Inc/travelSensor.h:
 ../Core/Inc/button.h:
+../Core/Inc/gpio.h:
 ../Core/Inc/menu.h:
 ../Core/Inc/button.h:
 ../Core/Inc/liquidcrystal_i2c.h:
 ../Core/Inc/ADXL345.h:
 ../Core/Inc/lcdMenu.h:
+../USB_DEVICE/App/usb_device.h:
+../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_def.h:
+../USB_DEVICE/Target/usbd_conf.h:
+../Core/Inc/ssd1306.h:
+../Core/Inc/fonts.h:

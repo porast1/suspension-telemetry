@@ -41,7 +41,7 @@ extern SD_HandleTypeDef hsd;
 void MX_SDIO_SD_Init(void);
 
 /* USER CODE BEGIN Prototypes */
-
+void MX_SDIO_SD_Init_4B(void);
 /* USER CODE END Prototypes */
 
 #ifdef __cplusplus
