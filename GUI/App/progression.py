@@ -62,7 +62,7 @@ def travel_progression_figure(selected_series,timeOrVelocityFront, timeOrVelocit
     return p
     
 
-def progressionDataConvert(dataAvgVelocity,percerntTravel):
+def progressionDataConvert(dataAvgVelocity,percerntTravel, max_travel:float):
 
     tmpPercent = []
     tmpVelocity = []
@@ -72,7 +72,7 @@ def progressionDataConvert(dataAvgVelocity,percerntTravel):
         tmpPercent = percerntTravel[0:percent]
         tmpVelocity = dataAvgVelocity[0:percent]
         if len(tmpPercent) > 0 and len(tmpVelocity) > 0:
-            result = np.trapz(tmpVelocity, tmpPercent)
+            result = np.trapz(1/tmpVelocity, (tmpPercent*max_travel)/100)
             results.append(result)
         else: 
             continue

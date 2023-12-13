@@ -50,7 +50,7 @@ void createNewFile(char *dir, char *sensorData, uint8_t *pathPtr)
 	Format_SD(path);
 	Create_Dir(dir);
 	Create_File(sensorData);
-
+	Update_File(sensorData,"FrontTravel;RearTravel;FrontPressure;RearPressure;LeftBrake;RightBrake\n");
 	Unmount_SD("/");
 	(*pathPtr)++;
 }
