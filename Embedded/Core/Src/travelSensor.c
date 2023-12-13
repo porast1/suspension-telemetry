@@ -190,6 +190,10 @@ void processDataSag(int16_t *sagFrontRear, int16_t *pressureFrontRear)
 	int numberOfElements = (TRAVEL_SENSOR_BUFFER_SIZE / HALF_BUFF_SINGLE_SENSOR);
 	int i;
 	normalizeTravelData(inBufPtr);
+	sagFrontRear[0] = 0;
+	sagFrontRear[1] = 0;
+	pressureFrontRear[0] = 0;
+	pressureFrontRear[1] = 0;
 	for (i = 0; i <= TRAVEL_SENSOR_BUFFER_SIZE / 2 - NUMBER_OF_SENSORS; i +=
 	NUMBER_OF_SENSORS)
 	{
@@ -204,8 +208,8 @@ void processDataSag(int16_t *sagFrontRear, int16_t *pressureFrontRear)
 	pressureFrontRear[0] = pressureFrontRear[0] / numberOfElements;
 	pressureFrontRear[1] = pressureFrontRear[1] / numberOfElements;
 
-	sagFrontRear[0] = CONVERT_TO_PERCENT * sagFrontRear[0]/(FRONT_SUSPENSION_TRAVEL - calibrationValues.frontTravelSensor);
-	sagFrontRear[1] = (CONVERT_TO_PERCENT * sagFrontRear[1])/ (REAR_SUSPENSION_TRAVEL - calibrationValues.rearTravelSensor);
+	sagFrontRear[0] = ((int16_t)CONVERT_TO_PERCENT * sagFrontRear[0])/(int16_t)(FRONT_SUSPENSION_TRAVEL - calibrationValues.frontTravelSensor);
+	sagFrontRear[1] = ((int16_t)CONVERT_TO_PERCENT * sagFrontRear[1])/ (int16_t)(REAR_SUSPENSION_TRAVEL - calibrationValues.rearTravelSensor);
 	UNUSED(0);
 }
 
@@ -237,21 +241,21 @@ static int16_t convertAdcToTravel(volatile int16_t *adcDataWrite,
 		int16_t sensorTravel)
 {
 
-	return (*adcDataWrite * sensorTravel /  ADC_RESOLUTION);
+	return (*adcDataWrite * sensorTravel /  (float)ADC_RESOLUTION);
 }
 
 static int16_t convertAdcToPressure(volatile int16_t *adcDataWrite,
 		int16_t sensorMaxPressure)
 {
 
-	return ((CONVERT_MPa_to_PSI)
-			* (*adcDataWrite * sensorMaxPressure / (ADC_RESOLUTION)));
+	return ((2.5 * CONVERT_MPa_to_PSI)
+			* (*adcDataWrite * sensorMaxPressure / (float)(ADC_RESOLUTION)));
 }
 
 static int16_t convertAdcToBrakeForce(volatile int16_t *adcDataWrite,
 		int16_t sensorBrakeMaxForce)
 {
-	return (*adcDataWrite * sensorBrakeMaxForce /  ADC_RESOLUTION);
+	return (*adcDataWrite * sensorBrakeMaxForce /  (float)ADC_RESOLUTION);
 }
 static void normalizeTravelData(volatile int16_t *inBufPtr)
 {

@@ -3,9 +3,9 @@
 ../Core/Src/travelSensor.c:137:5:travelPressureSensorCalibration	2
 ../Core/Src/travelSensor.c:182:6:processData	1
 ../Core/Src/travelSensor.c:188:6:processDataSag	2
-../Core/Src/travelSensor.c:212:6:HAL_ADC_ConvHalfCpltCallback	1
-../Core/Src/travelSensor.c:219:6:HAL_ADC_ConvCpltCallback	1
-../Core/Src/travelSensor.c:236:16:convertAdcToTravel	1
-../Core/Src/travelSensor.c:243:16:convertAdcToPressure	1
-../Core/Src/travelSensor.c:251:16:convertAdcToBrakeForce	1
-../Core/Src/travelSensor.c:256:13:normalizeTravelData	2
+../Core/Src/travelSensor.c:216:6:HAL_ADC_ConvHalfCpltCallback	1
+../Core/Src/travelSensor.c:223:6:HAL_ADC_ConvCpltCallback	1
+../Core/Src/travelSensor.c:240:16:convertAdcToTravel	1
+../Core/Src/travelSensor.c:247:16:convertAdcToPressure	1
+../Core/Src/travelSensor.c:255:16:convertAdcToBrakeForce	1
+../Core/Src/travelSensor.c:260:13:normalizeTravelData	2
