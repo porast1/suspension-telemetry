@@ -9,8 +9,6 @@ def sessionVariablesInit():
     # Inicjalizacja kontekstu sesji
     if 'suspensionDataUploaded' not in st.session_state:
         st.session_state.suspensionDataUploaded = False
-    if 'pressureDataUploaded' not in st.session_state:
-        st.session_state.pressureDataUploaded = False
     if 'accelerometerDataUploaded' not in st.session_state:
         st.session_state.accelerometerDataUploaded = False
     if 'travelPressureTime' not in st.session_state:

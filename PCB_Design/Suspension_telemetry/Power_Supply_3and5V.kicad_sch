@@ -1303,7 +1303,7 @@
     (uuid ff8be181-5448-47c1-b27e-9199ac8deadd)
   )
 
-  (hierarchical_label "V_BAT_2S_P" (shape output) (at 190.5 68.58 90) (fields_autoplaced)
+  (hierarchical_label "V_BAT_P" (shape output) (at 190.5 68.58 90) (fields_autoplaced)
     (effects (font (size 1.27 1.27)) (justify left))
     (uuid 1e2a116a-e258-4244-8a57-cb2bb9887692)
   )

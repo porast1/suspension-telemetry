@@ -40,7 +40,7 @@ uint32_t total, free_space;
 void setPath(char *dir, char *sensorData, uint8_t path)
 {
 	sprintf(dir, "Data%d", path);
-	sprintf(sensorData, "Data%d/Data%d.txt", path, path);
+	sprintf(sensorData, "Data%d/Data%d.csv", path, path);
 
 }
 void createNewFile(char *dir, char *sensorData, uint8_t *pathPtr)
@@ -50,7 +50,7 @@ void createNewFile(char *dir, char *sensorData, uint8_t *pathPtr)
 	Format_SD(path);
 	Create_Dir(dir);
 	Create_File(sensorData);
-
+	Update_File(sensorData,"FrontTravel;RearTravel;FrontPressure;RearPressure;LeftBrake;RightBrake\n");
 	Unmount_SD("/");
 	(*pathPtr)++;
 }
