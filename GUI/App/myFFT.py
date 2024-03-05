@@ -1,22 +1,32 @@
-from numpy.fft import fftfreq
-from numpy.fft import fft
-from numpy.fft import fftshift
-from bokeh.plotting import figure
-def my_fft_figure(data,fs):
-    N = len(data)
-    f = fftfreq(N,1/fs)
-    f = fftshift(f)
-    X = abs(fft(data))
-    X = fftshift(X)
-    p = figure(
-        height = 250,
-        x_range=(-10, 10),
-        sizing_mode="stretch_both",
-        x_axis_label="Freq [Hz]",
-        y_axis_label='Amplitude',
-        toolbar_location='above',
-        tools='xpan,xwheel_zoom,reset, hover, save',
-        active_drag='xpan',
-        output_backend='webgl')
-    p.circle(f, X, size=3)
-    return p
+from numpy.fft import fft, fftfreq, fftshift
+from bokeh.plotting import Figure
+from bokeh.models import Range1d
+from sessionInit import BaseDataAndFigure
+from streamlit import subheader
+class fftFigure(BaseDataAndFigure):
+    def __init__(self, dataFrom = 'Front'):
+        super().__init__()
+        subheader(f"{dataFrom} FFT")
+        if 'Front' == dataFrom:
+            self.__frequency, self.__FFT = self.__calculateFFT(self.getFrontTravel())
+        else:
+            self.__frequency, self.__FFT = self.__calculateFFT(self.getRearTravel())
+    def __calculateFFT(self, data : list):
+        time = self.getTimeTravelPressure()[:2]
+        fs = 1/(time[1] - time[0])
+        N = len(data)
+        f = fftfreq(N,1/fs)
+        f = fftshift(f)
+        X = abs(fft(data))
+        X = fftshift(X)
+        return f, X
+    def XY_LabelAbstract(self, abstractFigure: Figure):
+        abstractFigure.height = 250
+        abstractFigure.xaxis.axis_label = 'Frequency [Hz]'
+        abstractFigure.yaxis.axis_label = 'Amplitude'
+        x_range = Range1d(start=-10, end=10)
+        abstractFigure.x_range = x_range
+        return abstractFigure
+    def simpleFigureAbstract(self, abstractFigure : Figure):
+        abstractFigure.circle(self.__frequency, self.__FFT, size=3)
+        return abstractFigure

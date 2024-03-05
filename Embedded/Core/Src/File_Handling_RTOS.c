@@ -612,7 +612,7 @@ int readCalibrationData(calibration_t *calibration)
 		return -1;
 	}
 
-	char *buffer = (char*) calloc(160, sizeof(char));
+	char *buffer = (char*) calloc(240, sizeof(char));
 	if (buffer == NULL)
 	{
 		printf("Błąd alokacji pamięci dla bufora.\n");
@@ -620,7 +620,7 @@ int readCalibrationData(calibration_t *calibration)
 	}
 
 	int frontTravelInt, rearTravelInt, frontPressureInt, rearPressureInt,
-			leftBrakeInt, rightBrakeInt;
+			leftBrakeInt, rightBrakeInt, frontTravel, rearStroke;
 
 	char line[30];
 
@@ -629,9 +629,9 @@ int readCalibrationData(calibration_t *calibration)
 		strcat(buffer, line);
 	}
 	sscanf(buffer,
-			"Front travel sensor: %d\nRear travel sensor: %d\nFront pressure sensor: %d\nRear pressure sensor: %d\nLeft brake sensor: %d\nRight brake sensor: %d",
+			"Front travel sensor: %d\nRear travel sensor: %d\nFront pressure sensor: %d\nRear pressure sensor: %d\nLeft brake sensor: %d\nRight brake sensor: %d\nFront Travel: %d\nRear Stroke: %d",
 			&frontTravelInt, &rearTravelInt, &frontPressureInt,
-			&rearPressureInt, &leftBrakeInt, &rightBrakeInt);
+			&rearPressureInt, &leftBrakeInt, &rightBrakeInt, &frontTravel, &rearStroke);
 	free(buffer);
 
 	f_close(&fileCalibration);
@@ -643,6 +643,8 @@ int readCalibrationData(calibration_t *calibration)
 	calibration->rearPressureSensor = rearPressureInt;
 	calibration->leftBrakeSensor = leftBrakeInt;
 	calibration->rightBrakeSensor = rightBrakeInt;
+	calibration->frontTravel = frontTravel;
+	calibration->rearStroke = rearStroke;
 	Unmount_SD("/");
 
 	return 0;
@@ -652,24 +654,31 @@ int writeCalibrationData(const calibration_t *calibration)
 {
 
 	Mount_SD("/");
-	resultCalibration = f_open(&fileCalibration, CONFIG_FILE_NAME, FA_WRITE | FA_CREATE_ALWAYS);
-	if (resultCalibration != FR_OK)
-	{
-		printf("Nie można otworzyć pliku do zapisu\n");
-		return -1;
-	}
+	    resultCalibration = f_open(&fileCalibration, CONFIG_FILE_NAME, FA_WRITE);
 
-	f_printf(&fileCalibration,
-			"Front travel sensor: %d\nRear travel sensor: %d\nFront pressure sensor: %d\nRear pressure sensor: %d\nLeft brake sensor: %d\nRight brake sensor: %d\n",
-			(int16_t) calibration->frontTravelSensor,
-			(int16_t) calibration->rearTravelSensor,
-			(int16_t) calibration->frontPressureSensor,
-			(int16_t) calibration->rearPressureSensor,
-			(int16_t) calibration->leftBrakeSensor,
-			(int16_t) calibration->rightBrakeSensor);
+	    if (resultCalibration != FR_OK)
+	    {
+	        printf("Nie można otworzyć pliku do zapisu\n");
+	        return -1;
+	    }
 
-	f_close(&fileCalibration);
-	Unmount_SD("/");
+	    // Ustaw kursor na początku pliku
+	    f_lseek(&fileCalibration, 0);
 
-	return 0;
+	    f_printf(&fileCalibration,
+	             "Front travel sensor: %d\nRear travel sensor: %d\nFront pressure sensor: %d\nRear pressure sensor: %d\nLeft brake sensor: %d\nRight brake sensor: %d\n",
+	             (int16_t)calibration->frontTravelSensor,
+	             (int16_t)calibration->rearTravelSensor,
+	             (int16_t)calibration->frontPressureSensor,
+	             (int16_t)calibration->rearPressureSensor,
+	             (int16_t)calibration->leftBrakeSensor,
+	             (int16_t)calibration->rightBrakeSensor);
+
+	    // Ustaw kursor na końcu pliku
+	    f_lseek(&fileCalibration, f_size(&fileCalibration));
+
+	    f_close(&fileCalibration);
+	    Unmount_SD("/");
+
+	    return 0;
 }

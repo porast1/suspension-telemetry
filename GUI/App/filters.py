@@ -24,23 +24,13 @@ def butter_lowpass_filter(data, cutoff, fs, order):
     return y
 
 @st.cache_data
-def load_data(file_path):
-    T = 0.005        # Sample Period
-    fs = 1/T       # sample rate, Hz
-    cutoff = 2      # desired cutoff frequency of the filter, Hz ,  
-    order = 2
-    lista_liczb = []  # Zadeklaruj listę liczbową poza warunkiem
-    if file_path is not None:
-        st.success("Plik został pomyślnie wczytany!")
-        # Utwórz plik tymczasowy i zapisz zawartość UploadedFile do niego
-        with st.empty():
-            with open(file_path.name, "wb") as f:
-                f.write(file_path.read())
-        with open(file_path.name, 'r') as file:
-            content = file.read()
-            lista_liczb = [float(x) for x in content.split()]
-        data_cleaned = [x for x in lista_liczb if not (np.isnan(x) or np.isinf(x))]
-        data_cleaned = median_filter(data_cleaned,4)
-        data_cleaned = butter_lowpass_filter(data_cleaned, cutoff, fs, order)
-    return data_cleaned
+def load_data(data):
+    if data is not None and len(data) > 0:
+        st.success("Dane zostały pomyślnie wczytane!")
+        return data
+    else:
+        st.error("Brak danych do wczytania.")
+        return None
+
+
 

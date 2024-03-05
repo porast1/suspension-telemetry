@@ -208,8 +208,8 @@ void processDataSag(int16_t *sagFrontRear, int16_t *pressureFrontRear)
 	pressureFrontRear[0] = pressureFrontRear[0] / numberOfElements;
 	pressureFrontRear[1] = pressureFrontRear[1] / numberOfElements;
 
-	sagFrontRear[0] = ((int16_t)CONVERT_TO_PERCENT * sagFrontRear[0])/(int16_t)(FRONT_SUSPENSION_TRAVEL - calibrationValues.frontTravelSensor);
-	sagFrontRear[1] = ((int16_t)CONVERT_TO_PERCENT * sagFrontRear[1])/ (int16_t)(REAR_SUSPENSION_TRAVEL - calibrationValues.rearTravelSensor);
+	sagFrontRear[0] = ((int16_t)CONVERT_TO_PERCENT * sagFrontRear[0]) / (calibrationValues.frontTravel);
+	sagFrontRear[1] = ((int16_t)CONVERT_TO_PERCENT * sagFrontRear[1]) / (calibrationValues.rearStroke);
 	UNUSED(0);
 }
 

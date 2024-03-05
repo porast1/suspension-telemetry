@@ -13,5 +13,5 @@
 ../Core/Src/File_Handling_RTOS.c:528:9:Create_Dir	16	static
 ../Core/Src/File_Handling_RTOS.c:553:6:Check_SD_Space	8	static
 ../Core/Src/File_Handling_RTOS.c:573:6:sendDataSD	56	static
-../Core/Src/File_Handling_RTOS.c:603:5:readCalibrationData	96	static
-../Core/Src/File_Handling_RTOS.c:651:5:writeCalibrationData	40	static
+../Core/Src/File_Handling_RTOS.c:603:5:readCalibrationData	112	static
+../Core/Src/File_Handling_RTOS.c:653:5:writeCalibrationData	40	static

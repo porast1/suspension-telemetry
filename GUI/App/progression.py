@@ -1,79 +1,73 @@
 import numpy as np 
-import random
-from bokeh.plotting import figure
-
-def suspension_Progression_Data(percentTravel, velocity):
-    n = len(percentTravel)
-    iterationpercentTravel = range(0,101,1)
-    percentTravel = np.array(percentTravel)
-    velocity = np.array(velocity)
-    avgVelocity = np.empty(0)
-    index = np.empty(0)
-    mask = (velocity > 0)
-    indexVelocity = np.where(mask)[0]
-    for i in range(len(iterationpercentTravel) - 1):
-        newIndex = np.empty(0)
-        if iterationpercentTravel[i] >= 100:
-            mask = (percentTravel >= iterationpercentTravel[i])
+from bokeh.plotting import figure, Figure
+from sessionInit import BaseDataAndFigure
+from streamlit import header, write, selectbox, bokeh_chart, cache_data
+class ProgressionFigure(BaseDataAndFigure):
+    def __init__(self):
+        super().__init__()
+        header('Travel/Spring rate')
+        write('this graph shows the average - dynamic progression of our suspension based on readings from the travel sensor. Very useful for finding the balance of our suspension in terms of overall hardness. The overall hardness is influenced by the slow-fast compression settings, the suspension hardness and the number of tokens. Therefore, this chart must be considered on the basis of the charts below, first we set the relative balance of the air spring/sag hardness, then the balance settings for compression and come back here to verify the settings')
+        self.__Mode = selectbox("Choose figure type:", ['Progression', 'Velocity'])
+        self.__X_Axis = selectbox("Choose display option:", ['Travel [%]' , 'Travel [mm]'])
+        frontDataTravelPercent = self.getFrontTravelPercent()
+        frontDataVelocity = self.getFrontVelocity()
+        rearDataTravelPercent = self.getRearTravelPercent()
+        rearDataVelocity = self.getRearVelocity()
+        self.__uniqueFrontTravel, self.__uniqueFrontVelocity = self.__calculateUniqueVelocity(dataTravel=frontDataTravelPercent, dataVelocity=frontDataVelocity)
+        self.__uniqueRearTravel, self.__uniqueRearVelocity = self.__calculateUniqueVelocity(dataTravel=rearDataTravelPercent, dataVelocity=rearDataVelocity)
+        self.__frontProgressionTime = self.__calculateProgression(uniqueTravel=self.__uniqueFrontTravel, uniqueVelocity= self.__uniqueFrontVelocity)
+        self.__rearProgressionTime = self.__calculateProgression(uniqueTravel= self.__uniqueRearTravel, uniqueVelocity = self.__uniqueRearVelocity)
+    def XY_LabelAbstract(self, abstractFigure : Figure):
+        if 'Progression' == self.__Mode:
+            abstractFigure.xaxis.axis_label = 'Travel [%]'
+            abstractFigure.yaxis.axis_label = 'Time [s]'
         else:
-            mask = (percentTravel >= iterationpercentTravel[i]) & (percentTravel < iterationpercentTravel[i+1])
-        index = np.where(mask)[0]
-        newIndex = np.intersect1d(indexVelocity, index)
-        if (len(newIndex) > 0):
-            avgVelocity = np.append(avgVelocity, np.mean(velocity[newIndex]))
+            abstractFigure.xaxis.axis_label = 'Travel [%]'
+            abstractFigure.yaxis.axis_label = 'Velocity [mm/s]'
+        return abstractFigure
+    def simpleFigureAbstract(self, abstractFigure : Figure):
+        if 'Progression' == self.__Mode:
+            abstractFigure.line(x=self.__uniqueFrontTravel, y=self.__frontProgressionTime, line_width=2, legend_label='Front', line_color='blue')
+            abstractFigure.line(x=self.__uniqueRearTravel, y=self.__rearProgressionTime, line_width=2, legend_label='Rear', line_color='red')
         else:
-            avgVelocity = np.append(avgVelocity, 0)
+            abstractFigure.line(x=self.__uniqueFrontTravel, y=self.__uniqueFrontVelocity, line_width=2, legend_label='Front', line_color='blue')
+            abstractFigure.line(x=self.__uniqueRearTravel, y=self.__uniqueRearVelocity, line_width=2, legend_label='Rear', line_color='red')
+        abstractFigure.legend.location = 'top_left'
+        return abstractFigure
+    @cache_data
+    def __calculateUniqueVelocity(_self, dataVelocity : list, dataTravel : list ):
+        mask = dataVelocity >= 0
+        indices = np.where(mask)[0]
+        dataVelocity = dataVelocity[indices]
+        dataTravel = dataTravel[indices]
+        sorted_Indices = np.argsort(dataTravel)
+        sortedVelocity = dataVelocity[sorted_Indices]
+        sortedTravel = np.sort(dataTravel)
 
-    return iterationpercentTravel, avgVelocity
-
-    
-def travel_progression_figure(selected_series,timeOrVelocityFront, timeOrVelocityRear, travelDataPercent,maxFrontTravel,maxRearTravel):
-
-    if selected_series == "Travel mm":
-        p = figure(
-            height = 350,
-            min_border_left=70,
-            min_border_right=50,
-            sizing_mode="stretch_both",
-            x_axis_label="Travel (mm)",
-            y_axis_label='Time(ms)',
-            toolbar_location='above',
-            tools='xpan,xwheel_zoom,box_zoom,reset, hover, save',
-            active_drag='xpan',
-            output_backend='webgl')
-        travelDataFront = [percent * maxFrontTravel / 100 for percent in travelDataPercent]
-        travelDataRear = [percent * maxRearTravel / 100 for percent in travelDataPercent]
-        p.line(x=travelDataFront, y=timeOrVelocityFront, line_width=2, legend_label='Front', line_color='blue')
-        p.line(x=travelDataRear, y=timeOrVelocityRear, line_width=2, legend_label='Rear', line_color='red')
-    else:
-        p = figure(
-            height = 350,
-            min_border_left=70,
-            min_border_right=50,
-            sizing_mode="stretch_both",
-            x_axis_label="Travel (%)",
-            y_axis_label='Time(ms)',
-            toolbar_location='above',
-            tools='xpan,xwheel_zoom,box_zoom,reset, hover, save',
-            active_drag='xpan',
-            output_backend='webgl')
-        p.line(x=travelDataPercent, y=timeOrVelocityFront, line_width=2, legend_label='Front', line_color='blue')
-        p.line(x=travelDataPercent, y=timeOrVelocityRear, line_width=2, legend_label='Rear', line_color='red')
-    return p
-    
-
-def progressionDataConvert(dataAvgVelocity,percerntTravel, max_travel:float):
-
-    tmpPercent = []
-    tmpVelocity = []
-    results = []
-    
-    for percent in percerntTravel:
-        tmpPercent = percerntTravel[0:percent]
-        tmpVelocity = dataAvgVelocity[0:percent]
-        if len(tmpPercent) > 0 and len(tmpVelocity) > 0:
-            result = np.trapz(1/tmpVelocity, (tmpPercent*max_travel)/100)
-            results.append(result)
-        else: 
-            continue
-    return results
+        uniqueTravel = np.array(np.unique(sortedTravel))
+        uniqueVelocity = np.array([])
+        for unique_value in uniqueTravel:
+            meanVelocity = np.mean(sortedVelocity[sortedTravel == unique_value])
+            if 0 < meanVelocity:
+                uniqueVelocity = np.append(uniqueVelocity,meanVelocity)
+            else:
+                uniqueVelocity = np.append(uniqueVelocity,np.nan)
+        non_nan_indices = np.arange(len(uniqueVelocity))[~np.isnan(uniqueVelocity)]
+        uniqueVelocity = np.interp(np.arange(len(uniqueVelocity)), non_nan_indices, uniqueVelocity[non_nan_indices])
+        uniqueVelocity[0] = 0
+        return uniqueTravel, uniqueVelocity
+    @cache_data
+    def __calculateProgression(_self,  uniqueTravel : list, uniqueVelocity : list):
+        progressionTime = np.array([])
+        for i in range(1, len(uniqueTravel)):
+            tmpPercent = uniqueTravel[1:i]
+            tmpVelocity = uniqueVelocity[1:i]
+            
+            if len(tmpPercent) > 0 and len(tmpVelocity) > 0 and 0 not in tmpVelocity[1:]:
+                wynik = 1/tmpVelocity
+                progressionTime = np.append(progressionTime, np.trapz(wynik, tmpPercent))
+            else:
+                progressionTime = np.append(progressionTime, np.nan)
+        progressionTime[0] = 0
+        progressionTime = np.insert(progressionTime, 0, 0)
+        return progressionTime

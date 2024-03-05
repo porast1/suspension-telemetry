@@ -54,6 +54,8 @@ typedef struct calibration
 	int16_t rearPressureSensor;
 	int16_t leftBrakeSensor;
 	int16_t rightBrakeSensor;
+	int16_t frontTravel;
+	int16_t rearStroke;
 } calibration_t;
 /******************************************************************************
  * Variables
