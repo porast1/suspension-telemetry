@@ -50,11 +50,7 @@
 #define TRAVEL_SENSOR_ADC_TRIGER_TIMER &htim2
 #define TRAVEL_SENSOR_TIMER_SAMPLE_CHECK &htim6
 
-/**
- * Debug define
- */
 
-#define CHECK_SAMPLE_TIME  /** To check time in SwV delete NO_ */
 /******************************************************************************
  * Module Preprocessor Macros
  *******************************************************************************/
@@ -73,10 +69,10 @@
 calibration_t calibrationValues =
 { 0 };
 volatile int16_t adcDataWrite[TRAVEL_SENSOR_BUFFER_SIZE];
-volatile int16_t adcDataRead[TRAVEL_SENSOR_BUFFER_SIZE];
+volatile float adcDataRead[TRAVEL_SENSOR_BUFFER_SIZE];
 
 static volatile int16_t *inBufPtr;
-static volatile int16_t *outBufPtr;
+static volatile float *outBufPtr;
 
 extern osSemaphoreId travelSensorSemHandle;
 
@@ -97,14 +93,17 @@ volatile float sample_time = 0;
  * @param sensorTravel  - define constants(sensor travel)
  * @return actualTravel
  */
-static int16_t convertAdcToTravel(volatile int16_t *adcDataWrite,
+static float convertAdcToTravel(volatile int16_t adcDataWrite,
 		int16_t sensorTravel);
-
-static int16_t convertAdcToPressure(volatile int16_t *adcDataWrite,
+#ifdef PRESSURE_SENSOR
+static int16_t convertAdcToPressure(volatile int16_t adcDataWrite,
 		int16_t sensorMaxPressure);
+#endif
 
+#ifdef BRAKE_SENSOR
 static int16_t convertAdcToBrakeForce(volatile int16_t *adcDataWrite,
 		int16_t sensorBrakeMaxForce);
+#endif
 static void normalizeTravelData(volatile int16_t *inBufPtr);
 
 /**
@@ -139,40 +138,45 @@ int travelPressureSensorCalibration(void)
 	int status;
 
 		memset(&calibrationValues, 0, sizeof(calibration_t));
-		normalizeTravelData(inBufPtr);
 		for (int i = 0; i <= TRAVEL_SENSOR_BUFFER_SIZE / 2 - NUMBER_OF_SENSORS;
 				i += NUMBER_OF_SENSORS)
 		{
-			calibrationValues.rearTravelSensor += outBufPtr[i
+			calibrationValues.frontTravelSensor += inBufPtr[i
+								+ FRONT_TRAVEL_BUFFER_POSITION];
+			calibrationValues.rearTravelSensor += inBufPtr[i
 					+ REAR_TRAVEL_BUFFER_POSITION];
-			calibrationValues.frontTravelSensor += outBufPtr[i
-					+ FRONT_TRAVEL_BUFFER_POSITION];
-			calibrationValues.rearPressureSensor += outBufPtr[i
+#ifdef PRESSURE_SENSOR
+			calibrationValues.rearPressureSensor += inBufPtr[i
 					+ REAR_PRESSURE_BUFFER_POSITION];
-			calibrationValues.frontPressureSensor += outBufPtr[i
+			calibrationValues.frontPressureSensor += inBufPtr[i
 					+ FRONT_PRESSURE_BUFFER_POSITION];
-			calibrationValues.leftBrakeSensor += outBufPtr[i
+#endif
+#ifdef BRAKE_SENSOR
+			calibrationValues.leftBrakeSensor += inBufPtr[i
 					+ LEFT_BRAKE_POSITION];
-			calibrationValues.rightBrakeSensor += outBufPtr[i
+			calibrationValues.rightBrakeSensor += inBufPtr[i
 					+ RIGHT_BRAKE_POSITION];
-
+#endif
 		}
 		calibrationValues.rearTravelSensor = calibrationValues.rearTravelSensor
 				/ (TRAVEL_SENSOR_BUFFER_SIZE / HALF_BUFF_SINGLE_SENSOR);
 		calibrationValues.frontTravelSensor =
 				calibrationValues.frontTravelSensor
 						/ (TRAVEL_SENSOR_BUFFER_SIZE / HALF_BUFF_SINGLE_SENSOR);
+#ifdef PRESSURE_SENSOR
 		calibrationValues.rearPressureSensor =
 				calibrationValues.rearPressureSensor
 						/ (TRAVEL_SENSOR_BUFFER_SIZE / HALF_BUFF_SINGLE_SENSOR);
 		calibrationValues.frontPressureSensor =
 				calibrationValues.frontPressureSensor
 						/ (TRAVEL_SENSOR_BUFFER_SIZE / HALF_BUFF_SINGLE_SENSOR);
+#endif
+#ifdef BRAKE_SENSOR
 		calibrationValues.leftBrakeSensor = calibrationValues.leftBrakeSensor
 				/ (TRAVEL_SENSOR_BUFFER_SIZE / HALF_BUFF_SINGLE_SENSOR);
 		calibrationValues.rightBrakeSensor = calibrationValues.rightBrakeSensor
 				/ (TRAVEL_SENSOR_BUFFER_SIZE / HALF_BUFF_SINGLE_SENSOR);
-
+#endif
 		status = writeCalibrationData(&calibrationValues);
 
 
@@ -185,31 +189,42 @@ void processData(char *sensorsData)
 	sendDataSD(sensorsData, outBufPtr);
 }
 
-void processDataSag(int16_t *sagFrontRear, int16_t *pressureFrontRear)
+void processDataSag(char* frontTravelBuf,char* rearTravelBuf, char* frontPressureBuf, char* rearPressureBuf)
 {
+	float frontTravel = 0;
+	float rearTravel = 0;
+	#ifdef PRESSURE_SENSOR
+	int32_t frontPressure = 0;
+	int32_t rearPressure = 0;
+	#endif
+	
 	int numberOfElements = (TRAVEL_SENSOR_BUFFER_SIZE / HALF_BUFF_SINGLE_SENSOR);
 	int i;
-	normalizeTravelData(inBufPtr);
-	sagFrontRear[0] = 0;
-	sagFrontRear[1] = 0;
-	pressureFrontRear[0] = 0;
-	pressureFrontRear[1] = 0;
 	for (i = 0; i <= TRAVEL_SENSOR_BUFFER_SIZE / 2 - NUMBER_OF_SENSORS; i +=
 	NUMBER_OF_SENSORS)
 	{
-		sagFrontRear[0] += outBufPtr[i + FRONT_TRAVEL_BUFFER_POSITION];
-		sagFrontRear[1] += outBufPtr[i + REAR_TRAVEL_BUFFER_POSITION];
-		pressureFrontRear[0] += outBufPtr[i + FRONT_PRESSURE_BUFFER_POSITION];
-		pressureFrontRear[1] += outBufPtr[i + REAR_PRESSURE_BUFFER_POSITION];
+		frontTravel += inBufPtr[i + FRONT_TRAVEL_BUFFER_POSITION];
+		rearTravel += inBufPtr[i + REAR_TRAVEL_BUFFER_POSITION];
+		#ifdef PRESSURE_SENSOR
+		frontPressure += inBufPtr[i + FRONT_PRESSURE_BUFFER_POSITION];
+		rearPressure += inBufPtr[i + REAR_PRESSURE_BUFFER_POSITION];
+		#endif
 
 	}
-	sagFrontRear[0] = sagFrontRear[0] / numberOfElements;
-	sagFrontRear[1] = sagFrontRear[1] / numberOfElements;
-	pressureFrontRear[0] = pressureFrontRear[0] / numberOfElements;
-	pressureFrontRear[1] = pressureFrontRear[1] / numberOfElements;
-
-	sagFrontRear[0] = ((int16_t)CONVERT_TO_PERCENT * sagFrontRear[0]) / (calibrationValues.frontTravel);
-	sagFrontRear[1] = ((int16_t)CONVERT_TO_PERCENT * sagFrontRear[1]) / (calibrationValues.rearStroke);
+	#ifdef PRESSURE_SENSOR
+	frontPressure = (frontPressure / numberOfElements) - calibrationValues.frontPressureSensor;
+	rearPressure = (rearPressure / numberOfElements) - calibrationValues.rearPressureSensor;
+	sprintf(frontPressureBuf, "%ld", frontPressure);
+	sprintf(rearPressureBuf, "%ld", rearPressure);
+	#endif
+	frontTravel = (frontTravel / numberOfElements) - calibrationValues.frontTravelSensor;
+	rearTravel = (rearTravel / numberOfElements) - calibrationValues.rearTravelSensor;
+	(frontTravel < 0) ? (frontTravel = 0) : UNUSED(0);
+	(rearTravel < 0) ? (rearTravel = 0) : UNUSED(0);
+	frontTravel = (CONVERT_TO_PERCENT * frontTravel) / (ADC_RESOLUTION - calibrationValues.frontTravelSensor);
+	rearTravel = (CONVERT_TO_PERCENT * rearTravel) / (ADC_RESOLUTION - calibrationValues.rearTravelSensor);
+	floatToStringTravel(frontTravelBuf, frontTravel, 1);
+	floatToStringTravel(rearTravelBuf, rearTravel, 1);
 	UNUSED(0);
 }
 
@@ -236,52 +251,64 @@ void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef *hadc)
 	osSemaphoreRelease(travelSensorSemHandle);
 
 }
+void floatToStringTravel(char* buffer, float value, int decimalPlaces) {
+	(value < 0) ? (value = 0) : UNUSED(0);
+    int integerPart = (int)value;
+    float fractionalPart = value - integerPart;
+    int multiplier = 1;
+    int i;
 
-static int16_t convertAdcToTravel(volatile int16_t *adcDataWrite,
+    for(i = 0; i < decimalPlaces; ++i)
+        multiplier *= 10;
+
+    fractionalPart *= multiplier;
+    int fractional = (int)fractionalPart;
+
+    sprintf(buffer, "%d.%d", integerPart, fractional);
+}
+static float convertAdcToTravel(volatile int16_t adcDataWrite,
 		int16_t sensorTravel)
 {
 
-	return (*adcDataWrite * sensorTravel /  (float)ADC_RESOLUTION);
+	return (adcDataWrite * sensorTravel /  (float)(ADC_RESOLUTION));
 }
-
-static int16_t convertAdcToPressure(volatile int16_t *adcDataWrite,
+#ifdef PRESSURE_SENSOR
+static int16_t convertAdcToPressure(volatile int16_t adcDataWrite,
 		int16_t sensorMaxPressure)
 {
 
 	return ((2.5 * CONVERT_MPa_to_PSI)
-			* (*adcDataWrite * sensorMaxPressure / (float)(ADC_RESOLUTION)));
+			* (adcDataWrite * sensorMaxPressure / (float)(ADC_RESOLUTION)));
 }
-
+#endif
+#ifdef BRAKE_SENSOR
 static int16_t convertAdcToBrakeForce(volatile int16_t *adcDataWrite,
 		int16_t sensorBrakeMaxForce)
 {
-	return (*adcDataWrite * sensorBrakeMaxForce /  (float)ADC_RESOLUTION);
+	return (*adcDataWrite * sensorBrakeMaxForce /  (float)(ADC_RESOLUTION));
 }
+#endif
 static void normalizeTravelData(volatile int16_t *inBufPtr)
 {
 	for (int n = 0; n <= (TRAVEL_SENSOR_BUFFER_SIZE / 2) - NUMBER_OF_SENSORS;
 			n += NUMBER_OF_SENSORS)
 	{
-		outBufPtr[n + FRONT_TRAVEL_BUFFER_POSITION] = convertAdcToTravel(
-				&inBufPtr[n + FRONT_TRAVEL_BUFFER_POSITION],
-				FRONT_SENSOR_TRAVEL) - calibrationValues.frontTravelSensor;
-		outBufPtr[n + REAR_TRAVEL_BUFFER_POSITION] = convertAdcToTravel(
-				&inBufPtr[n + REAR_TRAVEL_BUFFER_POSITION], REAR_SENSOR_TRAVEL)
-				- calibrationValues.rearTravelSensor;
-		outBufPtr[n + FRONT_PRESSURE_BUFFER_POSITION] = convertAdcToPressure(
-				&inBufPtr[n + FRONT_PRESSURE_BUFFER_POSITION],
-				PRESSURE_SENSOR_MAX_VALUE)
-				- calibrationValues.frontPressureSensor;
-		outBufPtr[n + REAR_PRESSURE_BUFFER_POSITION] = convertAdcToPressure(
-				&inBufPtr[n + REAR_PRESSURE_BUFFER_POSITION],
-				PRESSURE_SENSOR_MAX_VALUE)
-				- calibrationValues.rearPressureSensor;
-		outBufPtr[n + LEFT_BRAKE_POSITION] = convertAdcToBrakeForce(
-				&inBufPtr[n + LEFT_BRAKE_POSITION],
-				BRAKE_SENSOR_MAX_FORCE) - calibrationValues.leftBrakeSensor;
-		outBufPtr[n + RIGHT_BRAKE_POSITION] = convertAdcToBrakeForce(
-				&inBufPtr[n + RIGHT_BRAKE_POSITION],
-				BRAKE_SENSOR_MAX_FORCE) - calibrationValues.rightBrakeSensor;
+		outBufPtr[n + FRONT_TRAVEL_BUFFER_POSITION] =
+				convertAdcToTravel((inBufPtr[n + FRONT_TRAVEL_BUFFER_POSITION] - calibrationValues.frontTravelSensor), FRONT_SENSOR_TRAVEL);
+		outBufPtr[n + REAR_TRAVEL_BUFFER_POSITION] =
+				convertAdcToTravel((inBufPtr[n + REAR_TRAVEL_BUFFER_POSITION] - calibrationValues.rearTravelSensor), REAR_SENSOR_TRAVEL);
+#ifdef PRESSURE_SENSOR
+		outBufPtr[n + FRONT_PRESSURE_BUFFER_POSITION] =
+				convertAdcToPressure(inBufPtr[n + FRONT_PRESSURE_BUFFER_POSITION] - calibrationValues.frontPressureSensor, PRESSURE_SENSOR_MAX_VALUE);
+		outBufPtr[n + REAR_PRESSURE_BUFFER_POSITION] =
+				convertAdcToPressure(inBufPtr[n + REAR_PRESSURE_BUFFER_POSITION] - calibrationValues.rearPressureSensor, PRESSURE_SENSOR_MAX_VALUE);
+#endif
+#ifdef BRAKE_SENSOR
+		outBufPtr[n + LEFT_BRAKE_POSITION] =
+				inBufPtr[n + LEFT_BRAKE_POSITION] - calibrationValues.leftBrakeSensor;
+		outBufPtr[n + RIGHT_BRAKE_POSITION] =
+				inBufPtr[n + RIGHT_BRAKE_POSITION] - calibrationValues.rightBrakeSensor;
+#endif
 
 	}
 }

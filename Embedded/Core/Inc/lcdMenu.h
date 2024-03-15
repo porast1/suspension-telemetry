@@ -46,8 +46,9 @@
 /******************************************************************************
  * Function Prototypes
  *******************************************************************************/
-void lcdMenuSagStart(int16_t *result, int16_t *resultPressure);
+void lcdMenuSagStart(char* frontTravelBuf,char* rearTravelBuf, char* frontPressureBuf, char* rearPressureBuf);
 void lcdMenuFinishedNotification(char *notification);
+void lcdMenuStartBatVoltage(char * batteryVoltage);
 void lcdMenuStart();
 void lcdMenuSag();
 void lcdStartMeasurement();

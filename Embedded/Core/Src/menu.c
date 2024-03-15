@@ -20,7 +20,7 @@
 #include "cmsis_os.h"
 #include "File_Handling_RTOS.h"
 #include "travelSensor.h"
-#include "liquidcrystal_i2c.h"
+#include "ssd1306.h"
 #include "lcdMenu.h"
 /******************************************************************************
  * Module Preprocessor Constants
@@ -42,7 +42,7 @@
 /******************************************************************************
  * Module Variable Definitions
  *******************************************************************************/
-extern osSemaphoreId travelSensorSemHandle;
+
 
 static menu_t selector = MENU_START;
 static uint8_t path = 0;
@@ -102,7 +102,7 @@ void menuSelector(button_t buttonLeft, button_t buttonRight)
 		{
 			if(0 == readCalibrationData(&calibrationValues)){
 			startAdcDma();
-			puts("pomiar rozpoczety, Przytrzymaj LEFT aby zakonczyc\n");
+			SSD1306_Clear();
 			selector = MENU_SAG_START;
 			}
 		}
@@ -118,7 +118,7 @@ void menuSelector(button_t buttonLeft, button_t buttonRight)
 		}
 		else
 		{
-			puts("PRZYTRZYMAJ LEFT aby rozpoczac pomiar\n");
+
 		}
 		break;
 	case (MENU_CALIBRATION):
@@ -134,7 +134,7 @@ void menuSelector(button_t buttonLeft, button_t buttonRight)
 		}
 		else
 		{
-			puts("PRZYTRZYMAJ LEFT aby rozpoczac pomiar\n");
+
 		}
 		break;
 	case (MENU_SAG_START):
@@ -146,7 +146,7 @@ void menuSelector(button_t buttonLeft, button_t buttonRight)
 		}
 		else
 		{
-			puts("PRZYTRZYMAJ LEFT aby wrocic do menu start");
+
 		}
 		break;
 
@@ -159,7 +159,7 @@ void menuSelector(button_t buttonLeft, button_t buttonRight)
 			if(0 == readCalibrationData(&calibrationValues)){
 			startAdcDma();
 			selector = MENU_MEASURMENT_START;
-			puts("pomiar ciagly rozpoczety, PRZYTRZYMAJ RIGHT aby zakonczyc\n");
+
 			}
 		}
 		else if (BUTTON_LEFT == buttonLeft)
@@ -169,7 +169,7 @@ void menuSelector(button_t buttonLeft, button_t buttonRight)
 		}
 		else
 		{
-			puts("PRZYTRZYMAJ RIGHT aby rozpoczac pomiar\n");
+
 		}
 		break;
 
@@ -183,7 +183,7 @@ void menuSelector(button_t buttonLeft, button_t buttonRight)
 		}
 		else
 		{
-			puts("PRZYTRZYMAJ RIGHT aby zakończyć pomiar\n");
+
 		}
 		break;
 

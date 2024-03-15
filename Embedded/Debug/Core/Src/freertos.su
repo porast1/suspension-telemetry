@@ -1,5 +1,5 @@
-../Core/Src/freertos.c:110:6:vApplicationGetIdleTaskMemory	24	static
-../Core/Src/freertos.c:125:6:MX_FREERTOS_Init	136	static
-../Core/Src/freertos.c:189:6:SdCardInit	16	static
-../Core/Src/freertos.c:212:6:sensorReadInit	24	static
-../Core/Src/freertos.c:256:6:menuProcessDataInit	24	static
+../Core/Src/freertos.c:107:6:vApplicationGetIdleTaskMemory	24	static
+../Core/Src/freertos.c:122:6:MX_FREERTOS_Init	136	static
+../Core/Src/freertos.c:186:6:SdCardInit	32	static
+../Core/Src/freertos.c:239:6:sensorReadInit	56	static
+../Core/Src/freertos.c:281:6:menuProcessDataInit	24	static

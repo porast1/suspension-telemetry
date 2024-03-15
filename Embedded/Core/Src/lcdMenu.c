@@ -46,21 +46,20 @@
 /******************************************************************************
  * Function Definitions
  *******************************************************************************/
-void lcdMenuSagStart(int16_t *result, int16_t *resultPressure)
+void lcdMenuSagStart(char* frontTravelBuf,char* rearTravelBuf, char* frontPressureBuf, char* rearPressureBuf)
 {
-	char lcdFirstLineTravel[8] =
+	char lcdFirstLineTravel[9] =
 	{ 0 };
-	char lcSecondLineTravel[8] =
+	char lcSecondLineTravel[9] =
 	{ 0 };
 	char lcdFirstLinePressure[8] =
 	{ 0 };
 	char lcSecondLinePressure[8] =
 	{ 0 };
-	sprintf(lcdFirstLineTravel, "FT: %d", result[0]);
-	sprintf(lcSecondLineTravel, "RT: %d", result[1]);
-	sprintf(lcdFirstLinePressure, "FP: %d", resultPressure[0]);
-	sprintf(lcSecondLinePressure, "RP: %d", resultPressure[1]);
-	SSD1306_Clear();
+	sprintf(lcdFirstLineTravel, "FT: %s", frontTravelBuf);
+	sprintf(lcSecondLineTravel, "RT: %s", rearTravelBuf);
+	sprintf(lcdFirstLinePressure, "FP: %s", frontPressureBuf);
+	sprintf(lcSecondLinePressure, "RP: %s", rearPressureBuf);
 	SSD1306_GotoXY(10, 10);
 	SSD1306_Puts(lcdFirstLineTravel, &Font_7x10, SSD1306_COLOR_WHITE);
 	SSD1306_GotoXY(10, 30);
@@ -81,7 +80,13 @@ void lcdMenuFinishedNotification(char *notification)
 	SSD1306_UpdateScreen();
 	osDelay(2000);
 }
-
+void lcdMenuStartBatVoltage(char * batteryVoltage){
+	SSD1306_GotoXY(10, 50);
+	char buf[30] = "Battery: ";
+	strcat(buf, batteryVoltage);
+	SSD1306_Puts(buf, &Font_7x10, SSD1306_COLOR_WHITE);
+	SSD1306_UpdateScreen();
+}
 void lcdMenuStart()
 {
 	SSD1306_Clear();

@@ -2,6 +2,8 @@ import numpy as np
 from bokeh.plotting import figure, Figure
 from sessionInit import BaseDataAndFigure
 from streamlit import header, write, selectbox, bokeh_chart, cache_data
+from scipy.signal import medfilt
+from scipy.optimize import curve_fit
 class ProgressionFigure(BaseDataAndFigure):
     def __init__(self):
         super().__init__()
@@ -34,6 +36,18 @@ class ProgressionFigure(BaseDataAndFigure):
             abstractFigure.line(x=self.__uniqueRearTravel, y=self.__uniqueRearVelocity, line_width=2, legend_label='Rear', line_color='red')
         abstractFigure.legend.location = 'top_left'
         return abstractFigure
+    def __calculateCurveVelocity(self, dataVelocity : list, dataTravel : list ):
+        mask = dataVelocity >= 0
+        indices = np.where(mask)[0]
+        dataVelocity = dataVelocity[indices]
+        dataTravel = dataTravel[indices]
+        def quadratic_func(x, a, ha, b, hb, c):
+            return a * (x-ha)**2 +b*(x - hb) + c
+        popt, pcov = curve_fit(quadratic_func, dataTravel, dataVelocity)
+        a_fit, ha_fit, b_fit, hb_fit, c_fit = popt
+        x_data = np.linspace(0, max(dataTravel), 1000)
+        y_data = quadratic_func(x_data, a_fit, ha_fit, b_fit, hb_fit, c_fit)
+        return x_data, y_data
     @cache_data
     def __calculateUniqueVelocity(_self, dataVelocity : list, dataTravel : list ):
         mask = dataVelocity >= 0
@@ -44,18 +58,24 @@ class ProgressionFigure(BaseDataAndFigure):
         sortedVelocity = dataVelocity[sorted_Indices]
         sortedTravel = np.sort(dataTravel)
 
-        uniqueTravel = np.array(np.unique(sortedTravel))
-        uniqueVelocity = np.array([])
-        for unique_value in uniqueTravel:
-            meanVelocity = np.mean(sortedVelocity[sortedTravel == unique_value])
-            if 0 < meanVelocity:
-                uniqueVelocity = np.append(uniqueVelocity,meanVelocity)
-            else:
-                uniqueVelocity = np.append(uniqueVelocity,np.nan)
+        travel_bins = np.arange(0, max(sortedTravel), max(sortedTravel) * 0.01)  
+        bin_indices = np.digitize(sortedTravel, travel_bins)
+        uniqueVelocity = [np.mean(sortedVelocity[bin_indices == i]) if np.any(bin_indices == i) else np.nan for i in range(1, len(travel_bins))]
+
+        uniqueVelocity = np.array(uniqueVelocity)
         non_nan_indices = np.arange(len(uniqueVelocity))[~np.isnan(uniqueVelocity)]
-        uniqueVelocity = np.interp(np.arange(len(uniqueVelocity)), non_nan_indices, uniqueVelocity[non_nan_indices])
+        non_nan_values = uniqueVelocity[non_nan_indices]
+        uniqueVelocity = np.interp(np.arange(len(uniqueVelocity)), non_nan_indices, non_nan_values)
+
+        uniqueVelocity = medfilt(uniqueVelocity, 11)
+        window_size = 8
+        window = np.ones(window_size) / window_size
+        uniqueVelocity = np.convolve(uniqueVelocity, window, 'same')
+
+        print(len(uniqueVelocity))
         uniqueVelocity[0] = 0
-        return uniqueTravel, uniqueVelocity
+        uniqueVelocity[100:] = 0
+        return travel_bins[:-1], uniqueVelocity 
     @cache_data
     def __calculateProgression(_self,  uniqueTravel : list, uniqueVelocity : list):
         progressionTime = np.array([])

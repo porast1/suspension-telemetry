@@ -58,10 +58,17 @@
 void SystemClock_Config(void);
 void MX_FREERTOS_Init(void);
 /* USER CODE BEGIN PFP */
-int __io_putchar(int ch)
+// int __io_putchar(int ch)
+// {
+// 	ITM_SendChar(ch);
+// 	return (ch);
+// }
+int _write(int file, char *ptr, int len)
 {
-	ITM_SendChar(ch);
-	return (ch);
+    int i=0;
+    for(i=0 ; i<len ; i++)
+        ITM_SendChar((*ptr++));
+    return len;
 }
 /* USER CODE END PFP */
 

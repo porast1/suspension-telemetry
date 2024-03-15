@@ -46,11 +46,40 @@ void setPath(char *dir, char *sensorData, uint8_t path)
 void createNewFile(char *dir, char *sensorData, uint8_t *pathPtr)
 {
 	uint8_t path = *pathPtr;
+	char columnName[80] = {'\0'};
 	Mount_SD("/");
 	Format_SD(path);
 	Create_Dir(dir);
 	Create_File(sensorData);
-	Update_File(sensorData,"FrontTravel;RearTravel;FrontPressure;RearPressure;LeftBrake;RightBrake\n");
+	char *FrontTravel = "FrontTravel;";
+	char *RearTravel = "RearTravel";
+	char travelSeparator = '\n';
+	sprintf(columnName, "%s%s%c", FrontTravel, RearTravel, travelSeparator);
+	#ifdef PRESSURE_SENSOR
+	travelSeparator = ';';
+	char pressureSeparator = '\n';
+	char *FrontPressure = "FrontPressure;";
+	char *RearPressure = "RearPressure";
+	memset(columnName, 0, sizeof(columnName));
+	sprintf(columnName, "%s%s%c%s%s%c", FrontTravel, RearTravel, travelSeparator, FrontPressure, RearPressure, pressureSeparator);
+	#endif
+
+	#ifdef BRAKE_SENSOR
+	travelSeparator = ';';
+	char brakeSeparator = '\n';
+	char *LeftBrake = "LeftBrake;";
+	char *RightBrake = "RightBrake";
+	memset(columnName, 0, sizeof(columnName));
+	sprintf(columnName, "%s%s%c%s%s%c", FrontTravel, RearTravel, travelSeparator, LeftBrake, RightBrake, brakeSeparator);
+	#endif
+	#if defined(PRESSURE_SENSOR) && defined(BRAKE_SENSOR)
+	travelSeparator = ';';
+	pressureSeparator = ';';
+	brakeSeparator = '\n';
+	memset(columnName, 0, sizeof(columnName));
+	sprintf(columnName, "%s%s%c%s%s%c%s%s%c", FrontTravel, RearTravel, travelSeparator, FrontPressure, RearPressure, pressureSeparator, LeftBrake, RightBrake, brakeSeparator);
+	#endif
+	Update_File(sensorData, columnName);
 	Unmount_SD("/");
 	(*pathPtr)++;
 }
@@ -570,23 +599,33 @@ void Check_SD_Space(void)
 	vPortFree(buf);
 #endif
 }
-void sendDataSD(char *file, volatile int16_t *sensor)
+void sendDataSD(char *file, volatile float *sensor)
 {
 	char *buffer = pvPortMalloc(
 			(7 * TRAVEL_SENSOR_BUFFER_SIZE / 2) * sizeof(char));
 	if (NULL != buffer)
 	{
 		memset(buffer, 0, (7 * TRAVEL_SENSOR_BUFFER_SIZE / 2));
+		char temp[8];
+		uint8_t border = NUMBER_OF_SENSORS - NO_PRESSURE_SENSOR - NO_BRAKE_SENSOR;
 		for (int i = 0; i < (TRAVEL_SENSOR_BUFFER_SIZE) / 2; i +=
 				NUMBER_OF_SENSORS)
 		{
-			sprintf(buffer + strlen(buffer), "%d;%d;%d;%d;%d;%d\n",
-					sensor[i + FRONT_TRAVEL_BUFFER_POSITION],
-					sensor[i + REAR_TRAVEL_BUFFER_POSITION],
-					sensor[i + FRONT_PRESSURE_BUFFER_POSITION],
-					sensor[i + REAR_PRESSURE_BUFFER_POSITION],
-					sensor[i + LEFT_BRAKE_POSITION],
-					sensor[i + RIGHT_BRAKE_POSITION]);
+			for (int j = 0; j < border; j++)
+			{
+				memset(temp, 0, 8);
+				floatToStringTravel(temp, sensor[i+j], 1);
+				if (j == border - 1)
+				{
+					strcat(buffer, temp);
+					strcat(buffer, "\n");
+				}
+				else
+				{
+					strcat(buffer, temp);
+					strcat(buffer, ";");
+				}
+			}
 		}
 		Mount_SD("/");
 		Update_File(file, buffer);
@@ -608,19 +647,19 @@ int readCalibrationData(calibration_t *calibration)
 	resultCalibration = f_open(&fileCalibration, CONFIG_FILE_NAME, FA_READ);
 	if (resultCalibration != FR_OK)
 	{
-		printf("Nie można otworzyć pliku do odczytu\n");
+		puts("Nie można otworzyć pliku do odczytu\n");
 		return -1;
 	}
 
 	char *buffer = (char*) calloc(240, sizeof(char));
 	if (buffer == NULL)
 	{
-		printf("Błąd alokacji pamięci dla bufora.\n");
+		puts("Błąd alokacji pamięci dla bufora.\n");
 		return 1;
 	}
 
 	int frontTravelInt, rearTravelInt, frontPressureInt, rearPressureInt,
-			leftBrakeInt, rightBrakeInt, frontTravel, rearStroke;
+			leftBrakeInt, rightBrakeInt;
 
 	char line[30];
 
@@ -629,9 +668,9 @@ int readCalibrationData(calibration_t *calibration)
 		strcat(buffer, line);
 	}
 	sscanf(buffer,
-			"Front travel sensor: %d\nRear travel sensor: %d\nFront pressure sensor: %d\nRear pressure sensor: %d\nLeft brake sensor: %d\nRight brake sensor: %d\nFront Travel: %d\nRear Stroke: %d",
+			"Front travel sensor: %d\nRear travel sensor: %d\nFront pressure sensor: %d\nRear pressure sensor: %d\nLeft brake sensor: %d\nRight brake sensor: %d",
 			&frontTravelInt, &rearTravelInt, &frontPressureInt,
-			&rearPressureInt, &leftBrakeInt, &rightBrakeInt, &frontTravel, &rearStroke);
+			&rearPressureInt, &leftBrakeInt, &rightBrakeInt);
 	free(buffer);
 
 	f_close(&fileCalibration);
@@ -643,8 +682,7 @@ int readCalibrationData(calibration_t *calibration)
 	calibration->rearPressureSensor = rearPressureInt;
 	calibration->leftBrakeSensor = leftBrakeInt;
 	calibration->rightBrakeSensor = rightBrakeInt;
-	calibration->frontTravel = frontTravel;
-	calibration->rearStroke = rearStroke;
+
 	Unmount_SD("/");
 
 	return 0;
@@ -654,11 +692,11 @@ int writeCalibrationData(const calibration_t *calibration)
 {
 
 	Mount_SD("/");
-	    resultCalibration = f_open(&fileCalibration, CONFIG_FILE_NAME, FA_WRITE);
+	    resultCalibration = f_open(&fileCalibration, CONFIG_FILE_NAME, FA_WRITE|FA_CREATE_ALWAYS);
 
 	    if (resultCalibration != FR_OK)
 	    {
-	        printf("Nie można otworzyć pliku do zapisu\n");
+	        puts("Nie można otworzyć pliku do zapisu\n");
 	        return -1;
 	    }
 

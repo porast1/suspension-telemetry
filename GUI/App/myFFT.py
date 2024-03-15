@@ -20,6 +20,18 @@ class fftFigure(BaseDataAndFigure):
         X = abs(fft(data))
         X = fftshift(X)
         return f, X
+    def power_spectrum(self, data):
+        # Apply Fourier Transform
+        fft_result = fft(data)
+        
+        # Compute power spectrum: the square of the absolute value of the fft result
+        power_spectrum = abs(fft_result) ** 2
+        
+        # Compute frequencies for the spectrum
+        sample_rate = 1  # adjust as needed
+        freqs = fftfreq(len(data), 1/sample_rate)
+    
+        return freqs, power_spectrum
     def XY_LabelAbstract(self, abstractFigure: Figure):
         abstractFigure.height = 250
         abstractFigure.xaxis.axis_label = 'Frequency [Hz]'

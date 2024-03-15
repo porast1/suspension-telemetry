@@ -1,7 +1,8 @@
-../Core/Src/lcdMenu.c:49:6:lcdMenuSagStart	48	static
-../Core/Src/lcdMenu.c:76:6:lcdMenuFinishedNotification	16	static
-../Core/Src/lcdMenu.c:85:6:lcdMenuStart	8	static
-../Core/Src/lcdMenu.c:99:6:lcdMenuSag	8	static
-../Core/Src/lcdMenu.c:115:6:lcdStartMeasurement	8	static
-../Core/Src/lcdMenu.c:129:6:lcdCalibration	8	static
-../Core/Src/lcdMenu.c:143:6:lcdMeasurementStart	8	static
+../Core/Src/lcdMenu.c:49:6:lcdMenuSagStart	64	static
+../Core/Src/lcdMenu.c:75:6:lcdMenuFinishedNotification	16	static
+../Core/Src/lcdMenu.c:83:6:lcdMenuStartBatVoltage	48	static
+../Core/Src/lcdMenu.c:90:6:lcdMenuStart	8	static
+../Core/Src/lcdMenu.c:104:6:lcdMenuSag	8	static
+../Core/Src/lcdMenu.c:120:6:lcdStartMeasurement	8	static
+../Core/Src/lcdMenu.c:134:6:lcdCalibration	8	static
+../Core/Src/lcdMenu.c:148:6:lcdMeasurementStart	8	static

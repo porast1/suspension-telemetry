@@ -57,7 +57,7 @@ void Check_SD_Space(void);
  */
 FRESULT Update_File(char *name, char *data);
 
-void sendDataSD(char *file, volatile int16_t *sensor);
+void sendDataSD(char *file, volatile float *sensor);
 
 int readCalibrationData(calibration_t *calibration);
 int writeCalibrationData(const calibration_t *calibration);

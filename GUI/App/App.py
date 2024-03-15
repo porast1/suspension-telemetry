@@ -4,13 +4,15 @@ from balance import balance_data
 from Telemetry import GeneralTravelFigure, TravelHistogram
 from velocity import VelocityHistogram
 from pressure import pressure_figure, minPressure
-from sessionInit import SessionDataInit, BaseDataAndFigure
+from sessionInit import SessionDataInit,StreamlitApi, BaseDataAndFigure
 from myFFT import fftFigure
 from progression import ProgressionFigure
 import numpy as np
 if __name__ == '__main__':
     st.set_page_config(layout="wide")
-    SessionInit = SessionDataInit(samplingTime=0.005,interpolateConstanst=5)
+    my_api = StreamlitApi()
+    file_status, suspension_raw_data = my_api.upload_file_with_data()
+    my_api.prepare_suspension_data(suspension_raw_data)
     sidebarSelector = st.sidebar.selectbox(
         "Main Menu",
         ["Load & Process data", "Charts & Statistics"])
@@ -20,7 +22,7 @@ if __name__ == '__main__':
         st.write("1. Load the data first, if you are using only one shock absorber then load the data for front and rear at the same time, same for pressure")
     
 
-    if sidebarSelector == "Charts & Statistics" and st.session_state.suspensionDataUploaded:
+    if sidebarSelector == "Charts & Statistics" and file_status:
         st.title(f"{sidebarSelector}")
         baseTravelFigure = GeneralTravelFigure()
         baseTravelFigure.createFigure()

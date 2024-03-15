@@ -65,10 +65,7 @@
 
 /* Private variables ---------------------------------------------------------*/
 /* USER CODE BEGIN Variables */
- int16_t result[2] =
-	{ 0 };
-	 int16_t resultPressure[2] =
-	{ 0 };
+
 
 button_t buttonMenu = 5;
 /* USER CODE END Variables */
@@ -193,10 +190,40 @@ void SdCardInit(void const * argument)
   /* USER CODE BEGIN SdCardInit */
 	Mount_SD("/");
 	Unmount_SD("/");
+	char voltageStr[3] = {0};
+	uint32_t value;
+	float voltage;
+
 	/* Infinite loop */
+#ifdef CHECK_SAMPLE_TIME
+	int32_t startTime = 0;
+#endif
 	for (;;)
 	{
+#ifdef CHECK_SAMPLE_TIME
+		if (MENU_MEASURMENT_START == getMenuSelector()){
+			startTime++;
+			if(startTime >= 100){
+				startTime =0;
+				menuSelector(BUTTON_SNA, BUTTON_RIGHT_PRESSED);
+				UNUSED(0);
+			}
+		}
+#endif
+		if(MENU_START == getMenuSelector()){
+			HAL_ADC_Start(&hadc1);
+			if(HAL_OK == HAL_ADC_PollForConversion(&hadc1, HAL_MAX_DELAY)){
+				value = HAL_ADC_GetValue(&hadc1);
+				voltage = 3.3f * value / 4096.0f;
+				memset(voltageStr,0, sizeof(voltageStr));
+				floatToStringTravel(voltageStr, (2*voltage), 1);
+				lcdMenuStartBatVoltage(voltageStr);
+	//puts(voltageStr);
 
+	//			printf("Battery Voltage: %s\n", voltageStr);
+			}
+			HAL_ADC_Stop(&hadc1);
+		}
 		osDelay(1000);
 	}
   /* USER CODE END SdCardInit */
@@ -212,7 +239,6 @@ void SdCardInit(void const * argument)
 void sensorReadInit(void const * argument)
 {
   /* USER CODE BEGIN sensorReadInit */
-
 	/* Infinite loop */
 	for (;;)
 	{
@@ -225,8 +251,12 @@ void sensorReadInit(void const * argument)
 			}
 			else if (MENU_SAG_START == getMenuSelector())
 			{
-				processDataSag(result, resultPressure);
-				lcdMenuSagStart(result, resultPressure);
+				char frontTravel[8] = {'\0'};
+				char rearTravel[8] = {'\0'};
+				char frontPressure[8] = {'\0'};
+				char rearPressure[8] = {'\0'};
+				processDataSag(frontTravel, rearTravel, frontPressure, rearPressure);
+				lcdMenuSagStart(frontTravel, rearTravel, frontPressure, rearPressure);
 			}
 			else if (MENU_CALIBRATION == getMenuSelector()){
 				stopAdcDma();
@@ -236,12 +266,7 @@ void sensorReadInit(void const * argument)
 				setMenuSelector(MENU_START);
 			}
 		}
-
-		else
-		{
-
-		}
-		osDelay(50);
+		osDelay(10);
 	}
   /* USER CODE END sensorReadInit */
 }
@@ -271,7 +296,7 @@ void menuProcessDataInit(void const * argument)
 			menuSelector(buttonLeft, buttonRight);
 		}
 
-		osDelay(10);
+		osDelay(30);
 	}
   /* USER CODE END menuProcessDataInit */
 }

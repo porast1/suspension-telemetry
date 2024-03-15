@@ -64,7 +64,7 @@ Core/Src/menu.o: ../Core/Src/menu.c ../Core/Inc/menu.h \
  ../Middlewares/Third_Party/FatFs/src/diskio.h \
  ../Middlewares/Third_Party/FatFs/src/ff.h ../FATFS/Target/sd_diskio.h \
  ../Core/Inc/travelSensor.h ../Core/Inc/travelSensor.h \
- ../Core/Inc/liquidcrystal_i2c.h ../Core/Inc/lcdMenu.h
+ ../Core/Inc/ssd1306.h ../Core/Inc/fonts.h ../Core/Inc/lcdMenu.h
 ../Core/Inc/menu.h:
 ../Core/Inc/button.h:
 ../Core/Inc/gpio.h:
@@ -138,5 +138,6 @@ Core/Src/menu.o: ../Core/Src/menu.c ../Core/Inc/menu.h \
 ../FATFS/Target/sd_diskio.h:
 ../Core/Inc/travelSensor.h:
 ../Core/Inc/travelSensor.h:
-../Core/Inc/liquidcrystal_i2c.h:
+../Core/Inc/ssd1306.h:
+../Core/Inc/fonts.h:
 ../Core/Inc/lcdMenu.h:

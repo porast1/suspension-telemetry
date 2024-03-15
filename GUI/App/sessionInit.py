@@ -2,98 +2,151 @@ import streamlit as st
 from numpy import array, insert, diff, linspace, where, zeros_like, mean
 from pandas import read_csv, DataFrame, to_numeric, date_range
 from bokeh.plotting import figure, Figure
-class SessionDataInit:
-    #private
-    __uploaded_file = None
-    #public
-    def __init__(self, samplingTime : float, interpolateConstanst : int):
-        self.__initSessionVariables()
-        self.__yourBikeSetup()
-        #dane
-        SessionDataInit.__uploaded_file = st.sidebar.file_uploader("Upload a CSV file", type=["csv"])
-        if ( SessionDataInit.__uploaded_file is not None) and (SessionDataInit.__uploaded_file.name != st.session_state.dataFileName):
-            data = read_csv(SessionDataInit.__uploaded_file, delimiter=';')
-            data = self.__load_data(data=data,samplingTime=samplingTime, interpolateConst=interpolateConstanst)
-            if data is not None:
-                st.session_state.dfFrontTravel = array(data["FrontTravel"] if "FrontTravel" in data.columns else None)
-                st.session_state.dfRearTravel = array(data["RearTravel"] if "RearTravel" in data.columns else None)
-                st.session_state.dfRearTravel = self.__calculateRearTravelFromStroke(st.session_state.dfRearTravel)
-                with open('RearTravel.txt', 'w') as ft:
-                # Zapisujemy całą listę do pliku, łącząc elementy za pomocą znaku nowej linii
-                    ft.write('\n'.join(map(str, st.session_state.dfRearTravel)))
-                st.session_state.dfFrontTravelPercent = self.__calculateTravelPercent(st.session_state.dfFrontTravel, st.session_state.maxFrontTravel)
-                st.session_state.dfRearTravelPercent = self.__calculateTravelPercent(st.session_state.dfRearTravel, st.session_state.maxRearTravel)
-                with open('RearTravelPercent.txt', 'w') as fp:
-                # Zapisujemy całą listę do pliku, łącząc elementy za pomocą znaku nowej linii
-                    fp.write('\n'.join(map(str, st.session_state.dfRearTravelPercent)))
-                st.session_state.dfFrontPressure = array(data["FrontPressure"] if "FrontPressure" in data.columns else None)
-                st.session_state.dfRearPressure = array(data["RearPressure"] if "RearPressure" in data.columns else None)
-                st.session_state.travelPressureTime = linspace(0,(samplingTime / interpolateConstanst) * (data.shape[0]-1),data.shape[0])
-                st.session_state.dfFrontVelocity = self.__calculateVelocity(samples=st.session_state.dfFrontTravel, sampleTime=(samplingTime / interpolateConstanst))
-                st.session_state.dfRearVelocity = self.__calculateVelocity(samples=st.session_state.dfRearTravel, sampleTime=(samplingTime / interpolateConstanst))
-                with open('RearVelocity.txt', 'w') as f:
-                # Zapisujemy całą listę do pliku, łącząc elementy za pomocą znaku nowej linii
-                    f.write('\n'.join(map(str, st.session_state.dfRearVelocity)))
-                st.session_state.dataFileName = SessionDataInit.__uploaded_file.name
-                st.session_state.suspensionDataUploaded = True
-                st.success("Dane zostały pomyślnie wczytane!")
-            else:
-                st.session_state.suspensionDataUploaded = False
-                st.error("Brak danych do wczytania.")
-            
-    def __initSessionVariables(self):
-         # Lista zmiennych sesji do zainicjalizowania
-        session_variables = {
-            'suspensionDataUploaded': False,
-            'dataFileName': False,
-            'travelPressureTime': None,
-            'dfFrontTravel': None,
-            'dfRearTravel': None,
-            'dfFrontTravelPercent': None,
-            'dfRearTravelPercent': None,
-            'dfFrontVelocity' : None,
-            'dfRearVelocity' : None,
-            'dfFrontPressure': None,
-            'dfRearPressure': None,
-            'maxFrontTravel': None,
-            'maxRearTravel': None,
-            'maxRearStroke': None
+from scipy.signal import butter, lfilter
+from abc import ABC, abstractmethod
+class UserApi(ABC):
+    def __init__(self):
+        self.__suspension_parameters_template = {
+            'data_file_name': None,
+            'time': None,
+            'front_travel': None,
+            'rear_travel': None,
+            'front_travel_percent': None,
+            'rear_travel_percent': None,
+            'front_velcty' : None,
+            'rear_velocity' : None,
+            'front_pressure': None,
+            'rear_pressure': None,
+            'max_front_travel': None,
+            'max_rear_travel': None,
+            'max_rear_stroke': None
         }
-        # Inicjalizacja kontekstu sesji
-        for variable_name, default_value in session_variables.items():
-            if variable_name not in st.session_state:
-                st.session_state[variable_name] = default_value
+    def _get_suspension_parameters_template(self):
+        return self.__suspension_parameters_template.copy()
+    
+    def _your_bike_setup(self):
+        self.title("Choose your setup")
+        self.__suspension_parameters_template['max_front_travel'] = self._select_max_travel("Add max front travel:", 180)
+        self.__suspension_parameters_template['max_rear_travel'] = self._select_max_travel("Add max Rear travel:", 170)
+        self.__suspension_parameters_template['max_rear_stroke'] = self._select_max_travel("Add max Rear stroke:", 65)
 
-    def __yourBikeSetup(self):
-        st.title("Choose your setup")
-        st.session_state.maxFrontTravel = st.number_input("Add max front travel:",0,300,180)
-        st.session_state.maxRearTravel = st.number_input("Add max Rear travel:",0,300,170)
-        st.session_state.maxRearStroke = st.number_input("Add max Rear stroke:",0,300,65)
+    @abstractmethod
+    def upload_file_with_data(self, suspension_data : dict):
+        pass
+    
+    @abstractmethod
+    def _init_suspension_df(self):
+        pass
+
+    @abstractmethod
+    def _select_max_travel(self, label : str, travel : int, max_travel : int = 310):
+        pass
+    @abstractmethod
+    def file_uploader(self, label : str, type : str):
+        pass
+    @abstractmethod
+    def title(self, title : str):
+        pass
+    
+class StreamlitApi(UserApi):
+    def __init__(self, session_state : dict):
+        super().__init__()
+        self.__suspension_parameters = self._get_suspension_parameters_template()
+        self._init_suspension_df(suspension_parameters=self.__suspension_parameters)
+        self._your_bike_setup(session_variables=self.__suspension_parameters)
+
+    def upload_file_with_data(self, suspension_data : dict):
+        uploaded_file = self.file_uploader(label="Upload a CSV file", type=["csv"])
+        status = False
+        data = None
+        if ( uploaded_file is not None) and (uploaded_file.name != suspension_data['data_file_name']):
+            suspension_data['data_file_name'] = uploaded_file.name
+            data = read_csv(uploaded_file, delimiter=';')
+            status = True
+        elif suspension_data['data_file_name'] is not None:
+            status = True
+        else:
+            status = False
+            data = None
+        return status, data
+    def _init_suspension_df(self, suspension_parameters : dict, suspension_data : dict ):
+        for parameter, default_value in suspension_parameters.items():
+            if parameter not in suspension_data:
+                suspension_data[parameter] = default_value
+
+    def _select_max_travel(self, label : str, travel : int, max_travel : int = 310):
+        slider = st.number_input(f'{label}',0, max_travel, travel)
+        return slider
+    def file_uploader(self, label : str, type : str):
+        file = st.sidebar.file_uploader(label, type=[type])
+        return file
+    def title(self, title : str):
+        st.title(f"{title}")
+    @property
+    def suspension_data_frame(self):
+        return st.session_state
+
+class PrepareData:
+    def __init__(self):
+        pass
+    def prepare_suspension_data(self, file_data : DataFrame, samplingTime : float = 0.005, interpolateConstanst : int = 5, suspension_df : dict = st.session_state):
+        if file_data is not None:
+            prepared_data = self._prepare_data(data=file_data, samplingTime=samplingTime, interpolateConst=interpolateConstanst)
+            suspension_df['front_travel'] = array(prepared_data["FrontTravel"] if "FrontTravel" in prepared_data.columns else None)
+            rear_stroke = array(prepared_data["RearTravel"] if "RearTravel" in prepared_data.columns else None)
+            suspension_df['rear_travel'] = self.__calculateRearTravelFromStroke(rear_stroke)
+            suspension_df['front_travel_percent'] = self.__calculateTravelPercent(suspension_df['front_travel'], suspension_df['max_front_travel'])
+            suspension_df['rear_travel_percent'] = self.__calculateTravelPercent(suspension_df['rear_travel'], suspension_df['max_rear_travel'])
+            suspension_df['front_velocity'] = self.__calculateVelocity(samples=suspension_df['front_travel'], sampleTime=(samplingTime / interpolateConstanst))
+            suspension_df['rear_velocity'] = self.__calculateVelocity(samples=suspension_df['rear_travel'], sampleTime=(samplingTime / interpolateConstanst))
+
+            suspension_df['front_pressure'] = array(prepared_data["FrontPressure"] if "FrontPressure" in prepared_data.columns else None)
+            suspension_df['rear_pressure'] = array(prepared_data["RearPressure"] if "RearPressure" in prepared_data.columns else None)
+
+            suspension_df['time'] = linspace(0,(samplingTime / interpolateConstanst) * (prepared_data.shape[0]-1),prepared_data.shape[0])
 
     @st.cache_data
-    def __load_data(_self, data : DataFrame, samplingTime : float, interpolateConst : float):
+    def _prepare_data(_self, data : DataFrame, samplingTime : float, interpolateConst : float):
         if data is not None and len(data) > 0:
             samplingTime_ms = samplingTime * 1000
             data = data.apply(to_numeric, errors='coerce')
             index = date_range(start='2024-02-07 00:00:00', periods=len(data), freq=f'{samplingTime_ms}ms')
             data.index = index
-            #interpolation
             resampleTime = samplingTime_ms/interpolateConst
+            for column in data.columns:
+                data[column] = _self.__butter_lowpass_filter(data[column], 10, 200)
             data = data.resample(f'{resampleTime}ms').interpolate(method='cubic')
             data = data.mask(data < 0, 0)
-            return data
+            data = data.dropna()
+            return data.iloc[200:]
         else:
             return None
+        
+    @st.cache_data
+    def __butter_lowpass(_self,cutoff, fs, order=10):
+        nyq = 0.5 * fs
+        normal_cutoff = cutoff / nyq
+        b, a = butter(order, normal_cutoff, btype='low', analog=False)
+        return b, a
+    
+    @st.cache_data
+    def __butter_lowpass_filter(_self,data, cutoff, fs, order=10):
+        b, a = _self.__butter_lowpass(cutoff, fs, order=order)
+        y = lfilter(b, a, data)
+        return y
+    
     @st.cache_data
     def __calculateVelocity(_self, samples : list, sampleTime : float):
         differences = diff(samples)
         derivative = differences / sampleTime
         derivative = insert(derivative, 0, 0)
         return derivative
+    
     @st.cache_data
     def __calculateRearTravelFromStroke(_self, strokeData : list):
         normalizer = st.session_state.maxRearTravel / st.session_state.maxRearStroke
         return (normalizer * strokeData)
+    
     @st.cache_data
     def __calculateTravelPercent(_self, travelData : list, maxTravel):
         nonzero_mask = (travelData != 0)
@@ -101,66 +154,11 @@ class SessionDataInit:
         percent_values[nonzero_mask] = 100 * (travelData[nonzero_mask] / maxTravel)
         return percent_values
 class BaseDataAndFigure:
-    #private
-    _frontTravel = None
-    _rearTravel = None
-    _frontTravelPercent = None
-    _rearTravelPercent = None
-    _frontVelocity = None
-    _rearVelocity = None
-    _frontPressure = None
-    _rearPressure = None
-    _timeTravelPressure = None
-    _maxFrontTravel = None
-    _maxRearTravel = None
 
-    #public
     def __init__(self):
-        self._frontTravel = st.session_state.dfFrontTravel
-        self._rearTravel = st.session_state.dfRearTravel
-        self._frontTravelPercent = st.session_state.dfFrontTravelPercent
-        self._rearTravelPercent =  st.session_state.dfRearTravelPercent
-        self._frontVelocity = st.session_state.dfFrontVelocity
-        self._rearVelocity = st.session_state.dfRearVelocity
-        self._frontPressure = st.session_state.dfRearTravel
-        self._rearPressure = st.session_state.dfRearTravel
-        self._timeTravelPressure = st.session_state.travelPressureTime
-        self._maxFrontTravel = st.session_state.maxFrontTravel
-        self._maxRearTravel = st.session_state.maxRearTravel
+        pass
 
-    # Getters
-    def getFrontTravel(self):
-        return self._frontTravel
-
-    def getRearTravel(self):
-        return self._rearTravel
-
-    def getFrontTravelPercent(self):
-        return self._frontTravelPercent
-
-    def getRearTravelPercent(self):
-        return self._rearTravelPercent
-
-    def getFrontVelocity(self):
-        return self._frontVelocity
-
-    def getRearVelocity(self):
-        return self._rearVelocity
-
-    def getFrontPressure(self):
-        return self._frontPressure
-
-    def getRearPressure(self):
-        return self._rearPressure
-
-    def getTimeTravelPressure(self):
-        return self._timeTravelPressure
-
-    def getMaxFrontTravel(self):
-        return self._maxFrontTravel
-
-    def getMaxRearTravel(self):
-        return self._maxRearTravel
+    
     def calculateAvgandMaxVelocity(self, velocity: list[float]):
         maskComp = velocity >= 0
         maskReb = velocity < 0
