@@ -1,7 +1,0 @@
-../USB_DEVICE/App/usbd_storage_if.c:170:8:STORAGE_Init_FS	1
-../USB_DEVICE/App/usbd_storage_if.c:186:8:STORAGE_GetCapacity_FS	1
-../USB_DEVICE/App/usbd_storage_if.c:206:8:STORAGE_IsReady_FS	1
-../USB_DEVICE/App/usbd_storage_if.c:220:8:STORAGE_IsWriteProtected_FS	1
-../USB_DEVICE/App/usbd_storage_if.c:237:8:STORAGE_Read_FS	2
-../USB_DEVICE/App/usbd_storage_if.c:261:8:STORAGE_Write_FS	2
-../USB_DEVICE/App/usbd_storage_if.c:282:8:STORAGE_GetMaxLun_FS	1

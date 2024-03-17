@@ -1,4 +1,0 @@
-../Core/Src/menu.c:60:8:getMenuSelector	1
-../Core/Src/menu.c:64:6:setMenuSelector	1
-../Core/Src/menu.c:68:7:getSensorDataFileName	1
-../Core/Src/menu.c:73:6:menuSelector	20

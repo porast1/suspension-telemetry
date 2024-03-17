@@ -1,8 +1,0 @@
-../Core/Src/lcdMenu.c:49:6:lcdMenuSagStart	1
-../Core/Src/lcdMenu.c:75:6:lcdMenuFinishedNotification	1
-../Core/Src/lcdMenu.c:83:6:lcdMenuStartBatVoltage	1
-../Core/Src/lcdMenu.c:90:6:lcdMenuStart	1
-../Core/Src/lcdMenu.c:104:6:lcdMenuSag	1
-../Core/Src/lcdMenu.c:120:6:lcdStartMeasurement	1
-../Core/Src/lcdMenu.c:134:6:lcdCalibration	1
-../Core/Src/lcdMenu.c:148:6:lcdMeasurementStart	1
