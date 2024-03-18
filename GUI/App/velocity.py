@@ -8,10 +8,10 @@ from scipy.stats import norm
 from bokeh.models.annotations import ColorBar
 from bokeh.models.tickers import FixedTicker
 from bokeh.models.mappers import LinearColorMapper
-from sessionInit import BaseDataAndFigure
+from sessionInit import BaseFigure
 from numpy import histogram
 from bokeh.models.ranges import Range1d
-class VelocityHistogram(BaseDataAndFigure):
+class VelocityHistogram(BaseFigure):
     def __init__(self, dataFrom = 'Front', step = 50):
         super().__init__()
         self.__step = step
@@ -50,7 +50,7 @@ class VelocityHistogram(BaseDataAndFigure):
         data['velocities'] = edgeVel[:-1] + offset
         return data
 
-    def XY_LabelAbstract(self, abstractFigure: Figure):
+    def label_XY(self, abstractFigure: Figure):
         x_range = Range1d(min(self.__figureColumnDataSource['velocities']), max(self.__figureColumnDataSource['velocities']))
         abstractFigure.xaxis.axis_label = 'Velocity [mm/s]'
         abstractFigure.yaxis.axis_label = 'Time [%]'
@@ -74,7 +74,7 @@ class VelocityHistogram(BaseDataAndFigure):
         abstractFigure.add_layout(color_bar, 'above')
         return abstractFigure
 
-    def simpleFigureAbstract(self, abstractFigure: Figure):
+    def figure_data(self, abstractFigure: Figure):
         Travel = [str(element) for element in range(0, 110, 10)]
         bar_width = 0.9 * (self.__figureColumnDataSource['velocities'][1] - self.__figureColumnDataSource['velocities'][0])
         source = self.__figureColumnDataSource
@@ -86,9 +86,9 @@ class VelocityHistogram(BaseDataAndFigure):
 
         # Tworzenie źródła danych dla tekstu
         if 'Front' == self.__dataFrom:
-            avgComp, maxVelocityComp, avgReb, maxVelocityReb = self.calculateAvgandMaxVelocity(self.getFrontVelocity())
+            avgComp, maxVelocityComp, avgReb, maxVelocityReb = self.calculate_avg_max_velocity(self.getFrontVelocity())
         else:
-            avgComp, maxVelocityComp, avgReb, maxVelocityReb = self.calculateAvgandMaxVelocity(self.getRearVelocity())
+            avgComp, maxVelocityComp, avgReb, maxVelocityReb = self.calculate_avg_max_velocity(self.getRearVelocity())
         
         text_source_comp = ColumnDataSource(data=dict(x=[avgComp], y=[max(self.__pdf)], text=[f'AVG Comp: {avgComp:.2f}']))
         text_source_reb = ColumnDataSource(data=dict(x=[avgReb], y=[max(self.__pdf)], text=[f'AVG Rebound: {avgReb:.2f}']))

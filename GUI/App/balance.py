@@ -1,9 +1,9 @@
 from bokeh.plotting import Figure, figure
 import numpy as np
 from bokeh.models import ColumnDataSource
-from sessionInit import BaseDataAndFigure
+from sessionInit import BaseFigure
 
-class balance_data(BaseDataAndFigure):
+class balance_data(BaseFigure):
     def __init__(self, bikeSetup: str):
         super().__init__()
         self.__bikeSetup = bikeSetup
@@ -22,11 +22,11 @@ class balance_data(BaseDataAndFigure):
     def count_alfa(self, tgAlfa):
         degreeVariable = np.degrees(np.arctan(tgAlfa))
         return degreeVariable
-    def XY_LabelAbstract(self, abstractFigure: Figure):
+    def label_XY(self, abstractFigure: Figure):
         abstractFigure.xaxis.axis_label = 'Travel [%]'
         abstractFigure.yaxis.axis_label = 'Velocity [mm/s]'
         return abstractFigure
-    def simpleFigureAbstract(self, abstractFigure: Figure):
+    def figure_data(self, abstractFigure: Figure):
         frontTravelFit = np.arange(0, 100 + 1, 1)
         rearTravelFit = np.arange(0, 100 + 1, 1)
         if self.__bikeSetup == "Comp":

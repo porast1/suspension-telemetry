@@ -1,10 +1,10 @@
 import numpy as np 
 from bokeh.plotting import figure, Figure
-from sessionInit import BaseDataAndFigure
+from sessionInit import BaseFigure
 from streamlit import header, write, selectbox, bokeh_chart, cache_data
 from scipy.signal import medfilt
 from scipy.optimize import curve_fit
-class ProgressionFigure(BaseDataAndFigure):
+class ProgressionFigure(BaseFigure):
     def __init__(self):
         super().__init__()
         header('Travel/Spring rate')
@@ -19,7 +19,7 @@ class ProgressionFigure(BaseDataAndFigure):
         self.__uniqueRearTravel, self.__uniqueRearVelocity = self.__calculateUniqueVelocity(dataTravel=rearDataTravelPercent, dataVelocity=rearDataVelocity)
         self.__frontProgressionTime = self.__calculateProgression(uniqueTravel=self.__uniqueFrontTravel, uniqueVelocity= self.__uniqueFrontVelocity)
         self.__rearProgressionTime = self.__calculateProgression(uniqueTravel= self.__uniqueRearTravel, uniqueVelocity = self.__uniqueRearVelocity)
-    def XY_LabelAbstract(self, abstractFigure : Figure):
+    def label_XY(self, abstractFigure : Figure):
         if 'Progression' == self.__Mode:
             abstractFigure.xaxis.axis_label = 'Travel [%]'
             abstractFigure.yaxis.axis_label = 'Time [s]'
@@ -27,7 +27,7 @@ class ProgressionFigure(BaseDataAndFigure):
             abstractFigure.xaxis.axis_label = 'Travel [%]'
             abstractFigure.yaxis.axis_label = 'Velocity [mm/s]'
         return abstractFigure
-    def simpleFigureAbstract(self, abstractFigure : Figure):
+    def figure_data(self, abstractFigure : Figure):
         if 'Progression' == self.__Mode:
             abstractFigure.line(x=self.__uniqueFrontTravel, y=self.__frontProgressionTime, line_width=2, legend_label='Front', line_color='blue')
             abstractFigure.line(x=self.__uniqueRearTravel, y=self.__rearProgressionTime, line_width=2, legend_label='Rear', line_color='red')
