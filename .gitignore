@@ -2,7 +2,6 @@
 C:\Users\patry\Desktop\Nowy folder (2)\Suspension_telemetry\data_acquisition_module\PCB_Design\Suspension_telemetry\Draw_Schematic
 # VS Code
 *.code-workspace
-.vscode/
 **/test.py
 
 # Byte-compiled / optimized / DLL files
