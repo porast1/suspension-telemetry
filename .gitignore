@@ -1,5 +1,14 @@
 #PCB
-C:\Users\patry\Desktop\Nowy folder (2)\Suspension_telemetry\data_acquisition_module\PCB_Design\Suspension_telemetry\Draw_Schematic
+*.gbr
+*.drl
+*..kicad_sch-bak
+*.kicad_pcb-bak
+*.lck
+*.gbrjob
+
+#enclosure
+*.FCBak
+
 # VS Code
 *.code-workspace
 **/test.py
@@ -29,7 +38,7 @@ Embedded/.settings/*
 *.ilk
 *.map
 *.exp
-
+*.ld
 # Precompiled Headers
 *.gch
 *.pch
@@ -148,7 +157,7 @@ docs/_build/
 
 # PyBuilder
 .pybuilder/
-target/
+# target/
 
 # Jupyter Notebook
 .ipynb_checkpoints
