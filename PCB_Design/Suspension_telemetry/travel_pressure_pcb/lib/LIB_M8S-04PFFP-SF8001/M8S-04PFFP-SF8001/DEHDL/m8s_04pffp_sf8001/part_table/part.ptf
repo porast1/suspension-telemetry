@@ -1,0 +1,11 @@
+FILE_TYPE = MULTI_PHYS_TABLE;
+
+PART 'M8S_04PFFP_SF8001'
+CLASS = IO
+{========================================================================================}
+:"MANUFACTURER_NAME", "MANUFACTURER_PART_NUMBER"= "PART_NUMBER", "JEDEC_TYPE", "PACK_TYPE", "TME_ELECTRONIC_COMPONENTS_PART_NUMBER", "TME_ELECTRONIC_COMPONENTS_PRICE/STOCK", "DESCRIPTION", "DATASHEET", "HEIGHT";
+{========================================================================================}
+ "Amphenol", "M8S-04PFFP-SF8001" (!) = "", "M8S04PFFPSF8001", "Other", "", "", "Connector: M8; female; PIN:4; straight; on PCBs; socket; 4A; IP68", "", "15.25 mm"
+END_PART
+
+END.

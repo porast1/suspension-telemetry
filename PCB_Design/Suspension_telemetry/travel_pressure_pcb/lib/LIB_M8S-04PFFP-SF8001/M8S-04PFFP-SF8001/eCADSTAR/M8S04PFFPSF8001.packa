@@ -1,0 +1,13 @@
+(unit MM)
+
+(package "M8S-04PFFP-SF8001"
+    (type UNDEF)
+    (uver 2)
+    (cuser "SamacSys")
+    (uuser "SamacSys")
+    (utime 2020-08-07-10:07:25)
+    (mountForm default
+        (footprintRef "M8S04PFFPSF8001")
+        (spec "System")
+    )
+)

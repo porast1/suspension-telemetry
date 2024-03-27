@@ -1,0 +1,9 @@
+EESchema-DOCLIB  Version 2.0
+#
+$CMP M8S-04PFFP-SF8001
+D Connector: M8; female; PIN:4; straight; on PCBs; socket; 4A; IP68
+K
+F 
+$ENDCMP
+#
+#End Doc Library

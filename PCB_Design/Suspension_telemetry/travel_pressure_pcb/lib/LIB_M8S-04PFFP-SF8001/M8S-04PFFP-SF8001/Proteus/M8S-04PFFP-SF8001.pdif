@@ -1,0 +1,155 @@
+;Proteus Design Interchange Format
+(PDIF
+ (vendor "SamacSys Limited")
+ (version 1 0)
+ (library
+  (part "M8S-04PFFP-SF8001"
+   (description "Connector: M8; female; PIN:4; straight; on PCBs; socket; 4A; IP68")
+   (family "CON")
+   (package "M8S04PFFPSF8001")
+   (attribute "Datasheet Link" "")
+   (attribute "Geometry.Height" "15.25mm")
+   (attribute "TME Electronic Components Part Number" "")
+   (attribute "TME Electronic Components Price/Stock" "")
+   (attribute "Manufacturer_Name" "Amphenol")
+   (attribute "Manufacturer_Part_Number" "M8S-04PFFP-SF8001")
+   (gate
+    (symbol "M8S-04PFFP-SF8001")
+    (pin "1" 1 PS)
+    (pin "2" 2 PS)
+    (pin "3" 3 PS)
+    (pin "4" 4 PS)
+    (pin "MH1" MH1 PS)
+    (pin "MH2" MH2 PS)
+   )
+  )
+  (symbol "M8S-04PFFP-SF8001"
+   (units THOU)
+   (origin (pt 0 0))
+   (graphic
+    (stroke 10)
+    (path (pt 200 300) (pt 800 300) (pt 800 -300) (pt 200 -300) (pt 200 300) (closed))
+   )
+   (terminal
+    (body (symbol "PIN") (pt 400 500) (rot 90) (mir X) (visible true))
+    (name (pt 230 0) (rot 0) (just MIDDLE LEFT) (visible true))
+    (number (pt 140 20) (rot 0) (just BOTTOM RIGHT) (visible true)))
+   (terminal
+    (body (symbol "PIN") (pt 400 -500) (rot 90) (mir 0) (visible true))
+    (name (pt 230 0) (rot 0) (just MIDDLE LEFT) (visible true))
+    (number (pt 140 20) (rot 0) (just BOTTOM RIGHT) (visible true)))
+   (terminal
+    (body (symbol "PIN") (pt 500 500) (rot 90) (mir X) (visible true))
+    (name (pt 230 0) (rot 0) (just MIDDLE LEFT) (visible true))
+    (number (pt 140 20) (rot 0) (just BOTTOM RIGHT) (visible true)))
+   (terminal
+    (body (symbol "PIN") (pt 500 -500) (rot 90) (mir 0) (visible true))
+    (name (pt 230 0) (rot 0) (just MIDDLE LEFT) (visible true))
+    (number (pt 140 20) (rot 0) (just BOTTOM RIGHT) (visible true)))
+   (terminal
+    (body (symbol "PIN") (pt 0 0) (rot 0) (mir 0) (visible true))
+    (name (pt 230 0) (rot 0) (just MIDDLE LEFT) (visible true))
+    (number (pt 140 20) (rot 0) (just BOTTOM RIGHT) (visible true)))
+   (terminal
+    (body (symbol "PIN") (pt 1000 0) (rot 0) (mir X) (visible true))
+    (name (pt 230 0) (rot 0) (just MIDDLE LEFT) (visible true))
+    (number (pt 140 20) (rot 0) (just BOTTOM RIGHT) (visible true)))
+  )
+  (symbol "PIN"
+   (units THOU)
+   (origin (pt 0 0))
+   (graphic
+    (stroke 10)
+    (path (pt 0 0) (pt 200 0))))
+  (symbol "PINSHORT"
+   (units THOU)
+   (origin (pt 0 0))
+   (graphic
+    (stroke 10)
+    (path (pt 0 0) (pt 100 0))))
+  (package "M8S04PFFPSF8001"
+   (units MM)
+   (layer TASM
+    (graphic
+     (stroke 0.2)
+     (path
+      (closed true)
+      (pt -4.7 5.9)
+      (pt 8.1 5.9)
+      (pt 8.1 -6.9)
+      (pt -4.7 -6.9)
+      (pt -4.7 5.9))))
+   (layer OCCA
+    (graphic
+     (stroke 0.1)
+     (path
+      (closed true)
+      (pt -7.05 -7.9)
+      (pt 10.45 -7.9)
+      (pt 10.45 7.7)
+      (pt -7.05 7.7)
+      (pt -7.05 -7.9))))
+   (layer TSLK
+    (graphic
+     (stroke 0.2)
+     (path
+      (closed false)
+      (pt 0 6.7)
+      (arc (pt 0.000 6.700) (pt -0.050 6.600) (pt 0.050 6.700) (start 180.0) (sweep 90.0))
+      (pt 0 6.6)
+      (arc (pt 0.000 6.600) (pt -0.050 6.600) (pt 0.050 6.700) (start 180.0) (sweep -90.0))
+      (pt 0 6.7)
+      (arc (pt 0.000 6.700) (pt -0.050 6.600) (pt 0.050 6.700) (start 180.0) (sweep 90.0))
+      (pt 0 6.6))))
+   (layer TSLK
+    (graphic
+     (stroke 0.1)
+     (path
+      (closed false)
+      (pt -4.7 2.5)
+      (pt -4.7 5.9)
+      (pt 8.1 5.9)
+      (pt 8.1 2.5))))
+   (layer TSLK
+    (graphic
+     (stroke 0.1)
+     (path
+      (closed false)
+      (pt -4.7 -3.5)
+      (pt -4.7 -6.9)
+      (pt 8.1 -6.9)
+      (pt 8.1 -3.5))))
+   (leg 1 (pt 0.000 0.000) (padstack 0))
+   (leg 2 (pt 0.625 -1.950) (padstack 0))
+   (leg 3 (pt 3.400 0.000) (padstack 0))
+   (leg 4 (pt 2.775 -1.950) (padstack 0))
+   (leg MH1 (pt -4.550 -0.500) (padstack 5))
+   (leg MH2 (pt 7.950 -0.500) (padstack 6))
+   (padstack 0
+    (hole 1.3)
+    (plated true)
+    (pad (layer TCOP) (round 1.800))
+    (pad (layer INNER) (round 1.800))
+    (pad (layer BCOP) (round 1.800))
+   )
+   (padstack 5
+    (hole 3)
+    (plated true)
+    (pad (layer TCOP) (round 4.500))
+    (pad (layer INNER) (round 4.500))
+    (pad (layer BCOP) (round 4.500))
+   )
+   (padstack 6
+    (hole 3)
+    (plated true)
+    (pad (layer TCOP) (round 4.500))
+    (pad (layer INNER) (round 4.500))
+    (pad (layer BCOP) (round 4.500))
+   )
+   (model "M8S-04PFFP-SF8001.stp"
+    (euler 0 0 0)
+    (offset 0 0 0)
+   )
+  )
+ )
+)
