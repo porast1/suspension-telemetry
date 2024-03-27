@@ -1,7 +1,7 @@
 #PCB
 *.gbr
 *.drl
-*..kicad_sch-bak
+*.kicad_sch-bak
 *.kicad_pcb-bak
 *.lck
 *.gbrjob
