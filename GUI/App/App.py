@@ -10,8 +10,11 @@ if __name__ == '__main__':
     suspension_data = st_api.suspension_data_frame
     
     if sidebarSelector == "Load & Process data":
-        st_api.title("How to start:")    
-
+        st_api.title("How to start:")
+        st_api.display_text("1. Choose your setup")
+        st_api.display_text("2. Load your data file")
+        st_api.display_text("3. In sidebar select 'Charts & Statistics' to see the results")
+        
     if sidebarSelector == "Charts & Statistics" and suspension_data is not None:
 
         st_api.title("Charts & Statistics")
