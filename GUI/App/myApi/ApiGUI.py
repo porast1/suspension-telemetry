@@ -1,12 +1,12 @@
 import streamlit as st
-from numpy import array, insert, diff, linspace, where, zeros_like, mean
+from numpy import array, insert, diff, linspace, zeros_like
 from pandas import read_csv, DataFrame, to_numeric, date_range
-from bokeh.plotting import figure, Figure
+from bokeh.plotting import Figure
 from scipy.signal import butter, lfilter
 from abc import ABC, abstractmethod
+from typing import Any
 class UserApi(ABC):
     def __init__(self):
-        #fixed parameters names
         self.__suspension_parameters_template = {
             'data_file_name': None,
             'time': None,
@@ -53,6 +53,9 @@ class UserApi(ABC):
     def display_text(self, text : str):
         pass
     @abstractmethod
+    def selector(self, label : str, options : list):
+        pass
+    @abstractmethod
     def sidebar_selector(self, label : str, options : list):
         pass
     @abstractmethod
@@ -65,7 +68,7 @@ class UserApi(ABC):
     def subheader(self, subheader : str):
         pass
     @abstractmethod
-    def show_figure(self, figure_instance : Figure):
+    def show_figure(self, figure_instance : Any):
         pass
     
 class StreamlitApi(UserApi):
@@ -98,6 +101,8 @@ class StreamlitApi(UserApi):
         st.title(f"{title}")
     def display_text(self, text : str):
         st.write(f"{text}")
+    def selector(self, label : str, options : list):
+        return st.selectbox(label, options)
     def sidebar_selector(self, label : str, options : list):
         return st.sidebar.selectbox(label, options)
     def multi_selector(self, label : str, options : list):
@@ -141,7 +146,7 @@ class PrepareData:
             data.index = index
             resampleTime = samplingTime_ms/interpolate_const
             for column in data.columns:
-                data[column] = _self.__butter_lowpass_filter(data[column], 10, 200)
+                data[column] = _self.__butter_lowpass_filter(data[column], 30, 200)
             data = data.resample(f'{resampleTime}ms').interpolate(method='cubic')
             data = data.mask(data < 0, 0)
             data = data.dropna()
@@ -180,58 +185,5 @@ class PrepareData:
         percent_values = zeros_like(travel_data)
         percent_values[nonzero_mask] = 100 * (travel_data[nonzero_mask] / maxTravel)
         return percent_values
-class BaseFigure(ABC):
-
-    def __init__(self):
-        pass
-
-    def avg_travel(self, travel: list[float]):
-        return mean(travel)
-
-    def max_travel(self, travel: list[float]):
-        return max(travel)
     
-    def calculate_avg_comp_velocity(self, velocity: list[float]):
-        maskComp = velocity >= 0
-        comp = velocity[maskComp]
-        avgComp = mean(comp)
-        return avgComp
-    
-    def calculate_avg_reb_velocity(self, velocity: list[float]):
-        maskReb = velocity < 0
-        reb = velocity[maskReb]
-        avgReb = mean(reb)
-        return avgReb
-    
-    def calculate_max_velocity(self, velocity: list[float]):
-        return max(velocity)
-    
-    def calculate_min_velocity(self, velocity: list[float]):
-        return min(velocity)
-    
-    def create_empty_plot(self):
-        figure_instance = figure(
-            height = 350,
-            min_border_left=70,
-            min_border_right=50,
-            sizing_mode='stretch_both',
-            toolbar_location='above',
-            tools='xpan,xwheel_zoom,box_zoom,reset, hover, save',
-            active_drag='xpan',
-            output_backend='webgl')
-        figure_instance.circle([],[])
-        return figure_instance
-    @abstractmethod
-    def figure_data(self, figure_instance : Figure, legend_label : str, line_color : str):
-        pass
-    @abstractmethod
-    def label_XY(self, figure_instance : Figure):
-        pass
-
-    #figures
-    def create_figure(self, figure_instance, legend_label : str, line_color : str):
-        p = self.label_XY(figure_instance=figure_instance)
-        p = self.figure_data(figure_instance=figure_instance, legend_label= legend_label, line_color = line_color)
-        return p
-
-        
+      
