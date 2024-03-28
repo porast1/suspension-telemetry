@@ -49,6 +49,9 @@ PCB project:
 Enclosure:
   - standard .step file you can use freecad
 
+Images
+![plot](./Images/Telemetry_Overview.png)
+
 
 
 
