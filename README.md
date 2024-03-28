@@ -26,7 +26,7 @@ The most interesting part, data science:
 - In python the time base will be generated using the amount of measurements. Currently, the timer triggers the ADC converter with DMA with a frequency of 5ms. I implemented a ping pong buffer to be able to process and save half of the buffer to the SD card without interrupting the ADC measurement, read-write synchronization is done using a binary semaphore.
 - When measurement starts, fat32 file system creates new folder and files.
 - I used switch-case to implement the menu, a new flag is set each time the button is invoked.
-
+- Usb OTG for file sharing
 
 Currently, the menu has 4 options:
 1. Sensor calibration after installation - initial travel
