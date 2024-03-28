@@ -54,8 +54,8 @@ Images
 
 ![plot](./Images/Telemetry_Overview.png)
 ![plot](./Images/Sagpng.png)
-![plot](./Images/PCB_Front.png)
-![plot](./Images/PCB_Rear.png)
+![plot](./Images/PCB_Front.jpg)
+![plot](./Images/PCB_Rear.jpg)
 ![plot](./Images/PCB_Overview.png)
 ![plot](./Images/Startup_GUI.png)
 ![plot](./Images/General_diagram.png)
