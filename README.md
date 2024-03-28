@@ -5,6 +5,7 @@ The project consists in creating a system for testing suspension work and sugges
 The general concept of the idea, the embedded part:
 - Using linear potentiometers will take place the main travel measurement
 - Pressure sensors will monitor suspension progression
+- Brake force measurment (using tensometers) for Braking statistics (not suported yet on GUI)
 - The accelerometer will monitor overloads for a given setting,
 - Recording of measurement data on the sd card
 - LCD menu with buttons
