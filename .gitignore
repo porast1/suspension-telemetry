@@ -5,10 +5,10 @@
 *.kicad_pcb-bak
 *.lck
 *.gbrjob
-
+PCB_Design\Suspension_telemetry\Suspension_telemetry-backups\*
 #enclosure
 *.FCBak
-
+*.FCStd
 # VS Code
 *.code-workspace
 **/test.py
