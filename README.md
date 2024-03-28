@@ -50,7 +50,20 @@ Enclosure:
   - standard .step file you can use freecad
 
 Images
+
 ![plot](./Images/Telemetry_Overview.png)
+![plot](./Images/Sagpng.png)
+![plot](./Images/PCB_Front.png)
+![plot](./Images/PCB_Rear.png)
+![plot](./Images/PCB_Overview.png)
+![plot](./Images/Startup_GUI.png)
+![plot](./Images/General_diagram.png)
+![plot](./Images/Progression.png)
+![plot](./Images/Histogram.png)
+![plot](./Images/FFT.png)
+![plot](./Images/Velocity.png)
+![plot](./Images/Balance.png)
+
 
 
 
