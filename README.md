@@ -13,7 +13,7 @@ The general concept of the idea, the embedded part:
 - Enclosure
   
 The most interesting part, data science:
-- Setting up the server using the python bokeh library
+- Setting up the server using the python streamlit and bokeh library
 - Determination of the linear regression curve for the rebound/compression speed (curves from the front and rear suspension should have a similar slope)
 - Histograms for individual speeds depending on the suspension travel used (in theory, they should be a normal Gaussian distribution curve)
 - Calculation of the derivative over time to obtain acceleration on the shock absorber shaft at a particular moment of the stroke
@@ -33,3 +33,20 @@ Currently, the menu has 4 options:
 2. Measurement of static deflection/sag - the LCD display shows the percentage of travel, for shock absorbers rear front and pressure values
 3. Continuous measurement with recording on the SD card
 4. Start menu
+
+run GUI:
+  - install python (3.11.4) and add to systemPATH as python
+  - in bash runGUI.sh
+
+STM project:
+  - You need to setup project, I don't know why it's not import as it is
+  - Generate code from .IOC and copy files from Core/src and inc
+  - I changed some generated files related to fat32 and usb - compare changes and copy
+PCB project:
+  - Use KiCad 7 to open
+Enclosure:
+  - standard .step file you can use freecad
+
+
+
+
