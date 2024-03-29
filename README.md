@@ -43,7 +43,8 @@ STM project:
   - You need to setup project, I don't know why it's not import as it is
   - Generate code from .IOC and copy files from Core/src and inc
   - I changed some generated files related to fat32 and usb - compare changes and copy
-
+  - Build
+  - 
 PCB project:
   - Use KiCad 7 to open
 
