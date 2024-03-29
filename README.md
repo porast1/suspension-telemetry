@@ -51,6 +51,20 @@ PCB project:
 Enclosure:
   - standard .step file you can use freecad
 
+Things that can be improved:
+Embedded:
+  - You can better organize file handling, e.g. opening and closing.
+  - Separate the code from src and inc as separate packages for one functionality
+  - The PCB diagram has the ability to communicate on 4 data lines, currently only 1 data line is configured in CubeMx. I had problems with the stm driver, maybe they improved it in newer fw versions.
+  - Quite long detection of the connected device by the PC - currently about 8 seconds, not much, but I can complain :)
+  - You can do some light refactoring of the code. The season was chasing me and I was actually the last one to do it :)
+    
+  PCB:
+  - So far I have no objections
+    
+  GUI:
+  - Without any objections
+
 Images
 
 ![plot](./Images/Telemetry_Overview.png)
