@@ -44,7 +44,7 @@ STM project:
   - Generate code from .IOC and copy files from Core/src and inc
   - I changed some generated files related to fat32 and usb - compare changes and copy
   - Build
-  - 
+    
 PCB project:
   - Use KiCad 7 to open
 
@@ -58,6 +58,7 @@ Embedded:
   - The PCB diagram has the ability to communicate on 4 data lines, currently only 1 data line is configured in CubeMx. I had problems with the stm driver, maybe they improved it in newer fw versions.
   - Quite long detection of the connected device by the PC - currently about 8 seconds, not much, but I can complain :)
   - You can do some light refactoring of the code. The season was chasing me and I was actually the last one to do it :)
+  - If you want to have pressure and braking statistics, you must purchase appropriate sensors. Writing to the device is supported after defining two parameters responsible for activation.
     
   PCB:
   - So far I have no objections
