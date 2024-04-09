@@ -1,4 +1,4 @@
-# data_acquisition_module
+# suspension-telemetry
 contact: patryk.grzywnowicz@gmail.com
 
 The project consists in creating a system for testing suspension work and suggesting better settings. I love extreme cycling so came up with the idea out of passion and curiosity :)
